@@ -52,6 +52,19 @@
         </if>
     </select>
 
+    <!-- 根据用户名查询角色信息 -->
+    <select id="queryRolesByUserName" resultType="List" parameterType="map">
+        SELECT
+            r.name
+        FROM
+            sys_role r
+        LEFT JOIN sys_user_role ur ON ur.role_id = r.id
+        LEFT JOIN sys_user u ON u.id = ur.user_id
+        WHERE
+            1 = 1
+        AND u.user_name = #{userName}
+    </select>
+
     <!-- 查询加载表格 -->
     <select id="queryList" resultMap="SysRoleMap" parameterType="map">
         SELECT

@@ -1,14 +1,13 @@
 
 package cn.com.njdhy.muscle.triceps.controller.sys;
 
-import cn.com.njdhy.muscle.triceps.model.database.SysUser;
-import cn.com.njdhy.muscle.triceps.model.exception.ApplicationException;
-import cn.com.njdhy.muscle.triceps.util.errorcode.UserErrorCode;
-import com.github.pagehelper.PageInfo;
 import cn.com.njdhy.muscle.triceps.model.common.Query;
 import cn.com.njdhy.muscle.triceps.model.common.Result;
 import cn.com.njdhy.muscle.triceps.model.database.SysMenu;
+import cn.com.njdhy.muscle.triceps.model.exception.ApplicationException;
 import cn.com.njdhy.muscle.triceps.service.sys.SysMenuService;
+import cn.com.njdhy.muscle.triceps.util.errorcode.UserErrorCode;
+import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,11 +58,9 @@ public class MenuCtl {
     public Result queryById(@PathVariable String id) {
 
         SysMenu model = sysMenuService.queryById(id);
-
         if (ObjectUtils.isEmpty(model)) {
             model = new SysMenu();
         }
-
         return Result.success().put("model", model);
     }
 

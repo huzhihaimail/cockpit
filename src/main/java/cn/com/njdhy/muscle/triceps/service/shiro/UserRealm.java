@@ -3,6 +3,8 @@
 package cn.com.njdhy.muscle.triceps.service.shiro;
 
 import cn.com.njdhy.muscle.triceps.model.database.SysUser;
+import cn.com.njdhy.muscle.triceps.service.sys.SysPrivilegeService;
+import cn.com.njdhy.muscle.triceps.service.sys.SysRoleService;
 import cn.com.njdhy.muscle.triceps.service.sys.SysUserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -36,6 +38,12 @@ public class UserRealm extends AuthorizingRealm {
     @Autowired
     private SysUserService sysUserService;
 
+    @Autowired
+    private SysRoleService sysRoleService;
+
+    @Autowired
+    private SysPrivilegeService sysPrivilegeService;
+
     /**
      * 授权(验证权限时调用)
      */
@@ -49,7 +57,7 @@ public class UserRealm extends AuthorizingRealm {
         //用户角色授权
         addRole(loginName, info);
         //用户权限授权
-        addPermisson(loginName, info);
+        addPrivileges(loginName, info);
 
         return info;
     }
@@ -88,31 +96,32 @@ public class UserRealm extends AuthorizingRealm {
     /**
      * 函数功能描述：根据用户名查询权限
      *
-     * @param loginName
-     * @param info
+     * @param loginName 登录用户名
+     * @param info      对象
      */
-    private void addPermisson(String loginName, SimpleAuthorizationInfo info) {
-        List<String> permissonList = new ArrayList<>();//sysMenuService.queryPermissonByUserName(loginName);
+    private void addPrivileges(String loginName, SimpleAuthorizationInfo info) {
+        List<String> privilegesLst = sysPrivilegeService.queryPrivilegesByUserName(loginName);
         //用户角色列表
-        Set<String> permissonSet = new HashSet<String>();
-        for (String perm : permissonList) {
+        Set<String> privileges = new HashSet<String>();
+
+        for (String perm : privilegesLst) {
             if (StringUtils.isEmpty(perm)) {
                 continue;
             }
-            permissonSet.addAll(Arrays.asList(perm.trim().split(",")));
+            privileges.addAll(Arrays.asList(perm.trim().split(",")));
         }
 
-        info.setStringPermissions(permissonSet);
+        info.setStringPermissions(privileges);
     }
 
     /**
      * 函数功能描述：用户角色授权
      *
-     * @param loginName
-     * @param info
+     * @param loginName 登录名称
+     * @param info      对象
      */
     private void addRole(String loginName, SimpleAuthorizationInfo info) {
-        List<String> RoleList = new ArrayList<>();//sysRoleService.queryRolesByUserName(loginName);
+        List<String> RoleList = sysRoleService.queryRolesByUserName(loginName);
         //用户角色列表
         Set<String> RoleSet = new HashSet<String>();
         for (String role : RoleList) {

@@ -22,4 +22,13 @@ public interface SysRoleService extends BaseService<SysRole> {
      */
     List<SysRole> loadRoles(Map<String, Object> userName);
 
+
+    /**
+     * 根据用户名称加载角色列表
+     *
+     * @param userName 用户名称
+     * @return 角色列表
+     */
+    List<String> queryRolesByUserName(String userName);
+
 }

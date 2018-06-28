@@ -20,4 +20,12 @@ public interface SysRoleDao extends BaseDao<SysRole> {
      * @return 该用户所拥有的所有角色
      */
     List<SysRole> loadRoles(Map<String, Object> userName);
+
+    /**
+     * 根据用户名称查询用户角色信息
+     *
+     * @param map 用户名查询参数
+     * @return 用户角色列表
+     */
+    List<String> queryRolesByUserName(Map<String, Object> map);
 }

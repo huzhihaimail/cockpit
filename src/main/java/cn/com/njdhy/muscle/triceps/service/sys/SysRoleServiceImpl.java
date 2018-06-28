@@ -6,6 +6,7 @@ import cn.com.njdhy.muscle.triceps.model.database.SysRole;
 import cn.com.njdhy.muscle.triceps.service.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,5 +21,14 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
     @Override
     public List<SysRole> loadRoles(Map<String, Object> userName) {
         return dao.loadRoles(userName);
+    }
+
+    @Override
+    public List<String> queryRolesByUserName(String userName) {
+
+        Map<String, Object> query = new HashMap<>();
+        query.put("userName", userName);
+
+        return dao.queryRolesByUserName(query);
     }
 }

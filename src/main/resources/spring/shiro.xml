@@ -68,9 +68,10 @@
         </property>
         <property name="filterChainDefinitions">
             <value>
+                <!-- 说明：anon表示不拦截，authc表示拦截-->
                 /login=anon
-                /* = authc
-                /vue/**=anon
+                /*=authc
+                /sys/*/*=authc
             </value>
         </property>
     </bean>

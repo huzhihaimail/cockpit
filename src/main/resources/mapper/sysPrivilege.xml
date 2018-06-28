@@ -45,7 +45,6 @@
 
     <!-- 查询加载表格 -->
     <select id="queryList" resultMap="SysPrivilegeMap" parameterType="map">
-
         SELECT
         t.id,
         t. NAME,
@@ -66,6 +65,21 @@
         <if test="sortName!=null and sorName!='' and sortOrder !=null and sortOrder!=''">
             ORDER BY #{sortName} #{sortOrder}
         </if>
+    </select>
+
+    <!-- 根据用户名查询用户权限 -->
+    <select id="queryPrivilegesByUserName" resultType="List" parameterType="map">
+        SELECT
+        t.perms
+        FROM
+        <include refid="tableName"/>
+        t
+        LEFT JOIN sys_role_privilege rp ON rp.privilege_id = t.id
+        LEFT JOIN sys_role r ON rp.role_id = r.id
+        LEFT JOIN sys_user_role ur ON ur.role_id = r.id
+        LEFT JOIN sys_user u ON ur.user_id = u.id
+        WHERE 1 = 1
+        AND u.user_name =#{userName}
     </select>
 
     <!-- 根据ID查询-->
@@ -106,6 +120,7 @@
         <include refid="updates"/>
         WHERE id = #{id}
     </update>
+
 
 </mapper>
 

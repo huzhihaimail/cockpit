@@ -42,7 +42,7 @@ public class IndexCtl {
      * @param sysUser 用户对象
      * @return 登陆结果
      */
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login")
     public Result login(SysUser sysUser) {
 
         try {
