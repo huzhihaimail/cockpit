@@ -23,6 +23,19 @@ public class SysPrivilege extends BaseModel {
      */
     private String menuId;
 
+    /**
+     * 权限关联菜单菜单名称
+     */
+    private String menuName;
+
+    public String getMenuName() {
+        return menuName;
+    }
+
+    public void setMenuName(String menuName) {
+        this.menuName = menuName;
+    }
+
     public String getName() {
         return name;
     }

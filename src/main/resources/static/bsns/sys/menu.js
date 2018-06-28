@@ -90,6 +90,9 @@ var vm = new Vue({
             keyword: null,
         }
         , model: {} //实体对象(用于新建、修改页面)
+
+        // 定义模块名称
+        , moduleName: "menu"
     }
     // 定义方法
     , methods: {
@@ -136,7 +139,7 @@ var vm = new Vue({
             // 2. 入库
             $.ajax({
                 type: "POST",
-                url: APP_NAME + "/sys/menu/insert",
+                url: APP_NAME + "/sys/" + vm.moduleName + "/insert",
                 contentType: "application/json",
                 data: JSON.stringify(vm.model),
                 success: function (r) {
@@ -167,7 +170,7 @@ var vm = new Vue({
                 return;
             }
 
-            $.get(APP_NAME + "/sys/menu/" + ids[0], function (r) {
+            $.get(APP_NAME + "/sys/" + vm.moduleName + "/" + ids[0], function (r) {
                 vm.show = false;
                 vm.title = PAGE_UPDATE_TITLE;
                 vm.model = r.model;
@@ -180,7 +183,7 @@ var vm = new Vue({
             // 执行修改
             $.ajax({
                 type: "POST",
-                url: APP_NAME + "/sys/menu/update",
+                url: APP_NAME + "/sys/" + vm.moduleName + "/update",
                 contentType: "application/json",
                 data: JSON.stringify(vm.model),
                 success: function (r) {
@@ -212,7 +215,7 @@ var vm = new Vue({
             confirm(PAGE_ARE_YOU_SURE_DEL, function () {
                 $.ajax({
                     type: "POST",
-                    url: APP_NAME + "/sys/menu/delete",
+                    url: APP_NAME + "/sys/" + vm.moduleName + "/delete",
                     contentType: "application/json",
                     data: JSON.stringify(ids),
                     success: function (r) {
@@ -244,7 +247,7 @@ var vm = new Vue({
             vm.queryOption = queryOpt;
 
             // 刷新表格数据
-            bsTable.createBootStrapTable(showColumns, APP_NAME + "/sys/menu/list?rnd=" + Math.random(), vm.queryOption);
+            bsTable.createBootStrapTable(showColumns, APP_NAME + "/sys/" + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption);
         }
 
 

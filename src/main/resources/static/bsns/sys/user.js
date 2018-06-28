@@ -95,6 +95,9 @@ var vm = new Vue({
         , model: {} //实体对象(用于新建、修改页面)
         , roles: [] // 加载角色列表对象
         , userRoles: [] // 用户选择的角色
+
+        // 定义模块名称
+        , moduleName: "user"
     }
     // 定义方法
     , methods: {
@@ -147,7 +150,7 @@ var vm = new Vue({
             // 2. 入库
             $.ajax({
                 type: "POST",
-                url: APP_NAME + "/sys/user/insert",
+                url: APP_NAME + "/sys/" + vm.moduleName + "/insert",
                 contentType: "application/json",
                 data: JSON.stringify(vm.model),
                 success: function (r) {
@@ -180,7 +183,7 @@ var vm = new Vue({
                 return;
             }
 
-            $.get(APP_NAME + "/sys/user/" + ids[0], function (r) {
+            $.get(APP_NAME + "/sys/" + vm.moduleName + "/" + ids[0], function (r) {
                 vm.show = false;
                 vm.title = PAGE_UPDATE_TITLE;
                 vm.model = r.model;
@@ -193,7 +196,7 @@ var vm = new Vue({
             // 执行修改
             $.ajax({
                 type: "POST",
-                url: APP_NAME + "/sys/user/update",
+                url: APP_NAME + "/sys/" + vm.moduleName + "/update",
                 contentType: "application/json",
                 data: JSON.stringify(vm.model),
                 success: function (r) {
@@ -225,7 +228,7 @@ var vm = new Vue({
             confirm(PAGE_ARE_YOU_SURE_DEL, function () {
                 $.ajax({
                     type: "POST",
-                    url: APP_NAME + "/sys/user/delete",
+                    url: APP_NAME + "/sys/" + vm.moduleName + "/delete",
                     contentType: "application/json",
                     data: JSON.stringify(ids),
                     success: function (r) {
@@ -257,12 +260,12 @@ var vm = new Vue({
             vm.queryOption = queryOpt;
 
             // 刷新表格数据
-            bsTable.createBootStrapTable(showColumns, APP_NAME + "/sys/user/list?rnd=" + Math.random(), vm.queryOption);
+            bsTable.createBootStrapTable(showColumns, APP_NAME + "/sys/" + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption);
         }
 
         // 加载角色列表
         , loadRoles: function () {
-            $.get(APP_NAME + "/sys/user/loadRoles", function (r) {
+            $.get(APP_NAME + "/sys/" + vm.moduleName + "/loadRoles", function (r) {
                 vm.roles = r.page;
             });
         }
