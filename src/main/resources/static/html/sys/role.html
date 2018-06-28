@@ -63,10 +63,10 @@
             <div class="form-horizontal col-md-8">
 
                 <div class="form-group">
-                    <div class="col-sm-3 control-label">用户名称</div>
+                    <div class="col-sm-3 control-label">角色名称</div>
                     <div class="col-sm-6">
                         <input type="text" class="form-control" v-model="model.userName"
-                               placeholder="请输入用户名称"/>
+                               placeholder="请输入角色名称"/>
                     </div>
                     <!-- <div class="col-sm-3 control-label">
                          <span class="fa fa-info-circle">例如: 默认图标</span>
@@ -74,68 +74,11 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-3 control-label">用户昵称</div>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" v-model="model.nickName" placeholder="请输入用户昵称"/>
-                    </div>
-                    <!--
-                    <div class="col-sm-3">
-                        <span class="text-danger text-left">异常信息</span>
-                    </div>
-                    -->
-                </div>
-
-                <div class="form-group" v-show="showPwd">
-                    <div class="col-sm-3 control-label">密码</div>
-                    <div class="col-sm-6">
-                        <input type="password" class="form-control" v-model="model.password" placeholder="请输入密码"/>
-                    </div>
-                </div>
-
-                <div class="form-group" v-show="showPwd">
-                    <div class="col-sm-3 control-label">重复密码</div>
-                    <div class="col-sm-6">
-                        <input type="password" class="form-control" v-model="model.newPassword"
-                               placeholder="请输入用户昵称"/>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-sm-3 control-label">电子邮箱</div>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" v-model="model.email" placeholder="请输入电子邮箱"/>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-sm-3 control-label">手机号码</div>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" v-model="model.mobile" placeholder="请输入手机号码"/>
-                    </div>
-                </div>
-
-                <div class="form-group" v-show="!showPwd">
-                    <div class="col-sm-3 control-label">是否锁定</div>
-                    <div class="col-sm-2">
-                        <span class="text-red">解锁</span>
-                        <input id="unLock" type="radio" value="1" name="status" v-model="model.status">
-                    </div>
-                    <div class="col-sm-2">
-                        锁定 <input id="lock" type="radio" value="0" name="status" v-model="model.status">
-                    </div>
-                </div>
-
-                <div class="form-group has-success">
                     <div class="col-sm-3 control-label">选择角色</div>
-                    <div class="col-sm-9">
-
-                        <label class="checkbox-inline" v-for="(item,index) in roles">
-                            <input type="checkbox" :id="item.name" :value="item.id" v-model="userRoles">
-                            {{item.nameCn}}
-                        </label>
+                    <div class="col-sm-6">
+                        <input id="role" class="form-control" type="input" name="status" placeholder="请选择角色" readonly>
                     </div>
                 </div>
-
 
                 <div class="form-group text-center">
                     <a type="button" class="btn btn-success" @click="commit"><i class="fa fa-check-square-o"></i>&nbsp;确定</a>&nbsp;&nbsp;
