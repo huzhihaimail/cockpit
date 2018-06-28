@@ -27,15 +27,80 @@
         <result property="deleteFlag" column="delete_flag"/>
     </resultMap>
 
-    <!-- 根据条件查询菜单列表 -->
+    <!-- 配置表名 -->
+    <sql id="tableName">
+        sys_menu
+    </sql>
+
+    <!-- for insert columns -->
+    <sql id="columns">
+        id, parent_id, name, url, type, icon, order_num, create_date, update_date, delete_flag
+    </sql>
+
+    <!-- for insert value -->
+    <sql id="values">
+        #{id}, #{parentId}, #{name},  #{url}, #{type}, #{icon},  #{orderNum}, now(), now(), 0
+    </sql>
+
+    <!-- for update set -->
+    <sql id="updates">
+        parent_id=#{parentId}, name=#{name}, url=#{url}, type=#{type}, icon=#{icon}, order_num=#{orderNum}, delete_flag=#{deleteFlag}, update_date=now()
+    </sql>
+
+    <!-- 查询加载表格 -->
     <select id="queryList" resultMap="SysMenuMap" parameterType="map">
-        SELECT *
+        SELECT
+        id, parent_id, name, url, type, icon, order_num, create_date, update_date, delete_flag
         FROM
         sys_menu t
-        where 1=1
-        order by id desc
-
+        WHERE 1=1
+        AND t.delete_flag = 0
+        <if test="keyword!=null and keyword!=''">
+            AND t.name LIKE CONCAT('%',#{keyword},'%')
+            OR t.url LIKE CONCAT('%',#{keyword},'%')
+        </if>
+        <if test="sortName!=null and sorName!='' and sortOrder !=null and sortOrder!=''">
+            ORDER BY #{sortName} #{sortOrder}
+        </if>
     </select>
+
+    <!-- 根据ID查询-->
+    <select id="queryById" resultMap="SysMenuMap" parameterType="String">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE 1 = 1
+        AND id=#{id}
+    </select>
+
+    <!-- 批量删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+        DELETE FROM
+        <include refid="tableName"/>
+        WHERE 1=1
+        AND id IN
+        <foreach item="id" index="index" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 新建  -->
+    <insert id="insert" parameterType="SysMenu" keyProperty="id">
+        INSERT INTO sys_menu
+        (<include refid="columns"/>)
+        VALUES
+        (<include refid="values"/>)
+    </insert>
+
+    <!-- 修改 -->
+    <update id="update" parameterType="SysMenu">
+        UPDATE
+        <include refid="tableName"/>
+        SET
+        <include refid="updates"/>
+        WHERE id = #{id}
+    </update>
 
     <!-- 首页加载菜单 -->
     <select id="loadMenus" resultMap="SysMenuMap" parameterType="String">

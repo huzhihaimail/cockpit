@@ -1,18 +1,14 @@
 
 package cn.com.njdhy.muscle.triceps.controller.sys;
 
-import cn.com.njdhy.muscle.triceps.util.ShiroUtil;
-import cn.com.njdhy.muscle.triceps.util.errorcode.IndexErrorCode;
 import cn.com.njdhy.muscle.triceps.model.common.Result;
 import cn.com.njdhy.muscle.triceps.model.database.SysMenu;
 import cn.com.njdhy.muscle.triceps.model.database.SysUser;
 import cn.com.njdhy.muscle.triceps.service.sys.SysMenuService;
+import cn.com.njdhy.muscle.triceps.util.ShiroUtil;
+import cn.com.njdhy.muscle.triceps.util.errorcode.IndexErrorCode;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
