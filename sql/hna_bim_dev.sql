@@ -1,19 +1,133 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost-root
+Source Server         : localhost
 Source Server Version : 50717
 Source Host           : localhost:3306
-Source Database       : triceps
+Source Database       : hna_bim_dev
 
 Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-05-30 15:01:45
+Date: 2018-06-29 15:41:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for bi_city
+-- ----------------------------
+DROP TABLE IF EXISTS `bi_city`;
+CREATE TABLE `bi_city` (
+  `id` int(20) NOT NULL AUTO_INCREMENT COMMENT '唯一标志',
+  `code` varchar(20) DEFAULT '' COMMENT '城市代码',
+  `name` varchar(50) DEFAULT '' COMMENT '城市名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of bi_city
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for bi_city_project
+-- ----------------------------
+DROP TABLE IF EXISTS `bi_city_project`;
+CREATE TABLE `bi_city_project` (
+  `city_id` int(20) DEFAULT NULL COMMENT '城市id',
+  `project_id` int(20) DEFAULT NULL COMMENT '项目id'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of bi_city_project
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for bi_company
+-- ----------------------------
+DROP TABLE IF EXISTS `bi_company`;
+CREATE TABLE `bi_company` (
+  `id` int(20) NOT NULL AUTO_INCREMENT COMMENT '唯一标志',
+  `code` varchar(20) DEFAULT '' COMMENT '公司编码',
+  `name` varchar(50) DEFAULT '' COMMENT '公司名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of bi_company
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for bi_company_city
+-- ----------------------------
+DROP TABLE IF EXISTS `bi_company_city`;
+CREATE TABLE `bi_company_city` (
+  `company_id` int(20) NOT NULL COMMENT '公司id',
+  `city_id` int(20) DEFAULT NULL COMMENT '城市id',
+  PRIMARY KEY (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of bi_company_city
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for bi_group
+-- ----------------------------
+DROP TABLE IF EXISTS `bi_group`;
+CREATE TABLE `bi_group` (
+  `id` int(20) NOT NULL COMMENT '唯一标志',
+  `code` varchar(20) DEFAULT '' COMMENT '集团编码',
+  `name` varchar(50) DEFAULT '' COMMENT '集团名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of bi_group
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for bi_group_user
+-- ----------------------------
+DROP TABLE IF EXISTS `bi_group_user`;
+CREATE TABLE `bi_group_user` (
+  `group_id` int(20) NOT NULL COMMENT '集团id',
+  `company_id` int(20) DEFAULT NULL COMMENT '公司id',
+  PRIMARY KEY (`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of bi_group_user
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for bi_project
+-- ----------------------------
+DROP TABLE IF EXISTS `bi_project`;
+CREATE TABLE `bi_project` (
+  `id` int(20) NOT NULL COMMENT '唯一标志',
+  `name` varchar(255) DEFAULT '' COMMENT '项目名称',
+  `remark` varchar(255) DEFAULT '' COMMENT '项目备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of bi_project
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for bi_user_project
+-- ----------------------------
+DROP TABLE IF EXISTS `bi_user_project`;
+CREATE TABLE `bi_user_project` (
+  `user_id` int(20) DEFAULT NULL COMMENT '用户id',
+  `project_id` int(20) DEFAULT NULL COMMENT '项目id'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of bi_user_project
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_config
@@ -32,26 +146,6 @@ CREATE TABLE `sys_config` (
 -- ----------------------------
 -- Records of sys_config
 -- ----------------------------
-INSERT INTO `sys_config` VALUES ('1', '0', '主题', 'theme', '1', '主题123');
-INSERT INTO `sys_config` VALUES ('2', '1', '橙色主题', 'readable', '1', '主题颜色');
-INSERT INTO `sys_config` VALUES ('5', '1', '黄色主题', 'yellow', '1', '黄色主题');
-
--- ----------------------------
--- Table structure for sys_file
--- ----------------------------
-DROP TABLE IF EXISTS `sys_file`;
-CREATE TABLE `sys_file` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id ',
-  `file_name` varchar(255) DEFAULT NULL COMMENT '文件名',
-  `file_path` varchar(255) DEFAULT NULL COMMENT '文件路径',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of sys_file
--- ----------------------------
-INSERT INTO `sys_file` VALUES ('7', 'adminregister_success1497938021409.rar', 'http://172.16.0.199:8080/single-hbf/upload/adminregister_success1497938021409.rar');
-INSERT INTO `sys_file` VALUES ('8', 'adminexclamatory1497940769628.png', 'http://172.16.0.199:8080/single-hbf/upload/adminexclamatory1497940769628.png');
 
 -- ----------------------------
 -- Table structure for sys_log
@@ -71,6 +165,9 @@ CREATE TABLE `sys_log` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9174 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='日志表';
 
+-- ----------------------------
+-- Records of sys_log
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -88,7 +185,7 @@ CREATE TABLE `sys_menu` (
   `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_date` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='菜单管理';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='菜单管理';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -97,7 +194,7 @@ INSERT INTO `sys_menu` VALUES ('1', '0', '系统管理', null, '0', 'fa fa-cog',
 INSERT INTO `sys_menu` VALUES ('2', '1', '用户管理', 'user.html', '1', 'fa fa-user', '1', '0', '2018-04-11 15:29:16', '2018-04-11 15:29:16');
 INSERT INTO `sys_menu` VALUES ('3', '1', '角色管理', 'role.html', '1', 'fa fa-user-secret', '2', '0', '2018-04-11 15:28:33', '2018-04-11 15:28:33');
 INSERT INTO `sys_menu` VALUES ('4', '1', '菜单管理', 'menu.html', '1', 'fa fa-th-list', '3', '0', '2018-04-11 15:28:35', '2018-04-11 15:28:35');
-INSERT INTO `sys_menu` VALUES ('5', '1', '参数管理', 'config.html', '1', 'fa fa-th-cog', '4', '0', '2018-04-11 14:42:06', '2018-04-11 14:42:06');
+INSERT INTO `sys_menu` VALUES ('5', '1', '权限管理', 'privilege.html', '1', 'fa fa-th-list', '4', '0', '2018-04-11 14:42:06', '2018-04-11 14:42:06');
 
 -- ----------------------------
 -- Table structure for sys_privilege
@@ -107,45 +204,21 @@ CREATE TABLE `sys_privilege` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '权限名称',
   `name` varchar(255) DEFAULT NULL COMMENT '权限名称',
   `menu_id` int(11) DEFAULT NULL COMMENT '权限所属菜单ID',
+  `perms` varchar(255) DEFAULT NULL COMMENT '权限支付标识',
   `delete_flag` varchar(1) DEFAULT NULL COMMENT '是否删除（0未删除；1已删除）',
   `create_date` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '新增时间',
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=202 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_privilege
 -- ----------------------------
-INSERT INTO `sys_privilege` VALUES ('1', '系统管理', '1', '0', '2018-04-11 15:13:10', '2018-04-11 15:13:10');
-INSERT INTO `sys_privilege` VALUES ('101', '用户管理', '2', '0', '2018-04-21 13:36:17', '2018-04-21 13:36:17');
-INSERT INTO `sys_privilege` VALUES ('102', '角色管理', '3', '0', '2018-04-21 13:36:27', '2018-04-21 13:36:27');
-
--- ----------------------------
--- Table structure for sys_quartz_job
--- ----------------------------
-DROP TABLE IF EXISTS `sys_quartz_job`;
-CREATE TABLE `sys_quartz_job` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `job_id` varchar(64) NOT NULL,
-  `job_name` varchar(128) DEFAULT NULL COMMENT '任务名称',
-  `job_group` varchar(128) DEFAULT NULL COMMENT '任务分组',
-  `job_status` varchar(128) DEFAULT NULL COMMENT '任务状态:(0：停用，1：启用)',
-  `cron_expression` varchar(128) NOT NULL COMMENT 'cron表达式',
-  `description` varchar(128) DEFAULT NULL COMMENT '描述',
-  `bean_class` varchar(128) DEFAULT NULL COMMENT '任务执行时调用哪个类的方法 包名+类名',
-  `is_concurrent` varchar(128) DEFAULT NULL COMMENT '任务是否可以并行运行（0：不可以，1：可以）',
-  `spring_id` varchar(128) DEFAULT NULL COMMENT 'spring bean',
-  `method_name` varchar(128) NOT NULL COMMENT '任务调用的方法名',
-  `create_time` timestamp NULL DEFAULT NULL,
-  `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name_group` (`job_name`,`job_group`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='定时任务调度表';
-
--- ----------------------------
--- Records of sys_quartz_job
--- ----------------------------
-INSERT INTO `sys_quartz_job` VALUES ('19', 'f93b8313-0039-4825-b137-5268178648cf', 'IT上报数据查询（默认查询昨天的数据）', 'ItReport', '1', '0 0 7 * * ?', '每天凌晨7点执行一次', null, '1', 'itReportTask', 'run', '2018-02-08 16:36:54', '2018-02-27 14:34:54');
+INSERT INTO `sys_privilege` VALUES ('1', '系统管理权限', '1', 'sys', '0', '2018-06-28 17:30:33', '2018-06-28 17:30:33');
+INSERT INTO `sys_privilege` VALUES ('2', '用户管理权限', '2', 'sys:user', '0', '2018-06-28 17:30:29', '2018-06-28 17:30:29');
+INSERT INTO `sys_privilege` VALUES ('3', '角色管理权限', '3', 'sys:role', '0', '2018-06-28 17:30:26', '2018-06-28 17:30:26');
+INSERT INTO `sys_privilege` VALUES ('4', '菜单管理权限', '4', 'sys:menu', '0', '2018-06-28 17:30:21', '2018-06-28 17:30:21');
+INSERT INTO `sys_privilege` VALUES ('5', '权限管理权限', '5', 'sys:privilege', '0', '2018-06-28 17:30:44', '2018-06-28 17:30:44');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -154,19 +227,18 @@ DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '角色ID',
   `name` varchar(100) DEFAULT NULL COMMENT '角色名称',
-  `name_cn` varchar(100) DEFAULT NULL COMMENT '角色中文名称',
   `status` int(1) DEFAULT '0' COMMENT '是否删除',
+  `name_cn` varchar(100) DEFAULT NULL COMMENT '角色中文名称',
   `delete_flag` varchar(1) DEFAULT NULL COMMENT '删除状态（0未删除；1已删除）',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='角色';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='角色';
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES ('1', 'admin', '管理员', '0', '0', '2017-02-21 10:41:44', '2018-04-11 14:38:46');
-INSERT INTO `sys_role` VALUES ('2', 'guest', '访客', '1', '0', '2018-04-21 15:13:50', '2018-05-25 10:09:38');
+INSERT INTO `sys_role` VALUES ('1', 'admin', '0', '管理员', '0', '2017-02-21 10:41:44', '2018-04-11 14:38:46');
 
 -- ----------------------------
 -- Table structure for sys_role_privilege
@@ -174,18 +246,17 @@ INSERT INTO `sys_role` VALUES ('2', 'guest', '访客', '1', '0', '2018-04-21 15:
 DROP TABLE IF EXISTS `sys_role_privilege`;
 CREATE TABLE `sys_role_privilege` (
   `role_id` int(11) NOT NULL COMMENT '角色ID',
-  `privilege_id` int(11) NOT NULL COMMENT '权限ID',
-  PRIMARY KEY (`role_id`,`privilege_id`)
+  `privilege_id` int(11) NOT NULL COMMENT '权限ID'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_role_privilege
 -- ----------------------------
 INSERT INTO `sys_role_privilege` VALUES ('1', '1');
-INSERT INTO `sys_role_privilege` VALUES ('1', '101');
-INSERT INTO `sys_role_privilege` VALUES ('1', '102');
-INSERT INTO `sys_role_privilege` VALUES ('2', '1');
-INSERT INTO `sys_role_privilege` VALUES ('2', '101');
+INSERT INTO `sys_role_privilege` VALUES ('1', '2');
+INSERT INTO `sys_role_privilege` VALUES ('1', '3');
+INSERT INTO `sys_role_privilege` VALUES ('1', '4');
+INSERT INTO `sys_role_privilege` VALUES ('1', '5');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -204,28 +275,25 @@ CREATE TABLE `sys_user` (
   `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='系统用户';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='系统用户';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES ('1', 'admin', 'admin', '53c8cb0fe3b22b2aaa2a90c019593622', 'e372cb', 'root@renren.io', '13612345678', '1', '0', '2016-11-11 11:11:11', '2018-04-11 14:53:27');
-INSERT INTO `sys_user` VALUES ('2', 'guest', 'guest', 'f1861e4a94190a08307e8042fc2a29bb', '365ded', 'huzhihaimail@163.com', '15295577923', '1', '0', '2018-04-21 15:01:18', '2018-04-21 15:13:08');
 
 -- ----------------------------
 -- Table structure for sys_user_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_role`;
 CREATE TABLE `sys_user_role` (
-  `id` int(20) NOT NULL AUTO_INCREMENT COMMENT '唯一自增主键',
+  `id` int(20) NOT NULL AUTO_INCREMENT,
   `user_id` int(20) DEFAULT NULL COMMENT '用户ID',
   `role_id` int(20) DEFAULT NULL COMMENT '角色ID',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='用户与角色对应关系';
+) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=utf8 COMMENT='用户与角色对应关系';
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
 INSERT INTO `sys_user_role` VALUES ('1', '1', '1');
-INSERT INTO `sys_user_role` VALUES ('2', '2', '2');
-INSERT INTO `sys_user_role` VALUES ('3', '22', '2');
