@@ -4,8 +4,10 @@ package cn.com.njdhy.muscle.triceps.controller.sys;
 import cn.com.njdhy.muscle.triceps.model.common.Query;
 import cn.com.njdhy.muscle.triceps.model.common.Result;
 import cn.com.njdhy.muscle.triceps.model.database.SysMenu;
+import cn.com.njdhy.muscle.triceps.model.database.ZTree;
 import cn.com.njdhy.muscle.triceps.model.exception.ApplicationException;
 import cn.com.njdhy.muscle.triceps.service.sys.SysMenuService;
+import cn.com.njdhy.muscle.triceps.util.EmptyUtils;
 import cn.com.njdhy.muscle.triceps.util.errorcode.UserErrorCode;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -13,7 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
+import sun.invoke.empty.Empty;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -133,5 +137,41 @@ public class MenuCtl {
 
         return Result.success();
     }
+
+    /**
+     * 查询一级菜单(增加菜单时选择父级菜单用)
+     */
+    @RequestMapping("/queryMenu")
+    public Result queryMenu(){
+
+        //查询列表数据
+        List<SysMenu> menuList = sysMenuService.queryMenu();
+
+        return Result.success().put("model", menuList);
+    }
+
+//    /**
+//     * 查询所有菜单(新增角色时用)
+//     * @return
+//     */
+//    @RequestMapping("/select")
+//    public Result select(){
+//
+//        List<ZTree> treeList = new ArrayList<>();
+//        //查询列表数据
+//        List<SysMenu> menuList = sysMenuService.queryMenu();
+//
+//        if (!EmptyUtils.isEmpty(menuList)){
+//            for (SysMenu menu:menuList){
+//                ZTree tree = new ZTree();
+//                tree.setMenuId(menu.getId());
+//                tree.setParentId(menu.getParentId());
+//                tree.setName(menu.getName());
+//                treeList.add(tree);
+//            }
+//        }
+//
+//        return Result.success().put("model", treeList);
+//    }
 
 }

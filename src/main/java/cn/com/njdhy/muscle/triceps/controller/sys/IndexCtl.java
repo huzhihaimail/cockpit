@@ -9,6 +9,7 @@ import cn.com.njdhy.muscle.triceps.util.ShiroUtil;
 import cn.com.njdhy.muscle.triceps.util.errorcode.IndexErrorCode;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,25 @@ public class IndexCtl {
         return Result.success();
     }
 
+    /**
+     *
+     * 函数功能描述：退出系统
+     */
+    @RequestMapping("/exit")
+    public Result logOut() {
+
+        // 获取当前用户
+        Subject currentUser = SecurityUtils.getSubject();
+
+        // 身份校验通过
+        if (currentUser.isAuthenticated()) {
+
+            // session 会销毁，在SessionListener监听session销毁，清理权限缓存
+            currentUser.logout();
+        }
+
+        return Result.success();
+    }
 
     /**
      * 登陆用户名称

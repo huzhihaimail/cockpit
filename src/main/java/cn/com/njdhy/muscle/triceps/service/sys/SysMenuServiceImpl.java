@@ -20,4 +20,13 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
     public List<SysMenu> loadMenus(String userName) {
         return dao.loadMenus(userName);
     }
+
+    /**
+     * 查询一级和二级菜单
+     * @return
+     */
+    @Override
+    public List<SysMenu> queryMenu() {
+        return dao.queryMenu();
+    }
 }

@@ -20,4 +20,10 @@ public interface SysMenuDao extends BaseDao<SysMenu> {
      */
     List<SysMenu> loadMenus(String userName);
 
+    /**
+     * 查询一级菜单和二级菜单
+     * @return
+     */
+    List<SysMenu> queryMenu();
+
 }

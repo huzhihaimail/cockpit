@@ -40,7 +40,14 @@ var showColumns = [
         title: "菜单类型",
         width: "20%",
         sortable: true,
-        sortName: "type"
+        formatter: function (value, row, index) { // 设置列序号值，index从0开始
+            if (value==0){
+                return "目录";
+            }
+            if (value==1){
+                return "菜单";
+            }
+        }
     }
     , {
         field: "icon",
@@ -68,7 +75,6 @@ var showColumns = [
     }*/
 ];
 
-
 // 通用表格对象
 var bsTable = new BootStrapTable();
 // 如果有特殊表格需要处理，此处可以覆写覆写自己的表格属性 BootStrapTable.prototype.initBootstrapTable = function (columns, url, queryOpt) {}
@@ -90,7 +96,7 @@ var vm = new Vue({
             keyword: null,
         }
         , model: {} //实体对象(用于新建、修改页面)
-
+        , menu: {}
         // 定义模块名称
         , moduleName: "menu"
     }
@@ -110,17 +116,42 @@ var vm = new Vue({
 
             // 2. 设置标题
             vm.title = PAGE_INSERT_TITLE;
-            // 3. 清空表单数据
+
+            //3. 获取下拉框数据
+            $.get(APP_NAME + "/sys/menu/queryMenu", function (r) {
+                vm.show = false;
+                vm.title = "新增";
+                vm.menu = r.model;
+            });
+
+            // 4. 清空表单数据
             vm.model = {};
         }
 
         // 点击“确定”按钮
         , commit: function (el) {
 
-            // 校验表单
-            if (vm.model.userName == null || vm.model.userName == "") {
+            if (vm.model.type==null||vm.model.type==""){
+                vm.errorMessage = "请选择菜单类型！";
+                return;
+            }
+
+            if (vm.model.type==0){
+                vm.model.parentId=0;
+            }
+
+            // 校验表单菜单名称
+            if (vm.model.name == null || vm.model.name == "") {
                 vm.errorMessage = "请输入菜单名称！";
                 return;
+            }
+
+            // 校验表单上级菜单
+            if(vm.model.type==1){
+                if (vm.model.parentId == null || vm.model.parentId == "") {
+                    vm.errorMessage = "请选择上级菜单！";
+                    return;
+                }
             }
 
             // 执行新增操作
@@ -169,6 +200,13 @@ var vm = new Vue({
                 alert(PAGE_SELECT_ONE);
                 return;
             }
+
+            // 获取下拉框数据
+            $.get(APP_NAME + "/sys/menu/queryMenu", function (r) {
+                vm.show = false;
+                vm.title = "修改";
+                vm.menu = r.model;
+            });
 
             $.get(APP_NAME + "/sys/" + vm.moduleName + "/" + ids[0], function (r) {
                 vm.show = false;

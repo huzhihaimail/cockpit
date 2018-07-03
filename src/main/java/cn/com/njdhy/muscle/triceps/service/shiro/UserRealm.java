@@ -3,7 +3,6 @@
 package cn.com.njdhy.muscle.triceps.service.shiro;
 
 import cn.com.njdhy.muscle.triceps.model.database.SysUser;
-import cn.com.njdhy.muscle.triceps.service.sys.SysPrivilegeService;
 import cn.com.njdhy.muscle.triceps.service.sys.SysRoleService;
 import cn.com.njdhy.muscle.triceps.service.sys.SysUserService;
 import org.apache.shiro.authc.AuthenticationException;
@@ -20,11 +19,7 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * <一句话功能简述> 用户身份认证和授权
@@ -41,8 +36,6 @@ public class UserRealm extends AuthorizingRealm {
     @Autowired
     private SysRoleService sysRoleService;
 
-    @Autowired
-    private SysPrivilegeService sysPrivilegeService;
 
     /**
      * 授权(验证权限时调用)
@@ -100,7 +93,7 @@ public class UserRealm extends AuthorizingRealm {
      * @param info      对象
      */
     private void addPrivileges(String loginName, SimpleAuthorizationInfo info) {
-        List<String> privilegesLst = sysPrivilegeService.queryPrivilegesByUserName(loginName);
+        List<String> privilegesLst = new ArrayList<>();//sysPrivilegeService.queryPrivilegesByUserName(loginName);
         //用户角色列表
         Set<String> privileges = new HashSet<String>();
 

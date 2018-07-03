@@ -63,7 +63,19 @@
             <div class="form-horizontal col-md-8">
 
                 <div class="form-group">
-                    <div class="col-sm-3 control-label">用户名称</div>
+                    <div class="col-sm-3 control-label">菜单类型</div>
+                    <div class="col-sm-6">
+                        <input type="radio" name="type" value="0" v-model="model.type"/> 目录
+                        <input type="radio" name="type" value="1" v-model="model.type"/> 菜单
+                        <!--<input type="radio" name="type" value="2" v-model="model.type"/> 按钮-->
+                    </div>
+                    <!-- <div class="col-sm-3 control-label">
+                         <span class="fa fa-info-circle">例如: 默认图标</span>
+                     </div>-->
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-3 control-label">菜单名称</div>
                     <div class="col-sm-6">
                         <input type="text" class="form-control" v-model="model.name"
                                placeholder="请输入菜单名称"/>
@@ -73,8 +85,61 @@
                      </div>-->
                 </div>
 
+                <div class="form-group" v-if="model.type==1">
+                    <div class="col-sm-3 control-label">父级菜单</div>
+                    <div class="col-sm-6">
+                        <select class="form-control" v-model="model.parentId">
+                            <option :value="item.id" v-for="(item,index) in menu">{{item.name}}</option>
+                        </select>
+                    </div>
+                    <!-- <div class="col-sm-3 control-label">
+                         <span class="fa fa-info-circle">例如: 默认图标</span>
+                     </div>-->
+                </div>
 
+                <div class="form-group" v-if="model.type==1">
+                    <div class="col-sm-3 control-label">菜单地址</div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" v-model="model.url"
+                               placeholder="请输入菜单地址"/>
+                    </div>
+                    <!-- <div class="col-sm-3 control-label">
+                         <span class="fa fa-info-circle">例如: 默认图标</span>
+                     </div>-->
+                </div>
 
+                <div class="form-group" v-if="model.type==2">
+                    <div class="col-sm-3 control-label">授权标识</div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" v-model="model.perms"
+                               placeholder="请输入授权标识"/>
+                    </div>
+                    <!-- <div class="col-sm-3 control-label">
+                         <span class="fa fa-info-circle">例如: 默认图标</span>
+                     </div>-->
+                </div>
+
+                <div class="form-group" v-if="model.type!=2">
+                    <div class="col-sm-3 control-label">排序号</div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" v-model="model.orderNum"
+                               placeholder="请输入排序号"/>
+                    </div>
+                    <!-- <div class="col-sm-3 control-label">
+                         <span class="fa fa-info-circle">例如: 默认图标</span>
+                     </div>-->
+                </div>
+
+                <div class="form-group" v-if="model.type!=2">
+                    <div class="col-sm-3 control-label">图标</div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" v-model="model.icon"
+                               placeholder="请输入图标"/>
+                    </div>
+                    <!-- <div class="col-sm-3 control-label">
+                         <span class="fa fa-info-circle">例如: 默认图标</span>
+                     </div>-->
+                </div>
 
                 <div class="form-group text-center">
                     <a type="button" class="btn btn-success" @click="commit"><i class="fa fa-check-square-o"></i>&nbsp;确定</a>&nbsp;&nbsp;
@@ -94,6 +159,7 @@
 <script src="../../plugin/bootstrap-table/1.12.1/bootstrap-table-zh-CN.min.js"></script>
 <script src="../../plugin/vue/2.5.13/vue.min.js"></script>
 <script src="../../plugin/layer-v3.1.1/layer/layer.js"></script>
+<script src="../../plugin/ztree/js/jquery.ztree.all.min.js"></script>
 <script src="../../bsns/common/common-application.js"></script>
 <script src="../../bsns/common/common-layer.js"></script>
 <script src="../../bsns/common/common-bootstrap-table.js"></script>

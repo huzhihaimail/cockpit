@@ -21,4 +21,10 @@ public interface SysMenuService extends BaseService<SysMenu> {
      */
     List<SysMenu> loadMenus(String userName);
 
+    /**
+     * 查询一级菜单和二级菜单
+     * @return
+     */
+    List<SysMenu> queryMenu();
+
 }

@@ -30,6 +30,21 @@ var vm = new Vue({
                 }
             });
         }
+        ,exit: function(){
+            $.ajax({
+                type: "POST"
+                , url: APP_NAME + "/exit"
+                , success: function (r) {
+
+                    // 跳转到登陆页
+                    window.location.href = APP_NAME + "/html/sys/login.html";
+                }
+                , error: function (r) {
+                    vm.message = "请求异常";
+                }
+
+            });
+        }
     },
     created: function () { // vue实例化后执行
         this.loadMenus();

@@ -5,6 +5,8 @@
     <link href="../../plugin/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../plugin/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="../../plugin/bootstrap-table/1.12.1/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../../plugin/ztree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+    <link href="../../plugin/ztree/css/metroStyle/metroStyle.css" rel="stylesheet">
 </head>
 <body style="padding-top: 15px;">
 <div id="app" class="container-fluid" v-cloak>
@@ -74,9 +76,10 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-3 control-label">选择角色</div>
+                    <div class="col-sm-3 control-label">选择权限</div>
                     <div class="col-sm-6">
-                        <input id="role" class="form-control" type="input" name="status" placeholder="请选择角色" readonly>
+                        <!--<input id="role" class="form-control" type="input" name="status" placeholder="请选择角色" readonly>-->
+                        <div id="menuTree" class="ztree"></div>
                     </div>
                 </div>
 
@@ -93,6 +96,7 @@
 </div>
 </body>
 <script src="../../plugin/jquery/jquery.min.js"></script>
+<script src="../../plugin/jquery/jquery.serializejson.min.js"></script>
 <script src="../../plugin/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="../../plugin/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
 <script src="../../plugin/bootstrap-table/1.12.1/bootstrap-table-zh-CN.min.js"></script>
@@ -100,6 +104,7 @@
 <script src="../../plugin/layer-v3.1.1/layer/layer.js"></script>
 <script src="../../bsns/common/common-application.js"></script>
 <script src="../../bsns/common/common-layer.js"></script>
+<script src="../../plugin/ztree/js/jquery.ztree.all.min.js"></script>
 <script src="../../bsns/common/common-bootstrap-table.js"></script>
 <script src="../../plugin/moment/moment.min.js"></script>
 <script src="../../bsns/sys/role.js"></script>

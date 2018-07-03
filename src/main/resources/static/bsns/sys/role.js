@@ -71,6 +71,28 @@ var showColumns = [
 var bsTable = new BootStrapTable();
 // 如果有特殊表格需要处理，此处可以覆写覆写自己的表格属性 BootStrapTable.prototype.initBootstrapTable = function (columns, url, queryOpt) {}
 
+var setting = {
+    view : {
+        selectedMulti : false
+    },
+    check : {
+        enable : true
+    },
+    data : {
+        simpleData : {
+            enable : true,
+            idKey : "menuId",
+            pIdKey : "parentId",
+            rootPId: -1
+        }
+    },
+    edit : {
+        enable : false
+    }
+};
+
+var ztree;
+
 // 定义vue实例
 var vm = new Vue({
     el: "#" + VUE_EL
@@ -117,6 +139,10 @@ var vm = new Vue({
 
             // 4. 加载角色列表
             vm.loadRoles();
+
+            //5.加载树控件
+            vm.loadTreeMenu();
+
         }
 
         // 点击“确定”按钮
@@ -265,6 +291,28 @@ var vm = new Vue({
             $.get(APP_NAME + "/sys/" + vm.moduleName + "/loadRoles", function (r) {
                 vm.roles = r.page;
             });
+        }
+        , loadTreeMenu: function(){
+            function getMenuJson(url,data) {
+                var zNodes;
+                var role={roleId:data};
+                $.ajax({
+                    url : url,
+                    dataType : 'JSON',
+                    type : 'POST',
+                    data : role,
+                    async:false,
+                    success : function(data, status) {
+                        var nodes = JSON.stringify(data.model);
+                        zNodes = eval(nodes);
+                    }
+                });
+                return zNodes;
+            }
+            var data=null;
+            ztree = $.fn.zTree.init($("#menuTree"), setting,getMenuJson(APP_NAME + "/sys/menu/select",data) );
+            //展开所有节点
+            ztree.expandAll(true);
         }
     }
 });
