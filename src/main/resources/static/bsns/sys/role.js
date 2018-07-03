@@ -112,7 +112,6 @@ var vm = new Vue({
         }
         , model: {} //实体对象(用于新建、修改页面)
         , roles: [] // 加载角色列表对象
-        , userRoles: [] // 用户选择的角色
 
         // 定义模块名称
         , moduleName: "role"
@@ -135,13 +134,15 @@ var vm = new Vue({
             // 2. 设置标题
             vm.title = PAGE_INSERT_TITLE;
             // 3. 清空表单数据
-            vm.model = {};
+            vm.model = {
+                menuIdList:new Array()
+            };
 
             // 4. 加载角色列表
             vm.loadRoles();
 
             //5.加载树控件
-            vm.loadTreeMenu();
+            vm.loadTreeMenu('add');
 
         }
 
@@ -149,8 +150,8 @@ var vm = new Vue({
         , commit: function (el) {
 
             // 校验表单
-            if (vm.model.userName == null || vm.model.userName == "") {
-                vm.errorMessage = "请输入用户名";
+            if (vm.model.name == null || vm.model.name == "") {
+                vm.errorMessage = "请输入角色名";
                 return;
             }
 
@@ -167,8 +168,13 @@ var vm = new Vue({
         // 执行保存操作
         , doSave: function () {
 
-            // 获取到的用户配置的角色列表添加到后台参数
-            vm.model.userRoles = vm.userRoles;
+            //获取选择的菜单
+            var nodes = ztree.getCheckedNodes(true);
+            var menuIdList = new Array();
+            for(var i=0; i<nodes.length; i++) {
+                menuIdList.push(nodes[i].menuId);
+            }
+            vm.model.menuIdList=menuIdList;
 
             // 2. 入库
             $.ajax({
@@ -211,6 +217,9 @@ var vm = new Vue({
                 vm.title = PAGE_UPDATE_TITLE;
                 vm.model = r.model;
             });
+
+            //5.加载树控件
+            vm.loadTreeMenu('update');
         }
 
         // 执行修改操作
@@ -292,7 +301,7 @@ var vm = new Vue({
                 vm.roles = r.page;
             });
         }
-        , loadTreeMenu: function(){
+        , loadTreeMenu: function(type){
             function getMenuJson(url,data) {
                 var zNodes;
                 var role={roleId:data};
@@ -309,11 +318,20 @@ var vm = new Vue({
                 });
                 return zNodes;
             }
-            var data=null;
-            ztree = $.fn.zTree.init($("#menuTree"), setting,getMenuJson(APP_NAME + "/sys/menu/select",data) );
-            //展开所有节点
-            ztree.expandAll(true);
+            if (type=='add'){
+                var data=null;
+                ztree = $.fn.zTree.init($("#menuTree"), setting,getMenuJson(APP_NAME + "/sys/menu/queryAllMenuInsert",data) );
+                //展开所有节点
+                ztree.expandAll(true);
+            } else if (type=='update'){
+                var data=vm.model.id;
+                ztree = $.fn.zTree.init($("#menuTree"), setting,getMenuJson(APP_NAME + "/sys/menu/",data) );
+                //展开所有节点
+                ztree.expandAll(true);
+            }
+
         }
+
     }
 });
 

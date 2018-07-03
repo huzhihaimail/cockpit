@@ -2,15 +2,15 @@
 package cn.com.njdhy.muscle.triceps.model.database;
 
 /**
- * <类功能简述> 角色和权限关联实体
+ * <类功能简述> 角色和菜單关联实体
  *
  * @author 胡志海
  */
-public class SysRolePrivilege {
+public class SysRoleMenu {
 
     private String roleId;
 
-    private String privilegeId;
+    private String menuId;
 
     public String getRoleId() {
         return roleId;
@@ -20,19 +20,19 @@ public class SysRolePrivilege {
         this.roleId = roleId;
     }
 
-    public String getPrivilegeId() {
-        return privilegeId;
+    public String getMenuId() {
+        return menuId;
     }
 
-    public void setPrivilegeId(String privilegeId) {
-        this.privilegeId = privilegeId;
+    public void setMenuId(String menuId) {
+        this.menuId = menuId;
     }
 
     @Override
     public String toString() {
-        return "SysRolePrivilege{" +
+        return "SysRoleMenu{" +
                 "roleId='" + roleId + '\'' +
-                ", privilegeId='" + privilegeId + '\'' +
+                ", privilegeId='" + menuId + '\'' +
                 '}';
     }
 }

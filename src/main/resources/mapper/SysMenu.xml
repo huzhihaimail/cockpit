@@ -22,6 +22,7 @@
         <result property="type" column="type"/>
         <result property="icon" column="icon"/>
         <result property="orderNum" column="order_num"/>
+        <result property="permission" column="permission"/>
         <result property="createDate" column="create_date"/>
         <result property="updateDate" column="update_date"/>
         <result property="deleteFlag" column="delete_flag"/>
@@ -34,17 +35,17 @@
 
     <!-- for insert columns -->
     <sql id="columns">
-        id, parent_id, name, url, type, icon, order_num, create_date, update_date, delete_flag
+        id, parent_id, name, url, type, icon, order_num, permission, create_date, update_date, delete_flag
     </sql>
 
     <!-- for insert value -->
     <sql id="values">
-        #{id}, #{parentId}, #{name},  #{url}, #{type}, #{icon},  #{orderNum}, now(), now(), 0
+        #{id}, #{parentId}, #{name}, #{url}, #{type}, #{icon},  #{orderNum}, #{permission}, now(), now(), 0
     </sql>
 
     <!-- for update set -->
     <sql id="updates">
-        parent_id=#{parentId}, name=#{name}, url=#{url}, type=#{type}, icon=#{icon}, order_num=#{orderNum}, delete_flag=#{deleteFlag}, update_date=now()
+        parent_id=#{parentId}, name=#{name}, url=#{url}, type=#{type}, icon=#{icon}, order_num=#{orderNum}, permission=#{permission},delete_flag=#{deleteFlag}, update_date=now()
     </sql>
 
     <!-- 查询加载表格 -->
@@ -139,12 +140,20 @@
 
     </select>
 
-    <!-- 查询一级菜单 -->
+    <!-- 查询除按鈕以外的菜單 -->
     <select id="queryMenu" resultMap="SysMenuMap">
         select
         <include refid="columns"/>
-        from sys_menu m where m.type=0 order by m.order_num asc
+        from sys_menu m where m.type=0 or m.type=1 and m.delete_flag=0 order by m.order_num asc
     </select>
+
+    <!-- 查询所有菜單 -->
+    <select id="queryAllMenu" resultMap="SysMenuMap">
+        select
+        <include refid="columns"/>
+        from sys_menu m where m.delete_flag=0 order by m.order_num asc
+    </select>
+
 
 </mapper>
 

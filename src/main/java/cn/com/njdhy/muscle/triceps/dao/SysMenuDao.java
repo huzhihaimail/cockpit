@@ -26,4 +26,10 @@ public interface SysMenuDao extends BaseDao<SysMenu> {
      */
     List<SysMenu> queryMenu();
 
+    /**
+     * 查詢所有菜單
+     * @return
+     */
+    List<SysMenu> queryAllMenu();
+
 }

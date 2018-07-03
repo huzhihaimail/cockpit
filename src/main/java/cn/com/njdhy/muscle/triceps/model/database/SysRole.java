@@ -1,6 +1,8 @@
 
 package cn.com.njdhy.muscle.triceps.model.database;
 
+import java.util.List;
+
 /**
  * <类功能简述> 角色实体
  *
@@ -22,6 +24,19 @@ public class SysRole extends BaseModel {
      * 是否禁用角色
      */
     private String status;
+
+    /**
+     * 新增時用
+     */
+    private List<String> menuIdList;
+
+    public List<String> getMenuIdList() {
+        return menuIdList;
+    }
+
+    public void setMenuIdList(List<String> menuIdList) {
+        this.menuIdList = menuIdList;
+    }
 
     public String getName() {
         return name;

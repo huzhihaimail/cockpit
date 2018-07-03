@@ -91,7 +91,7 @@ public class RoleCtl {
             // 校验参数 todo
 
             // 执行入库操作
-            sysRoleService.insert(sysRole);
+            sysRoleService.insertRoleInfo(sysRole);
         } catch (ApplicationException e) {
             return Result.error(RoleErrorCode.SYS_ROLE_SAVE_APP_ERROR_CODE, RoleErrorCode.SYS_ROLE_SAVE_APP_ERROR_MESSAGE);
         } catch (Exception e) {

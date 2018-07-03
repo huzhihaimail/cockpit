@@ -31,4 +31,11 @@ public interface SysRoleService extends BaseService<SysRole> {
      */
     List<String> queryRolesByUserName(String userName);
 
+    /**
+     * 新增角色
+     * @param role
+     * @return
+     */
+    void insertRoleInfo(SysRole role);
+
 }

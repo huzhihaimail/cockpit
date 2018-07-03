@@ -38,6 +38,11 @@ public class SysMenu extends BaseModel {
      */
     private String orderNum;
 
+    /**
+     * 权限标志
+     */
+    private String permission;
+
     public String getParentId() {
         return parentId;
     }
@@ -84,6 +89,14 @@ public class SysMenu extends BaseModel {
 
     public void setOrderNum(String orderNum) {
         this.orderNum = orderNum;
+    }
+
+    public String getPermission() {
+        return permission;
+    }
+
+    public void setPermission(String permission) {
+        this.permission = permission;
     }
 
     @Override

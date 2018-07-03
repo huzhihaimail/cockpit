@@ -4,10 +4,12 @@ package cn.com.njdhy.muscle.triceps.controller.sys;
 import cn.com.njdhy.muscle.triceps.model.common.Query;
 import cn.com.njdhy.muscle.triceps.model.common.Result;
 import cn.com.njdhy.muscle.triceps.model.database.SysMenu;
+import cn.com.njdhy.muscle.triceps.model.database.SysRole;
 import cn.com.njdhy.muscle.triceps.model.database.ZTree;
 import cn.com.njdhy.muscle.triceps.model.exception.ApplicationException;
 import cn.com.njdhy.muscle.triceps.service.sys.SysMenuService;
 import cn.com.njdhy.muscle.triceps.util.EmptyUtils;
+import cn.com.njdhy.muscle.triceps.util.ShiroUtil;
 import cn.com.njdhy.muscle.triceps.util.errorcode.UserErrorCode;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -139,39 +141,100 @@ public class MenuCtl {
     }
 
     /**
-     * 查询一级菜单(增加菜单时选择父级菜单用)
+     * 查询除按鈕以外的菜單(增加菜单时选择父级菜单用)
      */
     @RequestMapping("/queryMenu")
     public Result queryMenu(){
-
+        List<ZTree> treeList = new ArrayList<>();
         //查询列表数据
         List<SysMenu> menuList = sysMenuService.queryMenu();
+        if (!EmptyUtils.isEmpty(menuList)){
+            for (SysMenu menu:menuList){
+                ZTree tree = new ZTree();
+                tree.setMenuId(menu.getId());
+                tree.setParentId(menu.getParentId());
+                tree.setName(menu.getName());
+                treeList.add(tree);
+            }
+            ZTree zTree = new ZTree();
+            zTree.setMenuId("0");
+            zTree.setParentId("-1");
+            zTree.setName("一级菜单");
 
-        return Result.success().put("model", menuList);
+            treeList.add(zTree);
+        }
+        return Result.success().put("model", treeList);
     }
 
-//    /**
-//     * 查询所有菜单(新增角色时用)
-//     * @return
-//     */
-//    @RequestMapping("/select")
-//    public Result select(){
+    /**
+     * 查询所有菜单(新增角色时用)
+     * @return
+     */
+    @RequestMapping("/queryAllMenuInsert")
+    public Result queryAllMenu(){
+
+        List<ZTree> treeList = new ArrayList<>();
+        //查询列表数据
+        List<SysMenu> allMenuList = sysMenuService.queryAllMenu();
+
+        if (!EmptyUtils.isEmpty(allMenuList)){
+            for (SysMenu menu:allMenuList){
+                ZTree tree = new ZTree();
+                tree.setMenuId(menu.getId());
+                tree.setParentId(menu.getParentId());
+                tree.setName(menu.getName());
+                treeList.add(tree);
+            }
+        }
+
+        return Result.success().put("model", treeList);
+    }
+
+    @RequestMapping("queryAllMenuUpdate")
+    public List<ZTree> queryAllMenuUpdate(SysRole role){
+        List<ZTree> zTreeList = null;
+        try {
+            List<SysMenu> sysMenusList = new ArrayList<SysMenu>();
+
+//            PageInfo<SysMenu> page = sysMenuLogic.queryList(new SysMenu(), 0, 0);
+//            sysMenusList = page.getList();
+
+//            zTreeList = new ArrayList<>();
+//            //根据角色ID查询该角色拥有的权限
+//            List<String> roleList = sysRoleService.queryPermissonsByRoleId(role.getRoleId());
 //
-//        List<ZTree> treeList = new ArrayList<>();
-//        //查询列表数据
-//        List<SysMenu> menuList = sysMenuService.queryMenu();
+//            if (!EmptyUtils.isEmpty(roleList)) {
+//                if (!EmptyUtils.isEmpty(sysMenusList)) {
+//                    for ( SysMenu sysMenu : sysMenusList ) {
+//                        //该用户有权限设置选中属性
+//                        if (roleList.contains(sysMenu.getMenuId() + "")) {
 //
-//        if (!EmptyUtils.isEmpty(menuList)){
-//            for (SysMenu menu:menuList){
-//                ZTree tree = new ZTree();
-//                tree.setMenuId(menu.getId());
-//                tree.setParentId(menu.getParentId());
-//                tree.setName(menu.getName());
-//                treeList.add(tree);
+//                            ZTree zTree = new ZTree();
+//
+//                            zTree.setMenuId(sysMenu.getMenuId());
+//                            zTree.setParentId(sysMenu.getParentId());
+//                            zTree.setName(sysMenu.getName());
+//                            zTree.setChecked(true);
+//                            zTreeList.add(zTree);
+//                        }
+//                        else {
+//                            ZTree zTree = new ZTree();
+//
+//                            zTree.setMenuId(sysMenu.getMenuId());
+//                            zTree.setParentId(sysMenu.getParentId());
+//                            zTree.setName(sysMenu.getName());
+//                            zTree.setChecked(false);
+//                            zTreeList.add(zTree);
+//                        }
+//                    }
+//                }
 //            }
-//        }
-//
-//        return Result.success().put("model", treeList);
-//    }
+        }
+        catch (Exception e) {
+            throw e;
+        }
+
+        return zTreeList;
+    }
 
 }

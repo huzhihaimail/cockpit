@@ -22,7 +22,7 @@
 
     <!-- for insert columns -->
     <sql id="columns">
-        id, name, name_cn, status, create_date, update_date, delete_flag
+        id, name, name_cn,status, create_date, update_date, delete_flag
     </sql>
 
     <!-- for insert value -->
@@ -111,7 +111,7 @@
 
     <!-- 新建  -->
     <insert id="insert" parameterType="SysRole" keyProperty="id">
-        INSERT INTO sys_user
+        INSERT INTO sys_role
         (<include refid="columns"/>)
         VALUES
         (<include refid="values"/>)

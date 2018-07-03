@@ -27,4 +27,10 @@ public interface SysMenuService extends BaseService<SysMenu> {
      */
     List<SysMenu> queryMenu();
 
+    /**
+     * 查询所有菜單
+     * @return
+     */
+    List<SysMenu> queryAllMenu();
+
 }

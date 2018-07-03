@@ -29,4 +29,13 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
     public List<SysMenu> queryMenu() {
         return dao.queryMenu();
     }
+
+    /**
+     * 查詢所有菜單
+     * @return
+     */
+    @Override
+    public List<SysMenu> queryAllMenu() {
+        return dao.queryMenu();
+    }
 }

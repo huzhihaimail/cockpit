@@ -41,11 +41,14 @@ var showColumns = [
         width: "20%",
         sortable: true,
         formatter: function (value, row, index) { // 设置列序号值，index从0开始
-            if (value==0){
+            if (value == 0) {
                 return "目录";
             }
-            if (value==1){
+            if (value == 1) {
                 return "菜单";
+            }
+            if (value == 2) {
+                return "按钮";
             }
         }
     }
@@ -79,6 +82,19 @@ var showColumns = [
 var bsTable = new BootStrapTable();
 // 如果有特殊表格需要处理，此处可以覆写覆写自己的表格属性 BootStrapTable.prototype.initBootstrapTable = function (columns, url, queryOpt) {}
 
+var setting = {
+    view : {
+        selectedMulti : false
+    },
+    data : {
+        simpleData : {
+            enable : true,
+            idKey : "menuId",
+            pIdKey : "parentId"
+        }
+    }
+};
+var ztree;
 // 定义vue实例
 var vm = new Vue({
     el: "#" + VUE_EL
@@ -117,27 +133,23 @@ var vm = new Vue({
             // 2. 设置标题
             vm.title = PAGE_INSERT_TITLE;
 
-            //3. 获取下拉框数据
-            $.get(APP_NAME + "/sys/menu/queryMenu", function (r) {
-                vm.show = false;
-                vm.title = "新增";
-                vm.menu = r.model;
-            });
+            //3.加载树控件
+            vm.getMenuTree();
 
             // 4. 清空表单数据
-            vm.model = {};
+            vm.model = {
+                parentName:"",
+                parentId:0,
+                type:0,
+            };
         }
 
         // 点击“确定”按钮
         , commit: function (el) {
 
-            if (vm.model.type==null||vm.model.type==""){
+            if (vm.model.type == null || vm.model.type == "") {
                 vm.errorMessage = "请选择菜单类型！";
                 return;
-            }
-
-            if (vm.model.type==0){
-                vm.model.parentId=0;
             }
 
             // 校验表单菜单名称
@@ -146,12 +158,10 @@ var vm = new Vue({
                 return;
             }
 
-            // 校验表单上级菜单
-            if(vm.model.type==1){
-                if (vm.model.parentId == null || vm.model.parentId == "") {
-                    vm.errorMessage = "请选择上级菜单！";
-                    return;
-                }
+            // 校验表单父级菜单
+            if (vm.model.parentId == null || vm.model.parentId == "") {
+                vm.errorMessage = "请选择父级菜单！";
+                return;
             }
 
             // 执行新增操作
@@ -200,13 +210,6 @@ var vm = new Vue({
                 alert(PAGE_SELECT_ONE);
                 return;
             }
-
-            // 获取下拉框数据
-            $.get(APP_NAME + "/sys/menu/queryMenu", function (r) {
-                vm.show = false;
-                vm.title = "修改";
-                vm.menu = r.model;
-            });
 
             $.get(APP_NAME + "/sys/" + vm.moduleName + "/" + ids[0], function (r) {
                 vm.show = false;
@@ -286,6 +289,48 @@ var vm = new Vue({
 
             // 刷新表格数据
             bsTable.createBootStrapTable(showColumns, APP_NAME + "/sys/" + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption);
+        }
+        , getMenuTree: function () {
+            function getMenuJson(url) {
+                var zNodes;
+                $.ajax({
+                    url: url,
+                    dataType: 'JSON',
+                    type: 'POST',
+                    async: false,
+                    success: function (data, status) {
+                        var nodes = JSON.stringify(data.model);
+                        zNodes = eval(nodes);
+                    }
+                });
+                return zNodes;
+            }
+
+            ztree = $.fn.zTree.init($("#menuTree"), setting, getMenuJson(APP_NAME + "/sys/menu/queryMenu"));
+            //展开所有节点
+            ztree.expandAll(true);
+        }
+        , showMenuTree: function () {
+
+           layer.open({
+                type: 1,
+                offset: '50px',
+                skin: 'layui-layer-molv',
+                title: "选择菜单",
+                area: ['300px', '450px'],
+                shade: 0,
+                shadeClose: false,
+                content: jQuery("#menuLayer"),
+                btn: ['确定', '取消'],
+                btn1: function (index) {
+                    var node = ztree.getSelectedNodes();
+                    //选择上级菜单
+                    vm.model.parentId = node[0].menuId;
+                    vm.model.parentName = node[0].name;
+                    layer.close(index);
+
+                }
+            });
         }
 
 
