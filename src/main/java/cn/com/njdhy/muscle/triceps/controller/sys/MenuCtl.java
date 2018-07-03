@@ -194,12 +194,9 @@ public class MenuCtl {
     public List<ZTree> queryAllMenuUpdate(SysRole role){
         List<ZTree> zTreeList = null;
         try {
-            List<SysMenu> sysMenusList = new ArrayList<SysMenu>();
+            //查询列表数据
+            List<SysMenu> allMenuList = sysMenuService.queryAllMenu();
 
-//            PageInfo<SysMenu> page = sysMenuLogic.queryList(new SysMenu(), 0, 0);
-//            sysMenusList = page.getList();
-
-//            zTreeList = new ArrayList<>();
 //            //根据角色ID查询该角色拥有的权限
 //            List<String> roleList = sysRoleService.queryPermissonsByRoleId(role.getRoleId());
 //
