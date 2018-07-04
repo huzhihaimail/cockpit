@@ -83,14 +83,14 @@ var bsTable = new BootStrapTable();
 // 如果有特殊表格需要处理，此处可以覆写覆写自己的表格属性 BootStrapTable.prototype.initBootstrapTable = function (columns, url, queryOpt) {}
 
 var setting = {
-    view : {
-        selectedMulti : false
+    view: {
+        selectedMulti: false
     },
-    data : {
-        simpleData : {
-            enable : true,
-            idKey : "menuId",
-            pIdKey : "parentId"
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "menuId",
+            pIdKey: "parentId"
         }
     }
 };
@@ -111,7 +111,11 @@ var vm = new Vue({
         , vueQueryParam: { // 查询参数
             keyword: null,
         }
-        , model: {} //实体对象(用于新建、修改页面)
+        , model: { //实体对象(用于新建、修改页面)
+            parentName: "",
+            parentId: 0,
+            type: 0,
+        }
         , menu: {}
         // 定义模块名称
         , moduleName: "menu"
@@ -138,16 +142,16 @@ var vm = new Vue({
 
             // 4. 清空表单数据
             vm.model = {
-                parentName:"",
-                parentId:0,
-                type:0,
-            };
+                parentName: "",
+                parentId: 0,
+                type: 0,
+            }
         }
 
         // 点击“确定”按钮
         , commit: function (el) {
 
-            if (vm.model.type == null || vm.model.type == "") {
+            if (vm.model.type !=0 && vm.model.type !=1 && vm.model.type !=2) {
                 vm.errorMessage = "请选择菜单类型！";
                 return;
             }
@@ -312,7 +316,7 @@ var vm = new Vue({
         }
         , showMenuTree: function () {
 
-           layer.open({
+            layer.open({
                 type: 1,
                 offset: '50px',
                 skin: 'layui-layer-molv',

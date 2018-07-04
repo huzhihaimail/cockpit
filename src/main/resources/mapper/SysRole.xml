@@ -27,19 +27,19 @@
 
     <!-- for insert value -->
     <sql id="values">
-        #{id}, #{name}, #{nameCn}, #{status}, now(), now(), 0
+        #{id}, #{name}, #{nameCn}, #{status}, GETDATE(), GETDATE(), 0
     </sql>
 
     <!-- for update set -->
     <sql id="updates">
-        name=#{name}, name_cn=#{nameCn}, status=#{status}, delete_flag=#{deleteFlag}, update_date=NOW()
+        name=#{name}, name_cn=#{nameCn}, status=#{status}, delete_flag=#{deleteFlag}, update_date=GETDATE()
     </sql>
 
     <!-- 根据用户名称查询该用户拥有的角色-->
     <select id="loadRoles" resultMap="SysRoleMap" parameterType="map">
         SELECT
         t.id,
-        t. NAME,
+        t.name,
         t.name_cn
         FROM
         sys_role t
@@ -110,11 +110,11 @@
     </delete>
 
     <!-- 新建  -->
-    <insert id="insert" parameterType="SysRole" keyProperty="id">
+    <insert id="insert" parameterType="SysRole" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO sys_role
-        (<include refid="columns"/>)
+        (name, name_cn,status, create_date, update_date, delete_flag)
         VALUES
-        (<include refid="values"/>)
+        (#{name}, #{nameCn}, #{status}, GETDATE(), GETDATE(), 0)
     </insert>
 
     <!-- 修改 -->

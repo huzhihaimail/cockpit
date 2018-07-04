@@ -33,12 +33,12 @@
 
     <!-- for insert value -->
     <sql id="values">
-        #{id}, #{userName}, #{nickName}, #{mobile}, #{password}, #{salt}, 1, #{email}, now(), now(), 0
+        #{id}, #{userName}, #{nickName}, #{mobile}, #{password}, #{salt}, 1, #{email}, GETDATE(), GETDATE(), 0
     </sql>
 
     <!-- for update set -->
     <sql id="updates">
-        user_name=#{userName}, nick_name=#{nickName}, mobile=#{mobile}, `password`=#{password}, salt=#{salt}, status=#{status}, email=#{email}, delete_flag=#{deleteFlag}, update_date=NOW()
+        user_name=#{userName}, nick_name=#{nickName}, mobile=#{mobile}, `password`=#{password}, salt=#{salt}, status=#{status}, email=#{email}, delete_flag=#{deleteFlag}, update_date=GETDATE()
     </sql>
 
     <!-- 根据名称查询 -->
@@ -76,17 +76,18 @@
     <!-- 新建  -->
     <insert id="insert" useGeneratedKeys="true" parameterType="SysUser" keyProperty="id">
         INSERT INTO sys_user
-        (<include refid="columns"/>)
+        (user_name, nick_name, mobile, password, salt, status, email, create_date, update_date, delete_flag)
         VALUES
-        (<include refid="values"/>)
+        (#{userName}, #{nickName}, #{mobile}, #{password}, #{salt}, 1, #{email}, GETDATE(), GETDATE(), 0)
     </insert>
 
     <!-- 修改 -->
     <update id="update" parameterType="SysUser">
         UPDATE
-        <include refid="tableName"/>
+        sys_user
         SET
-        <include refid="updates"/>
+        user_name=#{userName}, nick_name=#{nickName}, mobile=#{mobile}, password=#{password}, salt=#{salt},
+        status=#{status}, email=#{email}, delete_flag=#{deleteFlag}, update_date=GETDATE()
         WHERE id = #{id}
     </update>
 

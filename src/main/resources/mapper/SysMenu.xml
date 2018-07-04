@@ -40,12 +40,12 @@
 
     <!-- for insert value -->
     <sql id="values">
-        #{id}, #{parentId}, #{name}, #{url}, #{type}, #{icon},  #{orderNum}, #{permission}, now(), now(), 0
+        #{id}, #{parentId}, #{name}, #{url}, #{type}, #{icon},  #{orderNum}, #{permission}, GETDATE(), GETDATE(), 0
     </sql>
 
     <!-- for update set -->
     <sql id="updates">
-        parent_id=#{parentId}, name=#{name}, url=#{url}, type=#{type}, icon=#{icon}, order_num=#{orderNum}, permission=#{permission},delete_flag=#{deleteFlag}, update_date=now()
+        parent_id=#{parentId}, name=#{name}, url=#{url}, type=#{type}, icon=#{icon}, order_num=#{orderNum}, permission=#{permission},delete_flag=#{deleteFlag}, update_date=GETDATE()
     </sql>
 
     <!-- 查询加载表格 -->
@@ -87,11 +87,11 @@
     </delete>
 
     <!-- 新建  -->
-    <insert id="insert" parameterType="SysMenu" keyProperty="id">
+    <insert id="insert" parameterType="SysMenu" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO sys_menu
-        (<include refid="columns"/>)
+        (parent_id, name, url, type, icon, order_num, permission, create_date, update_date, delete_flag)
         VALUES
-        (<include refid="values"/>)
+        (#{parentId}, #{name}, #{url}, #{type}, #{icon},  #{orderNum}, #{permission}, GETDATE(), GETDATE(), 0)
     </insert>
 
     <!-- 修改 -->

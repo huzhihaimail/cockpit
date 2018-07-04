@@ -50,7 +50,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
         // 获取角色信息
         List<String> roles = sysUser.getUserRoles();
         // 获取用户ID
-        String userId = sysUser.getId();
+        String userId = String.valueOf(sysUser.getId());
 
         for (String roleId : roles) {
             SysUserRole sysUserRole = new SysUserRole();

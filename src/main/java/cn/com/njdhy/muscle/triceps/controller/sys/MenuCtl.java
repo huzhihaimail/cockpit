@@ -151,7 +151,7 @@ public class MenuCtl {
         if (!EmptyUtils.isEmpty(menuList)){
             for (SysMenu menu:menuList){
                 ZTree tree = new ZTree();
-                tree.setMenuId(menu.getId());
+                tree.setMenuId(String.valueOf(menu.getId()));
                 tree.setParentId(menu.getParentId());
                 tree.setName(menu.getName());
                 treeList.add(tree);
@@ -180,7 +180,7 @@ public class MenuCtl {
         if (!EmptyUtils.isEmpty(allMenuList)){
             for (SysMenu menu:allMenuList){
                 ZTree tree = new ZTree();
-                tree.setMenuId(menu.getId());
+                tree.setMenuId(String.valueOf(menu.getId()));
                 tree.setParentId(menu.getParentId());
                 tree.setName(menu.getName());
                 treeList.add(tree);

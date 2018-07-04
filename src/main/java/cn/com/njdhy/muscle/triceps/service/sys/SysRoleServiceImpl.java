@@ -59,7 +59,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
             List<SysRoleMenu> list = new ArrayList<>();
             for (String menuId:role.getMenuIdList()){
                 SysRoleMenu roleMenu = new SysRoleMenu();
-                roleMenu.setRoleId(detail.getId());
+                roleMenu.setRoleId(String.valueOf(detail.getId()));
                 roleMenu.setMenuId(menuId);
                 list.add(roleMenu);
             }

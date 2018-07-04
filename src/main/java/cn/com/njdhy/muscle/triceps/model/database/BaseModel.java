@@ -13,7 +13,7 @@ public class BaseModel {
     /**
      * 数据行ID
      */
-    private String id;
+    private Integer id;
 
     /**
      * 逻辑删除标志
@@ -30,14 +30,6 @@ public class BaseModel {
      */
     private Date updateDate;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getDeleteFlag() {
         return deleteFlag;
     }
@@ -48,6 +40,14 @@ public class BaseModel {
 
     public Date getCreateDate() {
         return createDate;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setCreateDate(Date createDate) {
