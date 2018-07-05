@@ -191,47 +191,47 @@ public class MenuCtl {
     }
 
     @RequestMapping("queryAllMenuUpdate")
-    public List<ZTree> queryAllMenuUpdate(SysRole role){
-        List<ZTree> zTreeList = null;
+    public Result queryAllMenuUpdate(SysRole role){
+        List<ZTree> zTreeList = new ArrayList<>();
         try {
             //查询列表数据
             List<SysMenu> allMenuList = sysMenuService.queryAllMenu();
 
-//            //根据角色ID查询该角色拥有的权限
-//            List<String> roleList = sysRoleService.queryPermissonsByRoleId(role.getRoleId());
-//
-//            if (!EmptyUtils.isEmpty(roleList)) {
-//                if (!EmptyUtils.isEmpty(sysMenusList)) {
-//                    for ( SysMenu sysMenu : sysMenusList ) {
-//                        //该用户有权限设置选中属性
-//                        if (roleList.contains(sysMenu.getMenuId() + "")) {
-//
-//                            ZTree zTree = new ZTree();
-//
-//                            zTree.setMenuId(sysMenu.getMenuId());
-//                            zTree.setParentId(sysMenu.getParentId());
-//                            zTree.setName(sysMenu.getName());
-//                            zTree.setChecked(true);
-//                            zTreeList.add(zTree);
-//                        }
-//                        else {
-//                            ZTree zTree = new ZTree();
-//
-//                            zTree.setMenuId(sysMenu.getMenuId());
-//                            zTree.setParentId(sysMenu.getParentId());
-//                            zTree.setName(sysMenu.getName());
-//                            zTree.setChecked(false);
-//                            zTreeList.add(zTree);
-//                        }
-//                    }
-//                }
-//            }
+            //根据角色ID查询该角色拥有的权限
+            List<String> roleList = sysMenuService.queryMenuByRole(String.valueOf(role.getId()));
+
+            if (!EmptyUtils.isEmpty(roleList)) {
+                if (!EmptyUtils.isEmpty(allMenuList)) {
+                    for ( SysMenu sysMenu : allMenuList ) {
+                        //该用户有权限设置选中属性
+                        if (roleList.contains(sysMenu.getId() + "")) {
+
+                            ZTree zTree = new ZTree();
+
+                            zTree.setMenuId(String.valueOf(sysMenu.getId()));
+                            zTree.setParentId(sysMenu.getParentId());
+                            zTree.setName(sysMenu.getName());
+                            zTree.setChecked(true);
+                            zTreeList.add(zTree);
+                        }
+                        else {
+                            ZTree zTree = new ZTree();
+
+                            zTree.setMenuId(String.valueOf(sysMenu.getId()));
+                            zTree.setParentId(sysMenu.getParentId());
+                            zTree.setName(sysMenu.getName());
+                            zTree.setChecked(false);
+                            zTreeList.add(zTree);
+                        }
+                    }
+                }
+            }
         }
         catch (Exception e) {
             throw e;
         }
 
-        return zTreeList;
+        return Result.success().put("model", zTreeList);
     }
 
 }

@@ -38,4 +38,10 @@ public interface SysRoleService extends BaseService<SysRole> {
      */
     void insertRoleInfo(SysRole role);
 
+    /**
+     * 修改角色
+     * @param role
+     */
+    void updateRoleInfo(SysRole role);
+
 }

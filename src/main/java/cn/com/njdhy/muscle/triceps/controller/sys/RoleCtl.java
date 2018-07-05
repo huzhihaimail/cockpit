@@ -115,7 +115,7 @@ public class RoleCtl {
             // TODO: 2018/3/14
 
             // 执行修改
-            sysRoleService.update(sysRole);
+            sysRoleService.updateRoleInfo(sysRole);
         } catch (RuntimeException e) {
             return Result.error(RoleErrorCode.SYS_ROLE_QUERY_APP_ERROR_CODE, RoleErrorCode.SYS_ROLE_QUERY_APP_ERROR_MESSAGE);
         } catch (Exception e) {

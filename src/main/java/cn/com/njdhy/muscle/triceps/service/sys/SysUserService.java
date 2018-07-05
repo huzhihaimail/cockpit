@@ -4,6 +4,8 @@ package cn.com.njdhy.muscle.triceps.service.sys;
 import cn.com.njdhy.muscle.triceps.model.database.SysUser;
 import cn.com.njdhy.muscle.triceps.service.BaseService;
 
+import java.util.List;
+
 /**
  * <类功能简述> 任务调度业务处理接口
  *
@@ -18,5 +20,12 @@ public interface SysUserService extends BaseService<SysUser> {
      * @return
      */
     void saveUser(SysUser sysUser);
+
+    /**
+     * 查询用户个人信息
+     * @param sysUser
+     * @return
+     */
+    SysUser queryUserInfo(SysUser sysUser);
 
 }

@@ -38,7 +38,7 @@
     <!-- 根据用户名称查询该用户拥有的角色-->
     <select id="loadRoles" resultMap="SysRoleMap" parameterType="map">
         SELECT
-        t.id,
+        DISTINCT(t.id),
         t.name,
         t.name_cn
         FROM

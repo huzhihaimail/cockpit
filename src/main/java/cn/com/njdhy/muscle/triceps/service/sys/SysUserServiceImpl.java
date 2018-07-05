@@ -2,6 +2,7 @@
 package cn.com.njdhy.muscle.triceps.service.sys;
 
 import cn.com.njdhy.muscle.triceps.dao.SysUserDao;
+import cn.com.njdhy.muscle.triceps.dao.SysUserRoleDao;
 import cn.com.njdhy.muscle.triceps.model.database.SysUser;
 import cn.com.njdhy.muscle.triceps.model.database.SysUserRole;
 import cn.com.njdhy.muscle.triceps.service.BaseServiceImpl;
@@ -24,6 +25,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
 
     @Autowired
     private SysUserRoleService sysUserRoleService;
+
+    @Autowired
+    private SysUserRoleDao sysUserRoleDao;
 
     /**
      * 插入用户
@@ -61,6 +65,20 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
 
         // 用户配置角色信息入库
         sysUserRoleService.batchInsert(sysUserRolesLst);
+    }
+
+    /**
+     * 根据用户id查询用户信息和角色信息(修改用户时用)
+     * @param sysUser
+     * @return
+     */
+    @Override
+    public SysUser queryUserInfo(SysUser sysUser) {
+
+        SysUser user = this.dao.queryById(String.valueOf(sysUser.getId()));
+        SysUserRole userRole = sysUserRoleDao.queryById(String.valueOf(sysUser.getId()));
+        user.setRoleId(userRole.getRoleId());
+        return user;
     }
 
 
