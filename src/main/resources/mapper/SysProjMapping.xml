@@ -90,7 +90,7 @@
         sys_proj_mapping
         SET
         re_flag=#{reFlag}, jsc_proj_code=#{jscProjCode}, jsc_proj_name=#{jscProjName}, yy_proj_name=#{yyProjName}, yx_proj_name=#{yxProjName},
-        jy_proj_name=#{jyProjName}, cb_proj_name=#{cbProjName}, cw_proj_name=#{cwProjName}, st_id=#(stId), create_user=#{createUser},  modify_user=#{modifyUser}, modify_date=#{modifyDate}
+        jy_proj_name=#{jyProjName}, cb_proj_name=#{cbProjName}, cw_proj_name=#{cwProjName}, st_id=#{stId}, create_user=#{createUser},  modify_user=#{modifyUser}, modify_date=#{modifyDate}
         WHERE id = #{id}
     </update>
 
