@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.njdhy.muscle.triceps.dao.SaleManageDao">
+
+    <select id="getSaleAndReturn" resultType="SaleAndReturn" parameterType="java.util.Map">
+        SELECT
+        <if test="areaCode!=null and projectCode==null">
+            AREA_ID    areaId,
+            AREA_CODE  areaCode,
+            AREA_NAME  areaName,
+        </if>
+            SUM(ZRRG) zrrg,          --昨日认购
+            SUM(ZRQY) zrqy,          --昨日签约
+            SUM(RGWQY) rgwqy,        --认购未签约
+            SUM(HKJE) hkje,          --昨日回款
+            SUM(QYYQWHK) qyyqwhk     --签约逾期未回款
+        FROM
+        <if test="areaCode==null">
+            DM_V_HAN_XS_HEAD_M
+        </if>
+        <if test="areaCode!=null and projectCode==null">
+            DM_V_HAN_XS_HEAD_A
+        </if>
+        <if test="areaCode!=null and projectCode!=null">
+            DM_V_HAN_XS_HEAD_P
+        </if>
+        WHERE YEAR_CODE = #{yearCode}
+            AND MONTH_CODE = #{monthCode}
+        <if test="areaCode!=null and projectCode==null">
+            AND AREA_CODE=#{areaCode}
+            GROUP BY AREA_ID,AREA_CODE,AREA_NAME
+        </if>
+        <if test="areaCode!=null and projectCode!=null">
+            AND AREA_CODE=#{areaCode}
+            AND PROJECT_CODE=#{projectCode}
+        </if>
+    </select>
+
+    <select id="getCityComDis" resultType="CityComDis" parameterType="java.util.Map">
+        SELECT
+        <if test="areaCode==null">
+            AREA_ID    areaId,
+            AREA_CODE  areaCode,
+            AREA_NAME  areaName,
+        </if>
+        <if test="areaCode!=null">
+            PROJECT_ID projectId,
+            PROJECT_CODE projectCode,
+            PROJECT_NAME projectName,
+        </if>
+            SUM(QYJE_M)     qyjem,             --签约金额月
+            SUM(QYJE_T_M)   qyjetm,           --签约金额目标值月
+            SUM(QYJE_L_M)   qyjelm,           --签约金额完成率月
+            SUM(QYJE_Y)     qyjey,             --签约金额年
+            SUM(QYJE_T_Y)   qyjety,           --签约金额目标值年
+            SUM(QYJE_L_Y)   qyjely,           --签约金额完成率 年
+            SUM(RGJE_M)     rgjem,             --认购金额月
+            SUM(RGJE_T_M)   rgjetm,           --认购金额目标值月
+            SUM(RGJE_L_M)   rgjelm,           --认购金额完成率月
+            SUM(RGJE_Y)     rgjey,             --认购金额年
+            SUM(RGJE_T_Y)   rgjety,           --认购金额目标值 年
+            SUM(RGJE_L_Y)   rgjely            --认购金额完成率 年
+        FROM
+        <if test="areaCode==null">
+          [HNA_BIM_DEV].[dbo].[DM_V_HAN_XS_XS_M]
+        </if>
+        <if test="areaCode!=null">
+            DM_V_HAN_XS_XS_A
+        </if>
+        WHERE YEAR_CODE = #{yearCode}
+            AND MONTH_CODE = #{monthCode}
+        <if test="areaCode==null">
+          GROUP BY AREA_ID,AREA_CODE,AREA_NAME
+        </if>
+        <if test="areaCode!=null">
+            AND AREA_CODE=#{areaCode}
+            GROUP BY   PROJECT_ID,PROJECT_CODE,PROJECT_NAME
+        </if>
+    </select>
+
+    <select id="getCityComDisRe" resultType="CityComDisRe" parameterType="java.util.Map">
+        SELECT
+        <if test="areaCode==null">
+            AREA_ID    areaId,
+            AREA_CODE  areaCode,
+            AREA_NAME  areaName,
+        </if>
+        <if test="areaCode!=null">
+            PROJECT_ID projectId,
+            PROJECT_CODE projectCode,
+            PROJECT_NAME projectName,
+        </if>
+            SUM(HKJE_M)     hkjem,       --回款金额月
+            SUM(HKJE_T_M)   hkjetm,     --回款金额目标值月
+            SUM(HKJE_L_M)   hkjelm,     --回款金额完成率月
+            SUM(HKJE_Y)     hkjey,        --回款金额年
+            SUM(HKJE_T_Y)   hkjety,      --回款金额目标值年
+            SUM(HKJE_L_Y)   hkjely      --回款金额完成率年
+        FROM
+        <if test="areaCode==null">
+          DM_V_HAN_XS_HK_M
+        </if>
+        <if test="areaCode!=null">
+          DM_V_HAN_XS_HK_A
+        </if>
+        WHERE YEAR_CODE = #{yearCode}
+          AND MONTH_CODE = #{monthCode}
+        <if test="areaCode==null">
+          GROUP BY AREA_ID,AREA_CODE,AREA_NAME
+        </if>
+        <if test="areaCode!=null">
+            AND AREA_CODE=#{areaCode}
+            GROUP BY PROJECT_ID,PROJECT_CODE,PROJECT_NAME
+        </if>
+    </select>
+
+    <select id="getCityComDisDe" resultType="CityComDisDe" parameterType="java.util.Map">
+        SELECT
+        <if test="areaCode==null">
+            AREA_ID    areaId,
+            AREA_CODE  areaCode,
+            AREA_NAME  areaName,
+        </if>
+        <if test="areaCode!=null and projectCode==null">
+            PROJECT_ID projectId,
+            PROJECT_CODE projectCode,
+            PROJECT_NAME projectName,
+        </if>
+            SUM(QHL_M)   qhlm,    --去化率月
+            SUM(QHL_Y)   qhly       --去化率年
+            FROM
+        <if test="areaCode==null">
+          DM_V_HAN_XS_QHL_M
+        </if>
+        <if test="areaCode!=null">
+          DM_V_HAN_XS_QHL_A
+        </if>
+        WHERE YEAR_CODE = #{yearCode}
+          AND MONTH_CODE = #{monthCode}
+        <if test="areaCode==null">
+            GROUP BY AREA_ID,AREA_CODE,AREA_NAME
+        </if>
+        <if test="areaCode!=null and projectCode==null">
+            AND AREA_CODE=#{areaCode}
+            GROUP BY PROJECT_ID,PROJECT_CODE,PROJECT_NAME
+        </if>
+        <if test="areaCode!=null and projectCode!=null">
+            AND AREA_CODE=#{areaCode}
+            AND PROJECT_CODE=#{projectCode}
+        </if>
+    </select>
+
+    <select id="getGoodsValueDis" resultType="GoodsValueDis" parameterType="java.util.Map">
+        SELECT
+          CHANPIN chanpin,     --业态（写字楼、车位、商业、住宅）
+        <if test="choose!=null and choose=='first'.toString()">
+            SUM(ZHZ_Y) zhzy       --总货值
+        </if>
+        <if test="choose!=null and choose=='second'.toString()">
+            SUM(YSHZ_Y) yshzy  --已售货值
+        </if>
+        <if test="choose!=null and choose=='third'.toString()">
+            SUM(SYHZ_Y) syhzy        --剩余货值
+        </if>
+        FROM
+        <if test="areaCode==null">
+            DM_V_HAN_XS_HZFB_M
+        </if>
+        <if test="areaCode!=null and projectCode==null">
+            DM_V_HAN_XS_HZFB_A
+        </if>
+        <if test="areaCode!=null and projectCode!=null">
+            DM_V_HAN_XS_HZFB_P
+        </if>
+        WHERE YEAR_CODE = #{yearCode}
+          AND MONTH_CODE = #{monthCode}
+        <if test="areaCode!=null">
+          AND AREA_CODE=#{areaCode}
+        </if>
+        <if test="projectCode!=null">
+          AND PROJECT_CODE=#{projectCode}
+        </if>
+        GROUP BY CHANPIN
+    </select>
+
+    <select id="getAgencyAndSubscribeUp" resultType="AgencySubscribeUp" parameterType="java.util.Map">
+        SELECT
+            CHANPIN       chanpin,     --业态
+            SUM(QYJE_Y) qyjey,         --签约金额年
+            SUM(QYJE_QP) qyjeqp,       --签约金额全盘
+            SUM(RGJE_Y)  rgjey,        --认购金额年
+            SUM(RGJE_QP) rgjeqp       --认购金额全盘
+        FROM DM_V_HAN_XS_XS_CP
+        WHERE YEAR_CODE = #{yearCode}
+          AND MONTH_CODE = #{monthCode}
+          AND AREA_CODE= #{areaCode} AND PROJECT_CODE= #{projectCode}
+	    GROUP BY CHANPIN
+    </select>
+
+    <select id="getAgencyAndSubscribeDown" resultType="AgencySubscribeDown" parameterType="java.util.Map">
+        SELECT
+         SUM(QYJE_M) qyjem,                        --签约金额月
+         SUM(QYJE_T_M) qyjetm,                    --签约金额目标月
+         SUM(QYJE_L_M) qyjelm,                    --签约金额完成率月
+         SUM(QYJE_L_M_YJ)  qyjelmyj,              --签约金额完成率月预警（1是正常0是预警）
+
+         SUM(QYJE_Y) qyjey,                        --签约金额年
+         SUM(QYJE_T_Y) qyjety,                    --签约金额目标年
+         SUM(QYJE_L_Y) qyjely,                    --签约金额完成率年
+         SUM(QYJE_L_Y_YJ)  qyjelyyj,              --签约金额完成率年预警（1是正常0是预警）
+
+         SUM(QYJE_QP) qyjeqp,                      --签约金额全盘
+         SUM(QYJE_T_QP) qyjetqp,                  --签约金额目标全盘
+         SUM(QYJE_L_QP) qyjelqp,                  --签约金额完成率全
+         SUM(QYJE_L_QP_YJ)  qyjelqpyj,            --签约金额完成率全盘预警（1是正常0是预警）
+
+         SUM(RGJE_M) rgjem,                        --认购金额月
+         SUM(RGJE_T_M) rgjetm,                    --认购金额目标值月
+         SUM(RGJE_L_M) rgjelm,                    --认购金额完成率月
+         SUM(RGJE_L_M_YJ)  rgjelmyj,              --认购金额完成率月预警（1是正常 0是预警）
+
+         SUM(RGJE_Y) rgjey,                        --认购金额年
+         SUM(RGJE_T_Y) rgjety,                    --认购金额目标值年
+         SUM(RGJE_L_Y) rgjely,                    --认购金额完成率年
+         SUM(RGJE_L_Y_YJ)  rgjelyyj,              --认购金额完成率年预警（1是正常 0是预警）
+
+         SUM(RGJE_QP) rgjeqp,                      --认购金额全盘
+         SUM(RGJE_T_QP) rgjetqp,                  --认购金额目标值全盘
+         SUM(RGJE_L_QP) rgjelqp,                  --认购金额完成率全盘
+         SUM(RGJE_L_QP_YJ)  rgjelqpyj             --认购金额完成率全盘预警（1是正常0是预警）
+
+        FROM DM_V_HAN_XS_XS_P
+        WHERE YEAR_CODE = #{yearCode}
+          AND MONTH_CODE = #{monthCode}
+          AND AREA_CODE= #{areaCode} AND PROJECT_CODE= #{projectCode}
+    </select>
+
+    <select id="getBusinessDisUp" resultType="BusinessDisUp" parameterType="java.util.Map">
+        SELECT
+          CHANPIN       chanpin,     --业态
+          SUM(HKJE_Y)   hkjey,      --回款金额年
+          SUM(ZPHKJE_Y)  zphkjey    --回款金额全盘
+        FROM DM_V_HAN_XS_HK_CP
+        WHERE YEAR_CODE = #{yearCode}
+          AND MONTH_CODE = #{monthCode}
+          AND AREA_CODE= #{areaCode} AND PROJECT_CODE= #{projectCode}
+        GROUP BY CHANPIN
+    </select>
+
+    <select id="getBusinessDisDown" resultType="BusinessDisDown" parameterType="java.util.Map">
+        SELECT
+            SUM(HKJE_M)     hkjem,       --回款金额月
+            SUM(HKJE_T_M)   hkjetm,     --回款金额目标值月
+            SUM(HKJE_L_M)   hkjelm,     --回款金额完成率月
+            SUM(HKJE_L_M_YJ)  hkjelmyj,     --回款金额完成率月（1是正常0是预警）
+
+            SUM(HKJE_Y)     hkjey,       --回款金额年
+            SUM(HKJE_T_Y)   hkjety,     --回款金额目标值年
+            SUM(HKJE_L_Y)   hkjely,      --回款金额完成率年
+            SUM(HKJE_L_Y_YJ)  hkjelyyj,      --回款金额完成率年（1是正常0是预警）
+
+            SUM(HKJE_QP)     hkjeqp,        --回款金额全周期
+            SUM(HKJE_T_QP)   hkjetqp,      --回款金额目标值全周期
+            SUM(HKJE_L_QP)   hkjelqp,     --回款金额完成率全周期
+            SUM(HKJE_L_QP_YJ)  hkjelqpyj      --回款金额完成率全周期（1是正常0是预警）
+
+        FROM DM_V_HAN_XS_HK_P
+        WHERE YEAR_CODE = #{yearCode}
+        AND MONTH_CODE = #{monthCode}
+        AND AREA_CODE= #{areaCode} AND PROJECT_CODE= #{projectCode}
+    </select>
+</mapper>

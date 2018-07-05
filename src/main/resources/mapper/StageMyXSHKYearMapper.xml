@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.njdhy.muscle.triceps.dao.StageMyXSHKYearDao">
+
+    <insert id="insert" parameterType="StageMyXSHKYear" >
+        insert into STAGE_MY_XSHK_YEAR (PROJECT_NAME,
+                                          PD_NAME,
+										  SUB_PD_NAME,
+										DATA_DATE,
+										RG_CNT,
+										RG_AREA,
+										RG_AMT,
+										QY_AMT,
+										QY_CNT_BUDGET,
+										QY_AREA_BUDGET,
+										QY_AMT_BUDGET,
+										HK_AMT_BUDGET,
+										HK_AMT,
+										etl_time)
+										values(
+									   #{projectName},
+                                      #{pdName},
+                                      #{subpdName},
+                                        #{dataDate},
+                                        #{rgCnt},
+                                        #{rgArea},
+                                        #{rgAmt},
+                                        #{qyAmt},
+                                        #{qyCntBudget},
+                                        #{qyAreaBudget},
+                                        #{qyAmtBudget},
+                                        #{hkAmtBudget},
+                                        #{hkAmt},
+										getdate()
+										)
+    </insert>
+
+    <insert id="insertList" parameterType="java.util.List">
+        <foreach collection="list" item="item"  separator =";">
+            insert into STAGE_MY_XSHK_YEAR
+            (PROJECT_NAME,
+            PD_NAME,
+            SUB_PD_NAME,
+            DATA_DATE,
+            RG_CNT,
+            RG_AREA,
+            RG_AMT,
+            QY_AMT,
+            QY_CNT_BUDGET,
+            QY_AREA_BUDGET,
+            QY_AMT_BUDGET,
+            HK_AMT_BUDGET,
+            HK_AMT,
+            etl_time)
+            values
+            (
+            #{item.projectName},
+            #{item.pdName},
+            #{item.subpdName},
+            #{item.dataDate},
+            #{item.rgCnt},
+            #{item.rgArea},
+            #{item.rgAmt},
+            #{item.qyAmt},
+            #{item.qyCntBudget},
+            #{item.qyAreaBudget},
+            #{item.qyAmtBudget},
+            #{item.hkAmtBudget},
+            #{item.hkAmt},
+            #{item.etlTime}
+            )
+        </foreach>
+
+    </insert>
+
+</mapper>

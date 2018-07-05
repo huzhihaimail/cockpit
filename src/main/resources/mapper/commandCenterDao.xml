@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+【命名规范说明 】
+1. 文件名采用 "表名.xml" 的方式；
+2. 每个SQL上需要编写该条SQL的注释；
+3. SQL关键字采用全大写的方式；
+4. 如果允许，请尽量保持SQL的ID和对应的业务方法名保持一致；
+5. 查询SQL如果需要使用自动分页，则其SQL的ID必须使用ByPage结尾；
+6. 可以使用MyBatis流程控制语句来实现SQL的重用；
+6. 注意SQL排版；
+-->
+<mapper namespace="cn.com.njdhy.muscle.triceps.dao.CommandCenterDao">
+
+
+    <select id="getAllData" resultType="AllDataDetails">
+        SELECT
+              DISTINCT(org_code) orgCode      --集团id
+              ,Year_MONTH yearMonth  --月份
+              ,org_name orgName      --集团名称
+              ,short_org_name shortOrgName --集团短名称
+              ,area_code areaCode      --城市公司id
+              ,area_name areaName       --城市公司名称
+              ,short_area_name shortAreaName  --城市公司短名称
+              --,project_code projectCode     --项目ID
+              --,project_name projectName    --项目名称
+              --,short_project_name shortProjectName  --项目短名称（暂无，先用项目名称）
+          FROM dim_v_org
+    </select>
+
+
+</mapper>
+

@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.njdhy.muscle.triceps.dao.PlanOperaDao">
+
+        <!-- 一层和二层-计划运营-仪表盘 -->
+    <select id="getFourRate" resultType="FourRate" parameterType="java.util.Map">
+        WITH a AS (
+        SELECT SUM(ct.WCS_M) wcsm, --月度完成
+        SUM(ct.WCS_T_M) wcstm, --月度目标
+        CONVERT(DECIMAL(18,0),SUM(ct.WCS_M)*100/NULLIF(SUM(ct.WCS_T_M),0)) wclm --月度完成率
+        FROM
+        <if test="cityCode==null">
+            dbo.DM_V_HAN_JH_HEAD_M ct
+        </if>
+        <if test="cityCode!=null">
+            dbo.DM_V_HAN_JH_HEAD_A ct
+        </if>
+        WHERE ct.YEAR_CODE =#{yearCode} AND ct.MONTH_CODE = #{monthCode}
+        <if test="cityCode!=null">
+            AND ct.city_code =#{cityCode}
+        </if>
+        ),
+        b AS(
+        SELECT
+        SUM(m1.WCS_Y) AS wcsynd, --年度完成   年度完成数
+        SUM(m1.WCS_Y) AS wcsyas, --年度完成   按时完成数
+        SUM(m1.WCS_Y) AS wcsyyq, --年度完成   逾期完成数
+        SUM(m1.WCS_T_Y) wcsty, --年度目标
+        SUM(m1.ASWCS_Y) aswcsy, --按时完成数
+        SUM(m1.YQWCS_Y) yqwcsy, --逾期完成数
+        CONVERT(DECIMAL(18,0),SUM(m1.WCS_Y)*100/NULLIF(SUM(m1.WCS_T_Y),0)) wcly, --年度完成率
+        CONVERT(DECIMAL(18,0),SUM(m1.ASWCS_Y)*100/NULLIF(SUM(m1.WCS_Y),0)) aswcl, --按时完成率
+        CONVERT(DECIMAL(18,0),SUM(m1.YQWCS_Y)*100/NULLIF(SUM(m1.WCS_Y),0)) yqwcl --逾期完成率
+        FROM
+        <if test="cityCode==null">
+            dbo.DM_V_HAN_JH_HEAD_M1 m1
+        </if>
+        <if test="cityCode!=null">
+            dbo.DM_V_HAN_JH_HEAD_A1 m1
+        </if>
+        WHERE m1.YEAR_CODE=#{yearCode}
+        AND m1.MONTH_CODE=#{monthCode}
+        <if test="cityCode!=null">
+            AND m1.city_code =#{cityCode}
+        </if>
+        )
+        select a.wcsm,a.wcstm,a.wclm,b.wcsynd,b.wcsyas,b.wcsyyq,b.wcsty,b.aswcsy,b.yqwcsy,b.wcly,b.aswcl,b.yqwcl
+        FROM a,b
+    </select>
+
+    <!-- 一层-明细页面-月度-->
+    <select id="getMonthDetailPlan" resultType="DetailPlan" parameterType="java.util.Map">
+        SELECT
+        ct.project_code projectCode, --项目编码
+        ct.project_name projectName, --项目名称
+        ct.Node_CODE nodeCode, --里程碑节点编码
+        ct.NODE_NAME nodeName, --里程碑名称
+        ct.P_END_DATE pEndDate, --计划完成时间
+        ct.A_END_DATE aEndDate, --实际完成时间
+        ct.YJ yj --预警
+        FROM dbo.DM_V_HAN_JH_MX_M ct
+        WHERE 1=1
+        <if test="yearCode!=null and yearCode!=''">
+            AND ct.YEAR_CODE =#{yearCode}
+        </if>
+        <if test="monthCode!=null and monthCode!=''">
+            AND ct.MONTH_CODE =#{monthCode}
+        </if>
+        GROUP BY ct.YEAR_CODE ,
+        ct.MONTH_CODE ,
+        ct.project_code ,
+        ct.project_name ,
+        ct.Node_CODE ,
+        ct.NODE_NAME ,
+        ct.P_END_DATE ,
+        ct.A_END_DATE ,
+        ct.YJ
+    </select>
+
+    <!-- 一层-明细页面-年度-->
+    <select id="getYearDetailPlan" resultType="DetailPlan" parameterType="java.util.Map">
+        SELECT
+        ct.project_code projectCode, --项目编码
+        ct.project_name projectName, --项目名称
+        ct.Node_CODE nodeCode, --里程碑节点编码
+        ct.NODE_NAME nodeName, --里程碑名称
+        ct.P_END_DATE pEndDate, --计划完成时间
+        ct.A_END_DATE aEndDate, --实际完成时间
+        ct.YJ yj--预警
+        FROM dbo.DM_V_HAN_JH_MX_M ct
+        WHERE 1=1
+        <if test="yearCode!=null and yearCode!=''">
+            AND ct.YEAR_CODE =#{yearCode}
+        </if>
+        <if test="monthCode!=null and monthCode!=''">
+            AND ct.MONTH_CODE <![CDATA[ <= ]]> #{monthCode}
+        </if>
+        GROUP BY ct.YEAR_CODE ,
+        ct.MONTH_CODE ,
+        ct.project_code ,
+        ct.project_name ,
+        ct.Node_CODE ,
+        ct.NODE_NAME ,
+        ct.P_END_DATE ,
+        ct.A_END_DATE ,
+        ct.YJ
+    </select>
+
+    <!-- 二层-明细页面-月度-->
+    <select id="getSecLayerMonthDetailPlan" resultType="DetailPlan" parameterType="java.util.Map">
+        SELECT
+        ct.project_code projectCode, --项目编码
+        ct.project_name projectName, --项目名称
+        ct.Node_CODE nodeCode, --里程碑节点编码
+        ct.NODE_NAME nodeName, --里程碑名称
+        ct.P_END_DATE pEndDate, --计划完成时间
+        ct.A_END_DATE aEndDate, --实际完成时间
+        ct.YJ yj --预警
+        FROM dbo.DM_V_HAN_JH_MX_A ct
+        WHERE 1=1
+        <if test="yearCode!=null and yearCode!=''">
+            AND ct.YEAR_CODE =#{yearCode}
+        </if>
+        <if test="monthCode!=null and monthCode!=''">
+            AND ct.MONTH_CODE =#{monthCode}
+        </if>
+        <if test="cityCode!=null and cityCode!=''">
+            AND ct.CITY_CODE=#{cityCode}
+        </if>
+        GROUP BY ct.YEAR_CODE ,
+        ct.MONTH_CODE ,
+        ct.project_code ,
+        ct.project_name ,
+        ct.Node_CODE ,
+        ct.NODE_NAME ,
+        ct.P_END_DATE ,
+        ct.A_END_DATE ,
+        ct.YJ
+    </select>
+
+    <!-- 二层-明细页面-年度-->
+    <select id="getSecLayerYearDetailPlan" resultType="DetailPlan" parameterType="java.util.Map">
+        SELECT
+        ct.project_code projectCode, --项目编码
+        ct.project_name projectName, --项目名称
+        ct.Node_CODE nodeCode, --里程碑节点编码
+        ct.NODE_NAME nodeName, --里程碑名称
+        ct.P_END_DATE pEndDate, --计划完成时间
+        ct.A_END_DATE aEndDate, --实际完成时间
+        ct.YJ yj --预警
+        FROM dbo.DM_V_HAN_JH_MX_A ct
+        WHERE 1=1
+        <if test="yearCode!=null and yearCode!=''">
+            AND ct.YEAR_CODE =#{yearCode}
+        </if>
+        <if test="monthCode!=null and monthCode!=''">
+            AND ct.MONTH_CODE <![CDATA[ <= ]]> #{monthCode}
+        </if>
+        <if test="cityCode!=null and cityCode!=''">
+            AND ct.CITY_CODE=#{cityCode}
+        </if>
+        GROUP BY ct.YEAR_CODE ,
+        ct.MONTH_CODE ,
+        ct.project_code ,
+        ct.project_name ,
+        ct.Node_CODE ,
+        ct.NODE_NAME ,
+        ct.P_END_DATE ,
+        ct.A_END_DATE ,
+        ct.YJ
+    </select>
+
+    <!-- 三层-计划运营-里程碑预警-->
+    <select id="getMilestoneWarning" resultType="MilestoneWarning" parameterType="java.util.Map">
+        SELECT
+        ct.Node_CODE nodeCode, --里程碑阶段编码
+        ct.NODE_NAME nodeName, --里程碑名称
+        ct.NODE_SEQ nodeSeq, --里程碑排列顺序
+        ct.YJ yj --预警
+        FROM dbo.DM_V_HAN_JH_HEAD_P ct
+        WHERE 1=1
+        <if test="yearCode!=null and yearCode!=''">
+            AND ct.YEAR_CODE =#{yearCode}
+        </if>
+        <if test="monthCode!=null and monthCode!=''">
+            AND ct.MONTH_CODE <![CDATA[ <= ]]> #{monthCode}
+        </if>
+        <if test="cityCode!=null and cityCode!=''">
+            AND ct.CITY_CODE=#{cityCode}
+        </if>
+        <if test="projectCode!=null and projectCode!=''">
+            AND ct.project_code=#{projectCode}
+        </if>
+    </select>
+
+    <!--计划运营-三层-一级计划-->
+    <select id="getOneLevelPlan" resultType="OneLevelPlan" parameterType="java.util.Map">
+        SELECT
+        SUM(ct.YJANWCS) yjanwcs, --一级计划按时完成数
+        SUM(ct.YJYQWCS) yjyqwcs, --一级计划逾期完成数
+        SUM(ct.YJWCS) yjwcs, --一级完成数
+        SUM(ct.YJWWCS) yjwwcs, --一级未完成数
+        CONVERT(DECIMAL(18,0),SUM(ct.YJWCS)*100/NULLIF((SUM(ct.YJWCS)+SUM(ct.YJWWCS)),0)) yjjhecl --一级计划完成率
+        FROM dbo.DM_V_HAN_JH_JH_P ct
+        WHERE 1=1
+        <if test="yearCode!=null and yearCode!=''">
+            AND ct.YEAR_CODE =#{yearCode}
+        </if>
+        <if test="monthCode!=null and monthCode!=''">
+            AND ct.MONTH_CODE <![CDATA[ <= ]]> #{monthCode}
+        </if>
+        <if test="cityCode!=null and cityCode!=''">
+            AND ct.CITY_CODE=#{cityCode}
+        </if>
+        <if test="projectCode!=null and projectCode!=''">
+            AND ct.project_code=#{projectCode}
+        </if>
+    </select>
+
+    <!--计划运营-三层-二级计划-->
+    <select id="getTwoLevelPlan" resultType="TwoLevelPlan" parameterType="java.util.Map">
+        SELECT
+        SUM(ct.EJANWCS) ejanwcs, --二级计划按时完成数
+        SUM(ct.EJYQWCS) ejyqwcs, --二级计划逾期完成数
+        SUM(ct.EJWCS) ejwcs, --二级完成数
+        SUM(ct.EJWWCS) ejwwc, --二级未完成数
+        CONVERT(DECIMAL(18,0),SUM(ct.EJWCS)*100/NULLIF((SUM(ct.EJWCS)+SUM(ct.EJWWCS)),0)) ejjhwcl --二级计划完成率
+        FROM dbo.DM_V_HAN_JH_JH_P ct
+        WHERE 1=1
+        <if test="yearCode!=null and yearCode!=''">
+            AND ct.YEAR_CODE =#{yearCode}
+        </if>
+        <if test="monthCode!=null and monthCode!=''">
+            AND ct.MONTH_CODE <![CDATA[ <= ]]> #{monthCode}
+        </if>
+        <if test="cityCode!=null and cityCode!=''">
+            AND ct.CITY_CODE=#{cityCode}
+        </if>
+        <if test="projectCode!=null and projectCode!=''">
+            AND ct.project_code=#{projectCode}
+        </if>
+    </select>
+
+    <!--计划运营-三层-专业线计划-->
+    <select id="getProfessionalLinePlan" resultType="ProfessionalLinePlan" parameterType="java.util.Map">
+        SELECT
+        ct.LINE_TYPE,
+        SUM(ct.WCS) WCS,      --完成数
+        SUM(ct.WCS_T) WCST,    --总数
+        CONVERT(DECIMAL(18,0),SUM(ct.WCS)/NULLIF(SUM(ct.WCS_T),0)) WCSL  --完成率
+        FROM dbo.DM_V_HAN_JH_ZYXJH_P ct
+        WHERE 1=1
+        <if test="yearCode!=null and yearCode!=''">
+            AND ct.YEAR_CODE =#{yearCode}
+        </if>
+        <if test="monthCode!=null and monthCode!=''">
+            AND ct.MONTH_CODE <![CDATA[ <= ]]> #{monthCode}
+        </if>
+        <if test="cityCode!=null and cityCode!=''">
+            AND ct.CITY_CODE=#{cityCode}
+        </if>
+        <if test="projectCode!=null and projectCode!=''">
+            AND ct.project_code=#{projectCode}
+        </if>
+        GROUP BY ct.LINE_TYPE
+    </select>
+
+    <!-- 计划运营-三层-明细页面-->
+    <select id="getTrdLayerDetailPlan" resultType="ThirdLayerDetailPlan" parameterType="java.util.Map">
+        SELECT
+        ct.Node_CODE nodeCode, --里程碑节点编码
+        ct.NODE_NAME nodeName, --里程碑名称
+        ct.NODE_TYPE nodeType, --节点类型（一级、二级）
+        ct.LINE_TYPE lineType, --专业线
+        ct.P_START_DATE pStartDate, --计划开始时间
+        ct.P_END_DATE pEndDate, --计划完成时间
+        ct.A_START_DATE aStartDate, --实际开始时间
+        ct.A_END_DATE aEndDate, --实际完成时间
+        ct.YJ --预警
+        FROM dbo.DM_V_HAN_JH_MX_P ct
+        WHERE 1=1
+        <if test="yearCode!=null and yearCode!=''">
+            AND ct.YEAR_CODE =#{yearCode}
+        </if>
+        <if test="monthCode!=null and monthCode!=''">
+            AND ct.MONTH_CODE <![CDATA[ <= ]]> #{monthCode}
+        </if>
+        <if test="cityCode!=null and cityCode!=''">
+            AND ct.CITY_CODE=#{cityCode}
+        </if>
+        <if test="projectCode!=null and projectCode!=''">
+            AND ct.project_code=#{projectCode}
+        </if>
+        <if test="lineType!=null and lineType!=''">
+            AND ct.line_type=#{lineType}
+        </if>
+        <if test="nodeType!=null and nodeType!=''">
+            AND ct.node_type=#{nodeType}
+        </if>
+
+    </select>
+
+    <!--  查询所有等级  -->
+    <select id="getAllLevel" resultType="SysDomain" >
+        SELECT DOMAIN_VALUE doMainValue FROM sys_domain WHERE DOMAIN_ID = 1 AND st_id = 1 ORDER BY SEQ
+    </select>
+
+    <!--  查询所有专业线  -->
+    <select id="getAllLine" resultType="SysDomain" >
+        SELECT DOMAIN_VALUE doMainValue FROM sys_domain WHERE DOMAIN_ID = 2 AND st_id = 1 ORDER BY SEQ
+    </select>
+</mapper>

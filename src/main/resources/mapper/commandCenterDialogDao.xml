@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.njdhy.muscle.triceps.dao.CommandCenterDialogDao">
+
+    <select id="getSixRateIndexDialog" resultType="SixRateIndexForDialog" parameterType="java.util.Map">
+        SELECT
+           AREA_CODE areaCode,    --城市公司编码
+           AREA_NAME areaName,     --城市公司名称
+           <if test="type=='zcfz'">
+           SUM(ZCFZ)   zcfz,   --资产负债率（按照指标大小顺序排序）
+           SUM(ZCFZ_YJ)  zcfzyj   --资产负债率预警（1是正常 0是预警）
+           </if>
+           <if test="type=='zczz'">
+           SUM(ZCZZ)   zczz,   --资产周转率（按照指标大小顺序排序）
+           SUM(ZCZZ_YJ)  zczzyj   --资产周转率预警（1是正常 0是预警）
+           </if>
+           <if test="type=='zblr'">
+           SUM(ZBLR)   zblr,   --资本利润率（按照指标大小顺序排序）
+           SUM(ZBLR_YJ)  zblryj   --资本利润率预警（1是正常 0是预警）
+           </if>
+           <if test="type=='jzcsy'">
+           SUM(JZCSY)  jzcsy,  --净资产收益率（按照指标大小顺序排序）
+           SUM(JZCSY_YJ) jzcsyyj  --净资产收益率预警（1是正常 0是预警）
+           </if>
+           <if test="type=='rjsr'">
+           SUM(RJSR)   rjsr,   --人均收入（劳动生产率）（按照指标大小顺序排序）
+           SUM(RJSR_YJ)  rjsryj   --人均收入（劳动生产率）预警（1是正常 0是预警）
+           </if>
+           <if test="type=='rjlr'">
+           SUM(RJLR)   rjlr,   --人均利润（按照指标大小顺序排序）
+           SUM(RJLR_YJ)  rjlryj   --人均利润预警（1是正常 0是预警）
+           </if>
+           <if test="type=='sczy'">
+           SUM(SCZY)   sczy,   --市场占有率（按照指标大小顺序排序）
+           SUM(SCZY_YJ)  sczyyj   --市场占有率预警（1是正常 0是预警）
+           </if>
+        FROM dbo.DM_V_HAN_SY_HEAD_A
+        WHERE YEAR_CODE = #{yearCode}
+            AND MONTH_CODE = #{monthCode}
+        GROUP BY AREA_CODE,AREA_NAME
+        order by
+        <if test="type=='zcfz'">
+            zcfz desc
+        </if>
+        <if test="type=='zczz'">
+            zczz desc
+        </if>
+        <if test="type=='zblr'">
+            zblr desc
+        </if>
+        <if test="type=='jzcsy'">
+            jzcsy desc
+        </if>
+        <if test="type=='rjsr'">
+            rjsr desc
+        </if>
+        <if test="type=='rjlr'">
+            rjlr desc
+        </if>
+        <if test="type=='sczy'">
+            sczy desc
+        </if>
+    </select>
+
+    <select id="getSixRateIndexDialogOfMonth" resultType="SixRateIndexForDialogOfMonth" parameterType="java.util.Map">
+        SELECT
+        YEAR_MONTH yearMonth,           --月份
+        <if test="type=='mzcfz'">
+            SUM(M_ZCFZ)   mzcfz,   --资产负债率（按照指标大小顺序排序）
+            SUM(M_ZCFZ_YJ)  mzcfzyj   --资产负债率预警（1是正常 0是预警）
+        </if>
+        <if test="type=='mzczz'">
+            SUM(M_ZCZZ)   mzczz,   --资产周转率（按照指标大小顺序排序）
+            SUM(M_ZCZZ_YJ)  mzczzyj   --资产周转率预警（1是正常 0是预警）
+        </if>
+        <if test="type=='mzblr'">
+            SUM(M_ZBLR)   mzblr,   --资本利润率（按照指标大小顺序排序）
+            SUM(M_ZBLR_YJ)  mzblryj   --资本利润率预警（1是正常 0是预警）
+        </if>
+        <if test="type=='mjzcsy'">
+            SUM(M_JZCSY)  mjzcsy,  --净资产收益率（按照指标大小顺序排序）
+            SUM(M_JZCSY_YJ) mjzcsyyj  --净资产收益率预警（1是正常 0是预警）
+        </if>
+        <if test="type=='mrjsr'">
+            SUM(M_RJSR)   mrjsr,   --人均收入（劳动生产率）（按照指标大小顺序排序）
+            SUM(M_RJSR_YJ)  mrjsryj   --人均收入（劳动生产率）预警（1是正常 0是预警）
+        </if>
+        <if test="type=='mrjlr'">
+            SUM(M_RJLR)   mrjlr,   --人均利润（按照指标大小顺序排序）
+            SUM(M_RJLR_YJ)  mrjlryj   --人均利润预警（1是正常 0是预警）
+        </if>
+        <if test="type=='msczy'">
+            SUM(M_SCZY)   msczy,   --市场占有率（按照指标大小顺序排序）
+            SUM(M_SCZY_YJ)  msczyyj   --市场占有率预警（1是正常 0是预警）
+        </if>
+        FROM dbo.DM_V_HAN_SY_HEAD_M
+        WHERE YEAR_CODE = #{yearCode}
+        GROUP BY YEAR_MONTH
+        order by YEAR_MONTH
+    </select>
+
+    <select id="getBudgetRevenueDialog" resultType="BudgetRevenue" parameterType="java.util.Map">
+        SELECT
+          AREA_CODE areaCode,     --城市公司编码
+          AREA_NAME areaName,     --城市公司名称
+          SUM(M_YSSRL) yssrl,         --预算收入目标完成率
+          SUM(M_YSSRL_YJ) myssrlyj,  --预算收入目标完成率预警
+          SUM(XSSR) xssr,             --销售收入
+	      SUM(XSSRZB) xssrzb,             --销售收入占比
+	      SUM(ZCYSR) zcysr,             --自持有收入
+	      SUM(ZCYSRZB) zcysrzb             --自持有收入占比
+
+        FROM DM_V_HAN_SY_SRLR_A1
+        WHERE YEAR_CODE = #{yearCode}
+          AND MONTH_CODE = #{monthCode}
+        GROUP BY AREA_CODE,AREA_NAME
+    </select>
+
+    <select id="getBudgetRevenueDialogOfMonth" resultType="BudgetRevenueOfMonth" parameterType="java.util.Map">
+        SELECT
+          YEAR_MONTH yearMonth,
+          SUM(M_YSSRL)  myssrl,         --预算收入目标完成率 （按照指标大小顺序排序）
+          SUM(M_YSSRL_YJ) myssrlyj,  --预算收入目标完成率预警
+          SUM(XSSR)   xssr,             --销售收入
+          SUM(XSSRZB)  xssrzb,             --销售收入占比
+          SUM(ZCYSR)  zcysr,             --自持有收入
+          SUM(ZCYSRZB)  zcysrzb           --自持有收入占比
+       FROM DM_V_HAN_SY_SRLR_M
+       WHERE YEAR_CODE = #{yearCode}
+        GROUP BY YEAR_MONTH ORDER BY yearMonth
+
+    </select>
+
+    <select id="getCarryOverProfitDialog" resultType="CarryOverProfit" parameterType="java.util.Map">
+        SELECT
+          AREA_CODE areaCode,     --城市公司编码
+          AREA_NAME areaName,     --城市公司名称
+          SUM(M_JZLRL) jzlrl,         --结转利润目标完成率
+          SUM(M_JZLRL_YJ) mjzlrlyj,         --结转利润目标完成率预警（1是正常 0是预警）
+          SUM(M_JZLR) jzlr,           --结转利润
+          SUM(M_JZLR_T) jzlrt       --结转利润目标
+        FROM DM_V_HAN_SY_SRLR_A
+        WHERE YEAR_CODE = #{yearCode}
+          AND MONTH_CODE = #{monthCode}
+         GROUP BY AREA_CODE,AREA_NAME  ORDER BY jzlrl DESC
+    </select>
+
+    <select id="getCarryOverProfitDialogOfMonth" resultType="CarryOverProfitOfMonth" parameterType="java.util.Map">
+        SELECT
+          YEAR_MONTH yearMonth,
+          SUM(M_JZLRL)  mjzlrl,         --结转利润目标完成率（按照指标大小顺序排序）
+          SUM(M_JZLRL_YJ) mjzlrlyj,         --结转利润目标完成率预警（1是正常 0是预警）
+          SUM(M_JZLR) mjzlr,           --结转利润
+          SUM(M_JZLR_T)  mjzlrt       --结转利润目标
+        FROM DM_V_HAN_SY_SRLR_M
+        WHERE YEAR_CODE = #{yearCode}
+        GROUP BY YEAR_MONTH  ORDER BY yearMonth
+    </select>
+
+    <select id="getTaxSectionDialog" resultType="TaxSection" parameterType="java.util.Map">
+        SELECT
+          AREA_CODE areaCode,     --城市公司编码
+          AREA_NAME areaName,     --城市公司名称
+          SUM(M_JSWCL)  jswcl,         --节税目标完成率
+          SUM(M_JSWCL_YJ) mjswclyj,         --节税目标完成率预警（1是正常 0是预警）
+          SUM(M_JSWC) jswc,           --节税金额
+          SUM(M_JSWC_T) jswct        --节税金额目标
+        FROM DM_V_HAN_SY_SRLR_A
+        WHERE YEAR_CODE = #{yearCode}
+          AND MONTH_CODE = #{monthCode}
+        GROUP BY AREA_CODE,AREA_NAME ORDER BY jswcl DESC
+    </select>
+
+    <select id="getTaxSectionDialogOfMonth" resultType="TaxSectionOfMonth" parameterType="java.util.Map">
+        SELECT
+          YEAR_MONTH yearMonth,       --月份
+          SUM(M_JSWCL)  mjswcl,         --节税目标完成率（按照指标大小顺序排序）
+          SUM(M_JSWCL_YJ) mjswclyj,         --节税目标完成率预警（1是正常 0是预警）
+          SUM(M_JSWC)  mjswc,           --节税金额
+          SUM(M_JSWC_T) mjswct        --节税金额目标
+      FROM DM_V_HAN_SY_SRLR_M
+       WHERE YEAR_CODE = #{yearCode}
+       GROUP BY YEAR_MONTH  ORDER BY yearMonth
+    </select>
+
+    <select id="getCurrentSaleForSaleFinishDialog" resultType="CurrentSaleXS" parameterType="java.util.Map">
+        SELECT
+          AREA_CODE areaCode,     --城市公司编码
+          AREA_NAME areaName,     --城市公司名称
+        <if test="type==null or type==''">
+            SUM(XSWCL_M)  xswcl,    --销售完成率月
+            SUM(XSWCL_M_YJ)   xswclmyj,    --销售完成率月预警（1是正常 0是预警）
+            SUM(XSWC_M)   xswc,     --销售金额月
+            SUM(XSWC_T_M) xswct    --销售目标月
+        </if>
+        <if test="type!=null and type!=''">
+            SUM(XSWCL_Y)  xswcl,     --销售完成率年
+            SUM(XSWCL_Y_YJ)   xswclyyj,     --销售完成率年预警（1是正常 0是预警）
+            SUM(XSWC_Y)   xswc,      --销售金额年
+            SUM(XSWC_T_Y) xswct     --销售目标年
+        </if>
+        FROM DM_V_HAN_SY_XSWC_A
+        WHERE YEAR_CODE = #{yearCode}
+          AND MONTH_CODE = #{monthCode}
+        GROUP BY AREA_CODE,AREA_NAME
+        <if test="type==null or type==''">
+            ORDER BY xswcl DESC
+        </if>
+        <if test="type!=null and type!=''">
+            ORDER BY xswcl DESC
+        </if>
+    </select>
+
+    <select id="getCurrentSaleForSaleFinishDialogOfMonth" resultType="CurrentSaleXSOfMonth" parameterType="java.util.Map">
+        SELECT
+          YEAR_MONTH yearMonth,
+          SUM(XSWCL_M)  xswclm,    --销售完成率月（按照指标大小顺序排序）
+          SUM(XSWCL_M_YJ)  xswclmyj,    --销售完成率月预警（1是正常 0是预警）
+          SUM(XSWC_M)   xswcm,     --销售金额月
+          SUM(XSWC_T_M) xswctm    --销售目标月
+      FROM DM_V_HAN_SY_XSWC_M
+          WHERE YEAR_CODE = #{yearCode}
+     GROUP BY YEAR_MONTH  ORDER BY yearMonth
+    </select>
+
+    <select id="getCurrentSaleForHKDialog" resultType="CurrentSaleHK" parameterType="java.util.Map">
+        SELECT
+            AREA_CODE areaCode,     --城市公司编码
+            AREA_NAME areaName,     --城市公司名称
+        <if test="type==null or type==''">
+            SUM(HKWCL_M)  hkwcl,         --回款完成金额率月
+            SUM(HKWCL_M_YJ)   hkwclmyj,         --回款完成金额率月预警（1是正常 0是预警）
+            SUM(HKWC_M)   hkwc,          --回款完成金额月
+            SUM(HKWC_T_M) hkwct       --回款完成目标月
+        </if>
+        <if test="type!=null and type!=''">
+            SUM(HKWCL_Y)  hkwcl,         --回款完成金额率年
+            SUM(HKWCL_Y_YJ) hkwclyyj,         --回款完成金额率年预警（1是正常 0是预警）
+            SUM(HKWC_Y)   hkwc,          --回款完成金额年
+            SUM(HKWC_T_Y) hkwct         --回款完成目标年
+        </if>
+        FROM DM_V_HAN_SY_HKWC_A
+        WHERE YEAR_CODE = #{yearCode}
+          AND MONTH_CODE = #{monthCode}
+        GROUP BY AREA_CODE,AREA_NAME
+        <if test="type==null or type==''">
+            ORDER BY hkwcl DESC
+        </if>
+        <if test="type!=null and type!=''">
+            ORDER BY hkwcl DESC
+        </if>
+    </select>
+
+    <select id="getCurrentSaleForHKDialogOfMonth" resultType="CurrentSaleHKOfMonth" parameterType="java.util.Map">
+        SELECT
+          YEAR_MONTH yearMonth,
+          SUM(HKWCL_M)  hkwclm,         --回款完成金额率月 （按照指标大小顺序排序）
+          SUM(HKWCL_M_YJ)  hkwclmyj,         --回款完成金额率月预警（1是正常 0是预警）
+          SUM(HKWC_M)  hkwcm,          --回款完成金额月
+          SUM(HKWC_T_M) hkwctm       --回款完成目标月
+      FROM DM_V_HAN_SY_HKWC_M
+            WHERE YEAR_CODE = #{yearCode}
+    GROUP BY YEAR_MONTH  ORDER BY yearMonth
+    </select>
+
+    <select id="getFirstGradePlanDialog" resultType="FirstGradePlan" parameterType="java.util.Map">
+        SELECT
+        AREA_CODE areaCode,     --城市公司编码
+        AREA_NAME areaName,     --城市公司名称
+        <if test="type==null or type==''">
+            SUM(YJJHL_M)  yjjhl,       --一级计划完成率月
+            SUM(YJJH_M)   yjjh,        --一级计划完成数月
+            SUM(YJJH_T_M) yjjht     --一级计划完成目标月
+        </if>
+        <if test="type!=null and type!=''">
+            SUM(YJJHL_Y)  yjjhl,       --一级计划完成率年
+            SUM(YJJH_Y)   yjjh,        --一级计划完成数年
+            SUM(YJJH_T_Y) yjjht       --一级计划完成目标年
+        </if>
+        FROM DM_V_HAN_SY_YJJH_A
+        WHERE YEAR_CODE = #{yearCode}
+          AND MONTH_CODE = #{monthCode}
+        GROUP BY AREA_CODE,AREA_NAME
+        <if test="type==null or type==''">
+            ORDER BY yjjhl DESC
+        </if>
+        <if test="type!=null and type!=''">
+            ORDER BY yjjhl DESC
+        </if>
+    </select>
+
+    <select id="getFirstGradePlanDialogOfMonth" resultType="FirstGradePlanOfMonth" parameterType="java.util.Map">
+        SELECT
+         YEAR_MONTH yearMonth ,
+         SUM(YJJHL_M)   yjjhlm,       --一级计划完成率月
+         SUM(YJJH_M)    yjjhm,        --一级计划完成数月
+         SUM(YJJH_T_M)  yjjhtm     --一级计划完成目标月
+      FROM DM_V_HAN_SY_YJJH_M
+      WHERE YEAR_CODE = #{yearCode}
+    GROUP BY YEAR_MONTH  ORDER BY yearMonth
+    </select>
+
+    <select id="getKeyWorkDialog" resultType="KeyWorkForDialog" parameterType="java.util.Map">
+        SELECT AREA_CODE areaCode,
+               AREA_NAME areaName,
+              CONVERT(DECIMAL(18,0),(SUM(ZDGZ_T_Y)-SUM(ZHS_Y))*100/NULLIF (SUM(ZDGZ_T_Y),0))  zdgzly,   --重点工作完成率
+              SUM(ZHS_Y)  zhsy,       --滞后数
+              SUM(ZDGZ_T_Y) zdgzty  --重点工作总数
+          FROM DM_V_HAN_SY_ZDGZ_A
+           WHERE YEAR_CODE = #{yearCode}
+            AND MONTH_CODE = #{monthCode}
+        GROUP BY AREA_CODE ,AREA_NAME ORDER BY zdgzly
+
+    </select>
+
+    <select id="getKeyWorkDialogOfMonth" resultType="KeyWorkForDialogOfMonth" parameterType="java.util.Map">
+        SELECT
+              YEAR_MONTH yearMonth,
+              SUM(ZDGZL_Y)  zdgzly,   --重点工作完成率
+              SUM(ZHS_Y)  zhsy,       --滞后数
+              SUM(ZDGZ_T_Y) zdgzty  --重点工作总数
+          FROM DM_V_HAN_SY_ZDGZ_M
+           WHERE YEAR_CODE = #{yearCode}
+        GROUP BY YEAR_MONTH  ORDER BY yearMonth
+
+    </select>
+
+    <select id="getKeyWorkLandDialog" resultType="KeyWorkLand" parameterType="java.util.Map">
+        SELECT
+            AREA_CODE areaCode,     --城市公司编码
+            AREA_NAME areaName,     --城市公司名称
+            SUM(TDTZL_Y) tdtzl,   --土地拓展完成率
+            SUM(TDTZ_Y) tdtz,     --土地收储
+            SUM(TDTZ_T_Y) tdtzt   --土地收储目标
+            FROM DM_V_HAN_SY_TDTZ_A
+        WHERE YEAR_CODE = #{yearCode}
+        AND MONTH_CODE = #{monthCode}
+        GROUP BY AREA_CODE,AREA_NAME
+        ORDER BY tdtzl DESC
+    </select>
+
+    <select id="getKeyWorkLandDialogOfMonth" resultType="KeyWorkLandOfMonth" parameterType="java.util.Map">
+        SELECT
+              YEAR_MONTH yearMonth,
+              SUM(TDTZL_Y)  tdtzly,   --土地拓展完成率
+              SUM(TDTZ_Y)   tdtzy,     --土地收储
+              SUM(TDTZ_T_Y) tdtzty   --土地收储目标
+          FROM DM_V_HAN_SY_TDTZ_M
+           WHERE YEAR_CODE = #{yearCode}
+        GROUP BY YEAR_MONTH  ORDER BY yearMonth
+
+    </select>
+
+</mapper>

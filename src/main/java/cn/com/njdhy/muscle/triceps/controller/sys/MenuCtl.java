@@ -9,7 +9,6 @@ import cn.com.njdhy.muscle.triceps.model.database.ZTree;
 import cn.com.njdhy.muscle.triceps.model.exception.ApplicationException;
 import cn.com.njdhy.muscle.triceps.service.sys.SysMenuService;
 import cn.com.njdhy.muscle.triceps.util.EmptyUtils;
-import cn.com.njdhy.muscle.triceps.util.ShiroUtil;
 import cn.com.njdhy.muscle.triceps.util.errorcode.UserErrorCode;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -17,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
-import sun.invoke.empty.Empty;
 
 import java.util.ArrayList;
 import java.util.List;

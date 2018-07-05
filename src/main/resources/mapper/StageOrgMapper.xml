@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.njdhy.muscle.triceps.dao.StageOrgDao">
+
+    <insert id="insert" parameterType="StageOrg" >
+        insert into stage_org (cFlag,
+                                          cLevel,
+										  dOperatorDate,
+										  HNA_ORGAN_PROP,
+										  nNodeID,
+										  vcFullName,
+										  vcName,
+										  vcOrganID,
+										  vcParentID,
+										  vcShortName)
+										values(
+									    #{cFlag},
+                                        #{cLevel},
+                                        #{dOperatorDate},
+                                        #{hnaOrganProp},
+                                        #{nNodeId},
+                                        #{vcFullName},
+                                        #{vcName},
+                                        #{vcOrganId},
+                                        #{vcParentID},
+                                        #{vcShortName}
+										)
+    </insert>
+
+
+</mapper>

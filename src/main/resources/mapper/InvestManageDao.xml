@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.njdhy.muscle.triceps.dao.InvestManageDao">
+
+    <select id="getInvestFourTotal" resultType="FourTotal" parameterType="java.util.Map">
+        SELECT
+          SUM(ZTZ_T) ztzt,       --目标总投资
+          SUM(ZTZ) ztz,           --动态总投资
+          SUM(CLXPCJE) clxpcje,   --超立项偏差金额
+          SUM(CLXGS) clxgs        --超立项个数
+        FROM
+        <if test="orgCode==null">
+          DM_V_HAN_TZ_HEAD_M
+        </if>
+        <if test="orgCode!=null">
+          DM_V_HAN_TZ_HEAD_A
+        </if>
+        WHERE YEAR_CODE = #{yearCode}
+          AND MONTH_CODE = #{monthCode}
+          <if test="orgCode!=null">
+              AND ORG_CODE = #{orgCode}
+          </if>
+    </select>
+
+    <select id="getProjectCost" resultType="ProjectCost" parameterType="java.util.Map">
+        SELECT
+        <if test="projectCode==null">
+          PROJECT_CODE projectCode,
+          PROJECT_NAME projectName,
+        </if>
+          SUM(XMCB_T) xmcbt,      -- 项目成本目标值
+          SUM(XMCB) xmcb,         --项目成本
+          SUM(MBCBPXL) mbcbpxl   --项目成本偏差率
+        FROM
+        <if test="type!=null and type=='left'.toString()">
+          DM_V_HAN_TZ_XMCB_M_T5
+        </if>
+        <if test="type!=null and type=='right'.toString()">
+          DM_V_HAN_TZ_XMCB_M_N5
+        </if>
+        <if test="type==null and areaCode!=null">
+          DM_V_HAN_TZ_XMCB_A
+        </if>
+        WHERE YEAR_CODE = #{yearCode}
+          AND MONTH_CODE = #{monthCode}
+        <if test="type==null and areaCode!=null">
+          AND area_code= #{areaCode}
+        </if>
+        <if test="projectCode!=null">
+            AND PROJECT_CODE = #{projectCode}
+        </if>
+        <if test="projectCode==null">
+	    GROUP BY
+	      PROJECT_CODE,
+	      PROJECT_NAME
+        </if>
+    </select>
+
+    <select id="getContractAmount" resultType="ContractAmount" parameterType="java.util.Map">
+        SELECT
+          YQHTJE yqhtje          --已签合同金额（总金额）
+          ,YZFJE yzfje           --已支付金额
+          ,DZFJE dzfje           --待支付金额
+        FROM
+        <if test="areaCode==null">
+          DM_V_HAN_TZ_HTJE_M
+        </if>
+        <if test="areaCode!=null and projectCode==null">
+          DM_V_HAN_TZ_HTJE_A
+        </if>
+        <if test="areaCode!=null and projectCode!=null">
+          DM_V_HAN_TZ_HTJE_P
+        </if>
+        WHERE YEAR_CODE = #{yearCode}
+          AND MONTH_CODE = #{monthCode}
+        <if test="areaCode!=null">
+          AND area_code= #{areaCode}
+        </if>
+        <if test="projectCode!=null">
+          AND PROJECT_CODE = #{projectCode}
+        </if>
+    </select>
+
+    <select id="getContractAmountOfCity" resultType="ContractAmount" parameterType="java.util.Map">
+        SELECT
+        <if test="areaCode==null">
+          ORG_ID orgId
+          ,ORG_CODE orgCode
+          ,ORG_NAME orgName
+        </if>
+        <if test="areaCode!=null and projectCode==null">
+          PROJECT_CODE projectCode,
+          PROJECT_NAME projectName
+        </if>
+        <if test="projectCode==null">
+            ,SUM(YQHTJE) yqhtje  --已签合同金额（总金额）
+            ,SUM(YZFJE)  yzfje   --已支付金额
+            ,SUM(DZFJE)  dzfje   --待支付金额
+
+        </if>
+        <if test="projectCode!=null">
+            ITEM_ID itemId,   --科目ID
+            ITEM_NAME itemName, --科目名称
+            SUM(XMCB_T) xmcbt,      -- 项目成本目标值
+            SUM(XMCB) xmcb,         --项目成本
+            SUM(MBCBPXL) mbcbpxy,   --项目成本偏差率
+            YJ       yj         --预警，1是预警0是正常
+        </if>
+        FROM
+        <if test="areaCode==null">
+          DM_V_HAN_TZ_HTJEFB_M
+        </if>
+        <if test="areaCode!=null and projectCode==null">
+          DM_V_HAN_TZ_HTJEFB_A
+        </if>
+        <if test="projectCode!=null and areaCode!=null">
+          DM_V_HAN_TZ_XMCB_P
+        </if>
+        WHERE YEAR_CODE = #{yearCode}
+          AND MONTH_CODE = #{monthCode}
+        <if test="areaCode==null">
+            GROUP BY ORG_ID,ORG_CODE,ORG_NAME
+        </if>
+        <if test="areaCode!=null and projectCode==null">
+            AND area_code=#{areaCode}
+            GROUP BY PROJECT_CODE,PROJECT_NAME
+        </if>
+        <if test="areaCode!=null and projectCode!=null">
+            AND area_code=#{areaCode}
+            AND PROJECT_CODE=#{projectCode}
+            GROUP BY ITEM_ID,ITEM_NAME,YJ
+        </if>
+    </select>
+</mapper>

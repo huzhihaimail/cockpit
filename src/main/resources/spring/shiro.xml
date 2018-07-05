@@ -70,8 +70,10 @@
             <value>
                 <!-- 说明：anon表示不拦截，authc表示拦截-->
                 /login=anon
-                /*=authc
+                /swagger-ui.html=anon
+                /api/*/*=anon
                 /sys/*/*=authc
+                /*=authc
             </value>
         </property>
     </bean>

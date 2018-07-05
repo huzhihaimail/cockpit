@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.njdhy.muscle.triceps.dao.StageUsersPostDao">
+
+    <insert id="insert" parameterType="StageUsersPost" >
+                  insert into stage_users_Post (
+                                          cIfMorB,
+                                          iPostRecordID,
+                                          nNodeID,
+                                          tbAL_nNodeID,
+                                          vcAdminLevelName,
+										  vcEmployeeID,
+										  vcOrganID,
+										  vcPostID,
+										  vcPostName,
+										  etl_time)
+										values(
+										#{cIfMorB},
+									    #{iPostRecordID},
+                                        #{nNodeID},
+                                        #{tbALnNodeID},
+                                        #{vcAdminLevelName},
+                                        #{vcEmployeeID},
+                                        #{vcOrganID},
+                                        #{vcPostID},
+                                        #{vcPostName},
+                                         getdate()
+										)
+    </insert>
+
+
+</mapper>
