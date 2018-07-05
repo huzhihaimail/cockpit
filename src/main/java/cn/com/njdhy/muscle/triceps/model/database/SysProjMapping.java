@@ -15,6 +15,10 @@ public class SysProjMapping extends BaseModel {
 
     private Integer reFlag;
 
+    private String cityCode;
+
+    private String cityName;
+
     private String jscProjCode;
 
     private String jscProjName;
@@ -155,5 +159,21 @@ public class SysProjMapping extends BaseModel {
 
     public void setModifyDate(Date modifyDate) {
         this.modifyDate = modifyDate;
+    }
+
+    public String getCityCode() {
+        return cityCode;
+    }
+
+    public void setCityCode(String cityCode) {
+        this.cityCode = cityCode;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 }

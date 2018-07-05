@@ -29,11 +29,18 @@ var showColumns = [
         sortName: "re_flag"
     }
     , {
-        field: "jscProjCode",
-        title: "驾驶舱项目代码",
+        field: "cityCode",
+        title: "城市代码",
+        width: "10%",
+        sortable: true,
+        sortName: "city_code"
+    }
+    , {
+        field: "cityName",
+        title: "城市名称",
         width: "20%",
         sortable: true,
-        sortName: "jsc_proj_code"
+        sortName: "city_name"
     }
     , {
         field: "jscProjName",
@@ -140,8 +147,6 @@ var vm = new Vue({
             keyword: null,
         }
         , model: {} //实体对象(用于新建、修改页面)
-        // , roles: [] // 加载角色列表对象
-        // , userRoles: [] // 用户选择的角色
 
         // 定义模块名称
         , moduleName: "projmapping"
@@ -310,12 +315,6 @@ var vm = new Vue({
             bsTable.createBootStrapTable(showColumns, APP_NAME + "/sys/" + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption);
         }
 
-        // 加载角色列表
-        // , loadRoles: function () {
-        //     $.get(APP_NAME + "/sys/" + vm.moduleName + "/loadRoles", function (r) {
-        //         vm.roles = r.page;
-        //     });
-        // }
     }
 });
 

@@ -10,6 +10,8 @@
         <!-- 配置实体和数据库列的对应关系，property：实体属性名；column：数据库表列名；-->
         <result property="id" column="id"></result>
         <result property="reFlag" column="re_flag"></result>
+        <result property="cityCode" column="city_code"></result>
+        <result property="cityName" column="city_name"></result>
         <result property="jscProjCode" column="jsc_proj_code"></result>
         <result property="jscProjName" column="jsc_proj_name"></result>
         <result property="yyProjName" column="yy_proj_name"></result>
@@ -31,17 +33,17 @@
 
     <!-- for insert columns -->
     <sql id="columns">
-        id, re_flag, jsc_proj_code, jsc_proj_name, yy_proj_name, yx_proj_name, jy_proj_name, cb_proj_name, cw_proj_name, st_id, create_user, create_date, modify_user, modify_date
+        id, city_code, city_name, re_flag, jsc_proj_code, jsc_proj_name, yy_proj_name, yx_proj_name, jy_proj_name, cb_proj_name, cw_proj_name, st_id, create_user, create_date, modify_user, modify_date
     </sql>
 
     <!-- for insert value -->
     <sql id="values">
-        #{id}, #{reFlag}, #{jscProjCode}, #{jscProjName}, #{yyProjName}, #{yxProjName}, #{jyProjName}, #{cbProjName}, #{cwProjName}, #{stId}, #{createUser}, #{createDate}, #{modifyUser}, #{modifyDate}
+        #{id}, #{cityCode}, #{cityName}, #{reFlag}, #{jscProjCode}, #{jscProjName}, #{yyProjName}, #{yxProjName}, #{jyProjName}, #{cbProjName}, #{cwProjName}, #{stId}, #{createUser}, #{createDate}, #{modifyUser}, #{modifyDate}
     </sql>
 
     <!-- for update set -->
     <sql id="updates">
-        id=#{id}, re_flag=#{reFlag}, jsc_proj_code=#{jscProjCode}, jsc_proj_name=#{jscProjName}, yy_proj_name=#{yyProjName}, yx_proj_name=#{yxProjName}, jy_proj_name=#{jyProjName}, cb_proj_name=#{cbProjName}, cw_proj_name=#{cwProjName}, st_id=#{stId}, create_user=#{createUser}, create_date=#{createDate}, modify_user=#{modifyUser}, modify_date=#{modifyDate}
+        id=#{id}, city_code=#{cityCode}, city_name=#{cityName}, re_flag=#{reFlag}, jsc_proj_code=#{jscProjCode}, jsc_proj_name=#{jscProjName}, yy_proj_name=#{yyProjName}, yx_proj_name=#{yxProjName}, jy_proj_name=#{jyProjName}, cb_proj_name=#{cbProjName}, cw_proj_name=#{cwProjName}, st_id=#{stId}, create_user=#{createUser}, create_date=#{createDate}, modify_user=#{modifyUser}, modify_date=#{modifyDate}
     </sql>
 
     <!-- 根据名称查询 -->
@@ -79,9 +81,9 @@
     <!-- 新建  -->
     <insert id="insert" useGeneratedKeys="true" parameterType="SysProjMapping" keyProperty="id">
         INSERT INTO sys_proj_mapping
-        (re_flag, jsc_proj_code, jsc_proj_name, yy_proj_name, yx_proj_name, jy_proj_name, cb_proj_name, cw_proj_name, st_id, create_user, create_date, modify_user, modify_date)
+        (re_flag, city_code, city_name, jsc_proj_code, jsc_proj_name, yy_proj_name, yx_proj_name, jy_proj_name, cb_proj_name, cw_proj_name, st_id, create_user, create_date, modify_user, modify_date)
         VALUES
-        (#{reFlag}, #{jscProjCode}, #{jscProjName}, #{yyProjName}, #{yxProjName}, #{jyProjName}, #{cbProjName}, #{cwProjName}, #{stId}, #{createUser}, GETDATE(), #{modifyUser}, GETDATE())
+        (#{reFlag}, #{cityCode}, #{cityName}, #{jscProjCode}, #{jscProjName}, #{yyProjName}, #{yxProjName}, #{jyProjName}, #{cbProjName}, #{cwProjName}, #{stId}, #{createUser}, GETDATE(), #{modifyUser}, GETDATE())
     </insert>
 
     <!-- 修改 -->
@@ -89,7 +91,7 @@
         UPDATE
         sys_proj_mapping
         SET
-        re_flag=#{reFlag}, jsc_proj_code=#{jscProjCode}, jsc_proj_name=#{jscProjName}, yy_proj_name=#{yyProjName}, yx_proj_name=#{yxProjName},
+        re_flag=#{reFlag}, city_code=#{cityCode}, city_name=#{cityName}, jsc_proj_code=#{jscProjCode}, jsc_proj_name=#{jscProjName}, yy_proj_name=#{yyProjName}, yx_proj_name=#{yxProjName},
         jy_proj_name=#{jyProjName}, cb_proj_name=#{cbProjName}, cw_proj_name=#{cwProjName}, st_id=#{stId}, create_user=#{createUser},  modify_user=#{modifyUser}, modify_date=#{modifyDate}
         WHERE id = #{id}
     </update>
@@ -98,6 +100,8 @@
     <select id="queryList" resultMap="SysProjMappingMap" parameterType="map">
         SELECT
         t.id,
+        t.city_code,
+        t.city_name,
         t.re_flag,
         t.jsc_proj_code,
         t.jsc_proj_name,
@@ -121,6 +125,7 @@
             OR t.jy_proj_name LIKE CONCAT('%',#{keyword},'%')
             OR t.cb_proj_name LIKE CONCAT('%',#{keyword},'%')
             OR t.cw_proj_name LIKE CONCAT('%',#{keyword},'%')
+            OR t.city_name LIKE CONCAT('%',#{keyword},'%')
         </if>
         <if test="sortName!=null and sorName!='' and sortOrder !=null and sortOrder!=''">
             ORDER BY #{sortName} #{sortOrder}
