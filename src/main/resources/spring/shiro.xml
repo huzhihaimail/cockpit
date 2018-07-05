@@ -70,7 +70,7 @@
             <value>
                 <!-- 说明：anon表示不拦截，authc表示拦截-->
                 /login=anon
-                /swagger-ui.html=anon
+                /swagger*=anon
                 /api/*/*=anon
                 /sys/*/*=authc
                 /*=authc

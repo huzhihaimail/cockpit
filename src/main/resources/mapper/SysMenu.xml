@@ -17,6 +17,7 @@
     <resultMap id="SysMenuMap" type="SysMenu">
         <result property="id" column="id"/>
         <result property="parentId" column="parent_id"/>
+        <result property="parentName" column="parent_name"/>
         <result property="name" column="name"/>
         <result property="url" column="url"/>
         <result property="type" column="type"/>
@@ -68,11 +69,11 @@
     <!-- 根据ID查询-->
     <select id="queryById" resultMap="SysMenuMap" parameterType="String">
         SELECT
-        <include refid="columns"/>
+        m.id,m.name,m.url,m.type,m.icon,m.order_num,m.delete_flag,m.parent_id,(select m1.name from sys_menu m1 where m1.id=m.parent_id) as parent_name
         FROM
-        <include refid="tableName"/>
+        sys_menu m
         WHERE 1 = 1
-        AND id=#{id}
+        AND m.id=#{id}
     </select>
 
     <!-- 批量删除-->
@@ -117,6 +118,7 @@
 		WHERE
 			1 = 1
 		AND m.delete_flag = 0
+		AND m.menu_type = 0
 		AND m.id IN (
 			SELECT DISTINCT
 				rm.menu_id
@@ -154,6 +156,68 @@
         from sys_menu m where m.delete_flag=0 order by m.order_num asc
     </select>
 
+    <!-- 根据用户名查询前端菜单 -->
+    <select id="queryMenuForHaiHang" resultMap="SysMenuMap"  parameterType="java.util.Map">
+            select m.id,m.name,m.url,m.order_num,m.icon from sys_menu m where 1=1 and ( m.id=
+            (
+            SELECT
+                        m.id
+                    FROM
+                        sys_menu m
+                    WHERE
+                        1 = 1
+                    AND m.delete_flag = 0 and m.menu_type=1
+                    and m.name=#{position}
+                    AND m.id IN (
+                        SELECT DISTINCT
+                            rm.menu_id
+                        FROM
+                            sys_role r
+                        LEFT JOIN sys_role_menu rm ON r.id = rm.role_id
+                        WHERE
+                            r.delete_flag = 0
+                        AND r.id IN (
+                            SELECT DISTINCT
+                                ur.role_id
+                            FROM
+                                sys_user t
+                            LEFT JOIN sys_user_role ur ON t.id = ur.user_id
+                            WHERE
+                                t.delete_flag = 0
+                            AND t.user_name = #{userName}
+                        )
+                    )
+            ) or m.parent_id=
+            (
+                SELECT
+                        m.id
+                    FROM
+                        sys_menu m
+                    WHERE
+                        1 = 1
+                    AND m.delete_flag = 0 and m.menu_type=1
+                    and m.name=#{position}
+                    AND m.id IN (
+                        SELECT DISTINCT
+                            rm.menu_id
+                        FROM
+                            sys_role r
+                        LEFT JOIN sys_role_menu rm ON r.id = rm.role_id
+                        WHERE
+                            r.delete_flag = 0
+                        AND r.id IN (
+                            SELECT DISTINCT
+                                ur.role_id
+                            FROM
+                                sys_user t
+                            LEFT JOIN sys_user_role ur ON t.id = ur.user_id
+                            WHERE
+                                t.delete_flag = 0
+                            AND t.user_name = #{userName}
+                        )
+                    )
+            ))
+    </select>
 
 </mapper>
 

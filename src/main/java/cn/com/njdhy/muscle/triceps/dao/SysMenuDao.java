@@ -4,6 +4,7 @@ package cn.com.njdhy.muscle.triceps.dao;
 import cn.com.njdhy.muscle.triceps.model.database.SysMenu;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <类功能简述> 定时任务数据访问层接口
@@ -31,5 +32,7 @@ public interface SysMenuDao extends BaseDao<SysMenu> {
      * @return
      */
     List<SysMenu> queryAllMenu();
+
+    List<SysMenu> queryMenuForHaiHang(ConcurrentHashMap map);
 
 }

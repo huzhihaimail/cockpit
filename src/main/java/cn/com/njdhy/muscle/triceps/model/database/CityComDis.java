@@ -20,24 +20,42 @@ public class CityComDis {
     private String projectCode;
     @ApiModelProperty(value = "项目名称",example = "项目名称")
     private String projectName;
+
     @ApiModelProperty(value = "签约金额月",example = "签约金额月")
     private String qyjem;
     @ApiModelProperty(value = "签约金额目标值月",example = "签约金额目标值月")
     private String qyjetm;
     @ApiModelProperty(value = "签约金额完成率月",example = "签约金额完成率月")
     private String qyjelm;
+
+    @ApiModelProperty(value = "签约金额当期",example = "签约金额当期")
+    private String qyjedq;
+    @ApiModelProperty(value = "签约金额目标值当期",example = "签约金额目标值当期")
+    private String qyjetdq;
+    @ApiModelProperty(value = "签约金额完成率当期",example = "签约金额完成率当期")
+    private String qyjeldq;
+
     @ApiModelProperty(value = "签约金额年",example = "签约金额年")
     private String qyjey;
     @ApiModelProperty(value = "签约金额目标值年",example = "签约金额目标值年")
     private String qyjety;
     @ApiModelProperty(value = "签约金额完成率年",example = "签约金额完成率年")
     private String qyjely;
+
     @ApiModelProperty(value = "认购金额月",example = "认购金额月")
     private String rgjem;
     @ApiModelProperty(value = "认购金额目标值月",example = "认购金额目标值月")
     private String rgjetm;
     @ApiModelProperty(value = "认购金额完成率月",example = "认购金额完成率月")
     private String rgjelm;
+
+    @ApiModelProperty(value = "认购金额当期",example = "认购金额当期")
+    private String rgjedq;
+    @ApiModelProperty(value = "认购金额目标值当期",example = "认购金额目标值当期")
+    private String rgjetdq;
+    @ApiModelProperty(value = "认购金额完成率当期",example = "认购金额完成率当期")
+    private String rgjeldq;
+
     @ApiModelProperty(value = "认购金额年",example = "认购金额年")
     private String rgjey;
     @ApiModelProperty(value = "认购金额目标值年",example = "认购金额目标值年")
@@ -187,5 +205,53 @@ public class CityComDis {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
+    }
+
+    public String getQyjedq() {
+        return qyjedq;
+    }
+
+    public void setQyjedq(String qyjedq) {
+        this.qyjedq = qyjedq;
+    }
+
+    public String getQyjetdq() {
+        return qyjetdq;
+    }
+
+    public void setQyjetdq(String qyjetdq) {
+        this.qyjetdq = qyjetdq;
+    }
+
+    public String getQyjeldq() {
+        return qyjeldq;
+    }
+
+    public void setQyjeldq(String qyjeldq) {
+        this.qyjeldq = qyjeldq;
+    }
+
+    public String getRgjedq() {
+        return rgjedq;
+    }
+
+    public void setRgjedq(String rgjedq) {
+        this.rgjedq = rgjedq;
+    }
+
+    public String getRgjetdq() {
+        return rgjetdq;
+    }
+
+    public void setRgjetdq(String rgjetdq) {
+        this.rgjetdq = rgjetdq;
+    }
+
+    public String getRgjeldq() {
+        return rgjeldq;
+    }
+
+    public void setRgjeldq(String rgjeldq) {
+        this.rgjeldq = rgjeldq;
     }
 }

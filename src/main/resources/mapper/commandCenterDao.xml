@@ -29,6 +29,281 @@
           FROM dim_v_org
     </select>
 
+    <select id="getProjectByAreaCode" resultType="AllDataDetails" parameterType="java.util.Map">
+        SELECT
+        org_code orgCode      --集团id
+        ,Year_MONTH yearMonth  --月份
+        ,org_name orgName      --集团名称
+        ,short_org_name shortOrgName --集团短名称
+        ,area_code areaCode      --城市公司id
+        ,area_name areaName       --城市公司名称
+        ,short_area_name shortAreaName  --城市公司短名称
+        ,project_code projectCode     --项目ID
+        ,project_name projectName    --项目名称
+        ,short_project_name shortProjectName  --项目短名称（暂无，先用项目名称）
+        FROM dim_v_org
+        <where>
+            <if test="areaCode!=null">
+                area_code=#{areaCode}
+            </if>
+        </where>
+    </select>
+
+    <select id="getSixRateIndex" resultType="SixRateIndex" parameterType="java.util.Map">
+        SELECT
+        <if test="areaCode==null">
+            SUM(M_ZCFZ)   zcfz,   --资产负债率
+            SUM(M_ZCZZ)   zczz,   --资产周转率
+            SUM(M_ZBLR)   zblr,   --资本利润率
+            SUM(M_JZCSY)  jzcsy,  --净资产收益率
+            SUM(M_RJSR)   rjsr,   --人均收入（劳动生产率）
+            SUM(M_RJLR)   rjlr,   --人均利润
+            SUM(M_SCZY)   sczy,   --市场占有率
+            SUM(M_ZCFZ_YJ)   mzcfzyj,   --资产负债率预警（1是正常 0是预警）
+            SUM(M_ZCZZ_YJ)   mzczzyj,   --资产周转率预警（1是正常 0是预警）
+            SUM(M_ZBLR_YJ)   mzblryj,   --资本利润率预警 （1是正常 0是预警）
+            SUM(M_JZCSY_YJ)  mjzcsyyj,  --净资产收益率预警（1是正常 0是预警）
+            SUM(M_RJSR_YJ)   mrjsryj,   --人均收入（劳动生产率）预警（1是正常 0是预警）
+            SUM(M_RJLR_YJ)   mrjlryj,   --人均利润预警 （1是正常 0是预警）
+            SUM(M_SCZY_YJ)   msczyyj   --市场占有率预警（1是正常 0是预警）
+        </if>
+        <if test="areaCode!=null">
+            SUM(ZCFZ)   zcfz,   --资产负债率
+            SUM(ZCZZ)   zczz,   --资产周转率
+            SUM(ZBLR)   zblr,   --资本利润率
+            SUM(JZCSY)  jzcsy,  --净资产收益率
+            SUM(RJSR)   rjsr,   --人均收入（劳动生产率）
+            SUM(RJLR)   rjlr,   --人均利润
+            SUM(SCZY)   sczy,   --市场占有率
+            SUM(ZCFZ_YJ)  zcfzyj,   --资产负债率预警（1是正常 0是预警）
+            SUM(ZCZZ_YJ)  zczzyj,   --资产周转率预警（1是正常 0是预警）
+            SUM(ZBLR_YJ)  zblryj,   --资本利润率预警（1是正常 0是预警）
+            SUM(JZCSY_YJ) jzcsyyj,  --净资产收益率预警（1是正常 0是预警）
+            SUM(RJSR_YJ)  rjsryj,   --人均收入（劳动生产率）预警（1是正常 0是预警）
+            SUM(RJLR_YJ)  rjlryj,   --人均利润预警（1是正常 0是预警）
+            SUM(SCZY_YJ)  sczyyj   --市场占有率预警（1是正常 0是预警）
+
+        </if>
+        FROM
+        <if test="areaCode!=null">
+            dbo.DM_V_HAN_SY_HEAD_A
+        </if>
+        <if test="areaCode==null">
+            dbo.DM_V_HAN_SY_HEAD_M
+        </if>
+        WHERE YEAR_CODE = #{yearCode}
+        AND MONTH_CODE = #{monthCode}
+        <if test="areaCode!=null">
+            AND AREA_CODE = #{areaCode}
+        </if>
+    </select>
+
+    <select id="getBudgetRevenue" resultType="BudgetRevenue" parameterType="java.util.Map">
+        SELECT
+        SUM(M_YSSRL) yssrl,         --预算收入目标完成率
+        SUM(M_YSSRL_YJ) myssrlyj,   --预算收入目标完成率预警（1是正常 0是预警）
+        SUM(M_YYSR) yysr,           --营业收入
+        SUM(M_YYSR_T) yysrt         --营业收入目标
+        FROM
+        <if test="areaCode==null">
+            DM_V_HAN_SY_SRLR_M
+        </if>
+        <if test="areaCode!=null">
+            DM_V_HAN_SY_SRLR_A
+        </if>
+        WHERE YEAR_CODE = #{yearCode}
+        AND MONTH_CODE = #{monthCode}
+        <if test="areaCode!=null">
+            AND AREA_CODE = #{areaCode}
+        </if>
+    </select>
+
+    <select id="getCarryOverProfit" resultType="CarryOverProfit" parameterType="java.util.Map">
+        SELECT
+        SUM(M_JZLRL) jzlrl,         --结转利润目标完成率
+        SUM(M_JZLRL_YJ) mjzlrlyj,   --结转利润目标完成率预警（1是正常 0是预警）
+        SUM(M_JZLR) jzlr,           --结转利润
+        SUM(M_JZLR_T) jzlrt       --结转利润目标
+        FROM
+        <if test="areaCode==null">
+            DM_V_HAN_SY_SRLR_M
+        </if>
+        <if test="areaCode!=null">
+            DM_V_HAN_SY_SRLR_A
+        </if>
+        WHERE YEAR_CODE = #{yearCode}
+        AND MONTH_CODE = #{monthCode}
+        <if test="areaCode!=null">
+            AND AREA_CODE = #{areaCode}
+        </if>
+    </select>
+
+    <select id="getTaxSection" resultType="TaxSection" parameterType="java.util.Map">
+        SELECT
+        SUM(M_JSWCL) jswcl,         --节税目标完成率
+        SUM(M_JSWCL_YJ) mjswclyj,   --节税目标完成率预警（1是正常 0是预警）
+        SUM(M_JSWC) jswc,           --节税金额
+        SUM(M_JSWC_T) jswct        --节税金额目标
+        FROM
+        <if test="areaCode==null">
+            DM_V_HAN_SY_SRLR_M
+        </if>
+        <if test="areaCode!=null">
+            DM_V_HAN_SY_SRLR_A
+        </if>
+        WHERE YEAR_CODE = #{yearCode}
+        AND MONTH_CODE = #{monthCode}
+        <if test="areaCode!=null">
+            AND AREA_CODE = #{areaCode}
+        </if>
+    </select>
+
+    <select id="getCurrentSaleForSaleFinish" resultType="CurrentSaleXS" parameterType="java.util.Map">
+        SELECT
+        <if test="type==null or type==''">
+            SUM(XSWCL_M)  xswcl,    --销售完成率月
+            SUM(XSWCL_M_YJ) xswclmyj,    --销售完成率月预警（1是正常 0是预警）
+            SUM(XSWC_M)   xswc,     --销售金额月
+            SUM(XSWC_T_M) xswct    --销售目标月
+        </if>
+        <if test="type!=null and type!=''">
+            SUM(XSWCL_Y)  xswcl,     --销售完成率年
+            SUM(XSWCL_Y_YJ) xswclyyj,     --销售完成率年预警（1是正常 0是预警）
+            SUM(XSWC_Y)   xswc,      --销售金额年
+            SUM(XSWC_T_Y) xswct     --销售目标年
+        </if>
+        FROM
+        <if test="areaCode==null">
+            DM_V_HAN_SY_XSWC_M
+        </if>
+        <if test="areaCode!=null">
+            DM_V_HAN_SY_XSWC_A
+        </if>
+        WHERE YEAR_CODE = #{yearCode}
+        AND MONTH_CODE = #{monthCode}
+        <if test="areaCode!=null">
+            AND AREA_CODE = #{areaCode}
+        </if>
+    </select>
+
+    <select id="getCurrentSaleForHK" resultType="CurrentSaleHK" parameterType="java.util.Map">
+        SELECT
+        <if test="type==null or type==''">
+            SUM(HKWCL_M)  hkwcl,         --回款完成金额率月
+            SUM(HKWCL_M_YJ)   hkwclmyj,  --回款完成金额率月预警（1是正常 0是预警）
+            SUM(HKWC_M)   hkwc,          --回款完成金额月
+            SUM(HKWC_T_M) hkwct       --回款完成目标月
+        </if>
+        <if test="type!=null and type!=''">
+            SUM(HKWCL_Y)  hkwcl,         --回款完成金额率年
+            SUM(HKWCL_Y_YJ)  hkwclyyj,         --回款完成金额率年预警（1是正常 0是预警）
+            SUM(HKWC_Y)   hkwc,          --回款完成金额年
+            SUM(HKWC_T_Y) hkwct         --回款完成目标年
+        </if>
+        FROM
+        <if test="areaCode==null">
+            DM_V_HAN_SY_HKWC_M
+        </if>
+        <if test="areaCode!=null">
+            DM_V_HAN_SY_HKWC_A
+        </if>
+        WHERE YEAR_CODE = #{yearCode}
+        AND MONTH_CODE = #{monthCode}
+        <if test="areaCode!=null">
+            AND AREA_CODE = #{areaCode}
+        </if>
+    </select>
+
+    <select id="getFirstGradePlan" resultType="FirstGradePlan" parameterType="java.util.Map">
+        SELECT
+        <if test="type==null or type==''">
+            SUM(YJJHL_M)  yjjhl,       --一级计划完成率月
+            SUM(YJJH_M)   yjjh,        --一级计划完成数月
+            SUM(YJJH_T_M) yjjht     --一级计划完成目标月
+        </if>
+        <if test="type!=null and type!=''">
+            SUM(YJJHL_Y)  yjjhl,       --一级计划完成率年
+            SUM(YJJH_Y)   yjjh,        --一级计划完成数年
+            SUM(YJJH_T_Y) yjjht       --一级计划完成目标年
+        </if>
+        FROM
+        <if test="areaCode==null">
+            DM_V_HAN_SY_YJJH_M
+        </if>
+        <if test="areaCode!=null">
+            DM_V_HAN_SY_YJJH_A
+        </if>
+        WHERE YEAR_CODE = #{yearCode}
+        AND MONTH_CODE = #{monthCode}
+        <if test="areaCode!=null">
+            AND AREA_CODE = #{areaCode}
+        </if>
+    </select>
+
+    <select id="getKeyWork" resultType="KeyWork" parameterType="java.util.Map">
+        SELECT
+        SUM(ZDGZL_Y) zdgzl,   --重点工作完成率
+        SUM(ZHS_Y) zhs,       --滞后数
+        SUM(ZDGZ_T_Y) zdgzt  --重点工作总数
+        FROM
+        <if test="areaCode==null">
+            DM_V_HAN_SY_ZDGZ_M
+        </if>
+        <if test="areaCode!=null">
+            DM_V_HAN_SY_ZDGZ_A
+        </if>
+        WHERE YEAR_CODE = #{yearCode}
+        AND MONTH_CODE = #{monthCode}
+        <if test="areaCode!=null">
+            AND AREA_CODE = #{areaCode}
+        </if>
+        <if test="choose!=null and choose=='first'.toString()">
+            AND ZDGZ_TYPE ='职能'
+        </if>
+        <if test="choose!=null and choose=='second'.toString()">
+            AND ZDGZ_TYPE ='项目'
+        </if>
+    </select>
+
+    <select id="getKeyWorkLand" resultType="KeyWorkLand" parameterType="java.util.Map">
+        SELECT
+            SUM(TDTZL_Y) tdtzl,   --土地拓展完成率
+            SUM(TDTZ_Y) tdtz,     --土地收储
+            SUM(TDTZ_T_Y) tdtzt   --土地收储目标
+            FROM DM_V_HAN_SY_TDTZ_M
+        WHERE YEAR_CODE = #{yearCode}
+        AND MONTH_CODE = #{monthCode}
+    </select>
+
+    <select id="getMonCityCompanyDis" resultType="MonCityCompanyDis" parameterType="java.util.Map">
+        SELECT
+            AREA_CODE areaCode,     --城市公司编码
+            AREA_NAME areaName,     --城市公司名称
+            SUM(SRWCL) srwcl,             --月度收入完成率
+            SUM(SRWCL_T) srwclt,       --月度收入完成率目标值
+	        YJ  yj,                       --预警（1是正常 0是预警）
+            SUM(SR)  sr                   --月度收入
+        FROM DM_V_HAN_SY_FB_M
+        WHERE YEAR_CODE = #{yearCode}
+          AND MONTH_CODE = #{monthCode}
+        GROUP BY
+        AREA_CODE,
+        AREA_NAME,
+        YJ
+    </select>
+
+    <select id="getInventory" resultType="KeyWorkLand" parameterType="java.util.Map">
+        SELECT
+        ACCOUNT_CODE accountCode,   --指标编码
+        ACCOUNT_NAME accountName,   --指标名称
+        SUM(KC_Y) tdtzt   --土地收储目标
+        FROM DM_V_HAN_SY_KC_A
+        WHERE YEAR_CODE = #{yearCode}
+        AND MONTH_CODE = #{monthCode}
+        AND AREA_CODE= #{areaCode}
+        GROUP BY ACCOUNT_CODE ,ACCOUNT_NAME
+    </select>
+
 
 </mapper>
 

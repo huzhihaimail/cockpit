@@ -188,7 +188,6 @@ var vm = new Vue({
                 vm.show = false;
                 vm.title = PAGE_UPDATE_TITLE;
                 vm.model = r.model;
-                // vm.userRoles = r.model.roleId;
             });
             // 加载角色列表
             vm.loadRoles();

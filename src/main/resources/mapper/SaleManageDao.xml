@@ -51,12 +51,23 @@
             SUM(QYJE_M)     qyjem,             --签约金额月
             SUM(QYJE_T_M)   qyjetm,           --签约金额目标值月
             SUM(QYJE_L_M)   qyjelm,           --签约金额完成率月
+
+            SUM(QYJE_DQ)    qyjedq,             --签约金额当期
+            SUM(QYJE_T_DQ)  qyjetdq,           --签约金额目标值当期
+            SUM(QYJE_L_DQ)  qyjeldq,           --签约金额完成率当期
+
             SUM(QYJE_Y)     qyjey,             --签约金额年
             SUM(QYJE_T_Y)   qyjety,           --签约金额目标值年
             SUM(QYJE_L_Y)   qyjely,           --签约金额完成率 年
+
             SUM(RGJE_M)     rgjem,             --认购金额月
             SUM(RGJE_T_M)   rgjetm,           --认购金额目标值月
             SUM(RGJE_L_M)   rgjelm,           --认购金额完成率月
+
+            SUM(RGJE_DQ)    rgjedq,             --认购金额当期
+            SUM(RGJE_T_DQ)  rgjetdq,           --认购金额目标值当期
+            SUM(RGJE_L_DQ)  rgjeldq,           --认购金额完成率当期
+
             SUM(RGJE_Y)     rgjey,             --认购金额年
             SUM(RGJE_T_Y)   rgjety,           --认购金额目标值 年
             SUM(RGJE_L_Y)   rgjely            --认购金额完成率 年

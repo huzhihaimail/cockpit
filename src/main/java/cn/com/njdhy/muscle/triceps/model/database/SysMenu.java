@@ -16,6 +16,11 @@ public class SysMenu extends BaseModel {
     /**
      * 菜单名称
      */
+    private String parentName;
+
+    /**
+     * 菜单名称
+     */
     private String name;
 
     /**
@@ -42,6 +47,14 @@ public class SysMenu extends BaseModel {
      * 权限标志
      */
     private String permission;
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
+    }
 
     public String getParentId() {
         return parentId;
