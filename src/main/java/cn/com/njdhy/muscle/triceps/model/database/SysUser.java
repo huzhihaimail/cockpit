@@ -27,6 +27,7 @@ public class SysUser extends BaseModel {
     /**
      * 修改密码
      */
+
     private String newPassword;
 
     /**
@@ -58,6 +59,20 @@ public class SysUser extends BaseModel {
      * 角色列表
      */
     private List<String> userRoles;
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
+    /**
+     * 角色id
+
+     */
+    private String roleId;
 
     /**
      * 记住我

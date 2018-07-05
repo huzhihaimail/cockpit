@@ -69,4 +69,40 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
         }
 
     }
+
+    /**
+     * 修改角色
+     * @param role
+     */
+    @Override
+    public void updateRoleInfo(SysRole role) {
+        try {
+            //修改菜单
+            SysRole detail = new SysRole();
+            detail.setId(role.getId());
+            detail.setStatus("0");
+            detail.setDeleteFlag("0");
+            detail.setName(role.getName());
+            detail.setNameCn(role.getNameCn());
+            this.dao.update(detail);
+
+            //删除该角色所有的菜单关系
+            List<String> list = new ArrayList<>();
+            list.add(String.valueOf(role.getId()));
+            roleMenuDao.deleteByIds(list);
+
+            //重新增加该角色所有的菜单关系
+            List<SysRoleMenu> roleMenuList = new ArrayList<>();
+            for (String menuId:role.getMenuIdList()){
+                SysRoleMenu roleMenu = new SysRoleMenu();
+                roleMenu.setRoleId(String.valueOf(role.getId()));
+                roleMenu.setMenuId(menuId);
+                roleMenuList.add(roleMenu);
+            }
+            roleMenuDao.batchInsert(roleMenuList);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

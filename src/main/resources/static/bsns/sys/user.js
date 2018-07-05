@@ -110,6 +110,7 @@ var vm = new Vue({
         // 点击“新增”按钮
         , save: function (event) {
             // 1. 隐藏表格，显示添加页面
+            vm.showPwd = true;
             vm.show = false;
             vm.errorMessage = null;
 
@@ -187,7 +188,10 @@ var vm = new Vue({
                 vm.show = false;
                 vm.title = PAGE_UPDATE_TITLE;
                 vm.model = r.model;
+                // vm.userRoles = r.model.roleId;
             });
+            // 加载角色列表
+            vm.loadRoles();
         }
 
         // 执行修改操作

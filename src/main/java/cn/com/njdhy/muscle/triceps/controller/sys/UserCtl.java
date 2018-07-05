@@ -66,8 +66,9 @@ public class UserCtl {
      */
     @RequestMapping("/{id}")
     public Result queryById(@PathVariable String id) {
-
-        SysUser model = sysUserService.queryById(id);
+        SysUser user = new SysUser();
+        user.setId(Integer.valueOf(id));
+        SysUser model = sysUserService.queryUserInfo(user);
 
         if (ObjectUtils.isEmpty(model)) {
             model = new SysUser();

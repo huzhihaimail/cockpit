@@ -138,9 +138,6 @@ var vm = new Vue({
                 menuIdList:new Array()
             };
 
-            // 4. 加载角色列表
-            vm.loadRoles();
-
             //5.加载树控件
             vm.loadTreeMenu('add');
 
@@ -225,6 +222,14 @@ var vm = new Vue({
         // 执行修改操作
         , doUpdate: function () {
 
+            //获取选择的菜单
+            var nodes = ztree.getCheckedNodes(true);
+            var menuIdList = new Array();
+            for(var i=0; i<nodes.length; i++) {
+                menuIdList.push(nodes[i].menuId);
+            }
+            vm.model.menuIdList=menuIdList;
+
             // 执行修改
             $.ajax({
                 type: "POST",
@@ -304,7 +309,7 @@ var vm = new Vue({
         , loadTreeMenu: function(type){
             function getMenuJson(url,data) {
                 var zNodes;
-                var role={roleId:data};
+                var role={id:data};
                 $.ajax({
                     url : url,
                     dataType : 'JSON',
@@ -324,8 +329,10 @@ var vm = new Vue({
                 //展开所有节点
                 ztree.expandAll(true);
             } else if (type=='update'){
-                var data=vm.model.id;
-                ztree = $.fn.zTree.init($("#menuTree"), setting,getMenuJson(APP_NAME + "/sys/menu/",data) );
+                var ids = bsTable.getMultiRowIds();
+                var data = ids[0];
+                /*ztree = $.fn.zTree.init($("#menuTree"), setting,getMenuJson(APP_NAME + "/sys/menu/queryAllMenuUpdate",data) );*/
+                ztree = $.fn.zTree.init($("#menuTree"), setting,getMenuJson(APP_NAME + "/sys/menu/queryAllMenuUpdate",data) );
                 //展开所有节点
                 ztree.expandAll(true);
             }

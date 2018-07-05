@@ -46,12 +46,22 @@
         AND id=#{id}
     </select>
 
+    <!-- 根据角色id查询菜单-->
+    <select id="queryMenuByRole" resultMap="SysRoleMenuMap" parameterType="SysRoleMenu">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE 1 = 1
+        AND role_id=#{roleId}
+    </select>
+
     <!-- 批量删除-->
     <delete id="deleteByIds" parameterType="List">
         DELETE FROM
         <include refid="tableName"/>
         WHERE 1=1
-        AND id IN
+        AND role_id IN
         <foreach item="id" index="index" collection="list" open="(" separator="," close=")">
             #{id}
         </foreach>
