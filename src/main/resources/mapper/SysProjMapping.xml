@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 配置dao接口路径-->
+<mapper namespace="cn.com.njdhy.muscle.triceps.dao.SysProjMappingDao">
+
+    <!-- type配置model层实体类名-->
+    <resultMap id="SysProjMappingMap" type="SysProjMapping">
+
+        <!-- 配置实体和数据库列的对应关系，property：实体属性名；column：数据库表列名；-->
+        <result property="id" column="id"></result>
+        <result property="reFlag" column="re_flag"></result>
+        <result property="jscProjCode" column="jsc_proj_code"></result>
+        <result property="jscProjName" column="jsc_proj_name"></result>
+        <result property="yyProjName" column="yy_proj_name"></result>
+        <result property="yxProjName" column="yx_proj_name"></result>
+        <result property="jyProjName" column="jy_proj_name"></result>
+        <result property="cbProjName" column="cb_proj_name"></result>
+        <result property="cwProjName" column="cw_proj_name"></result>
+        <result property="stId" column="st_id"></result>
+        <result property="createUser" column="create_user"></result>
+        <result property="createDate" column="create_date"></result>
+        <result property="modifyUser" column="modify_user"></result>
+        <result property="modifyDate" column="modify_date"></result>
+    </resultMap>
+
+    <!-- 配置表名 -->
+    <sql id="tableName">
+        sys_proj_mapping
+    </sql>
+
+    <!-- for insert columns -->
+    <sql id="columns">
+        id, re_flag, jsc_proj_code, jsc_proj_name, yy_proj_name, yx_proj_name, jy_proj_name, cb_proj_name, cw_proj_name, st_id, create_user, create_date, modify_user, modify_date
+    </sql>
+
+    <!-- for insert value -->
+    <sql id="values">
+        #{id}, #{reFlag}, #{jscProjCode}, #{jscProjName}, #{yyProjName}, #{yxProjName}, #{jyProjName}, #{cbProjName}, #{cwProjName}, #{stId}, #{createUser}, #{createDate}, #{modifyUser}, #{modifyDate}
+    </sql>
+
+    <!-- for update set -->
+    <sql id="updates">
+        id=#{id}, re_flag=#{reFlag}, jsc_proj_code=#{jscProjCode}, jsc_proj_name=#{jscProjName}, yy_proj_name=#{yyProjName}, yx_proj_name=#{yxProjName}, jy_proj_name=#{jyProjName}, cb_proj_name=#{cbProjName}, cw_proj_name=#{cwProjName}, st_id=#{stId}, create_user=#{createUser}, create_date=#{createDate}, modify_user=#{modifyUser}, modify_date=#{modifyDate}
+    </sql>
+
+    <!-- 根据名称查询 -->
+    <!--<select id="queryByName" resultMap="SysUserMap" parameterType="String">-->
+        <!--SELECT-->
+        <!--<include refid="columns"/>-->
+        <!--FROM-->
+        <!--sys_user t-->
+        <!--WHERE 1=1-->
+        <!--AND t.user_name=#{userName}-->
+
+    <!--</select>-->
+
+    <!-- 根据ID查询-->
+    <select id="queryById" resultMap="SysProjMappingMap" parameterType="String">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE 1 = 1
+        AND id=#{id}
+    </select>
+
+    <!-- 批量删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+        DELETE FROM
+        <include refid="tableName"/>
+        WHERE 1=1
+        AND id IN
+        <foreach item="id" index="index" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 新建  -->
+    <insert id="insert" useGeneratedKeys="true" parameterType="SysProjMapping" keyProperty="id">
+        INSERT INTO sys_proj_mapping
+        (re_flag, jsc_proj_code, jsc_proj_name, yy_proj_name, yx_proj_name, jy_proj_name, cb_proj_name, cw_proj_name, st_id, create_user, create_date, modify_user, modify_date)
+        VALUES
+        (#{reFlag}, #{jscProjCode}, #{jscProjName}, #{yyProjName}, #{yxProjName}, #{jyProjName}, #{cbProjName}, #{cwProjName}, #{stId}, #{createUser}, GETDATE(), #{modifyUser}, GETDATE())
+    </insert>
+
+    <!-- 修改 -->
+    <update id="update" parameterType="SysProjMapping">
+        UPDATE
+        sys_proj_mapping
+        SET
+        re_flag=#{reFlag}, jsc_proj_code=#{jscProjCode}, jsc_proj_name=#{jscProjName}, yy_proj_name=#{yyProjName}, yx_proj_name=#{yxProjName},
+        jy_proj_name=#{jyProjName}, cb_proj_name=#{cbProjName}, cw_proj_name=#{cwProjName}, st_id=#(stId), create_user=#{createUser},  modify_user=#{modifyUser}, modify_date=#{modifyDate}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据条件查询 -->
+    <select id="queryList" resultMap="SysProjMappingMap" parameterType="map">
+        SELECT
+        t.id,
+        t.re_flag,
+        t.jsc_proj_code,
+        t.jsc_proj_name,
+        t.yy_proj_name,
+        t.yx_proj_name,
+        t.jy_proj_name,
+        t.cb_proj_name,
+        t.cw_proj_name,
+        t.st_id,
+        t.create_user,
+        t.create_date,
+        t.modify_user,
+        t.modify_date
+        FROM
+        sys_proj_mapping t
+        WHERE 1=1
+        <if test="keyword!=null and keyword!=''">
+            AND t.jsc_proj_name LIKE CONCAT('%',#{keyword},'%')
+            OR t.yy_proj_name LIKE CONCAT('%',#{keyword},'%')
+            OR t.yx_proj_name LIKE CONCAT('%',#{keyword},'%')
+            OR t.jy_proj_name LIKE CONCAT('%',#{keyword},'%')
+            OR t.cb_proj_name LIKE CONCAT('%',#{keyword},'%')
+            OR t.cw_proj_name LIKE CONCAT('%',#{keyword},'%')
+        </if>
+        <if test="sortName!=null and sorName!='' and sortOrder !=null and sortOrder!=''">
+            ORDER BY #{sortName} #{sortOrder}
+        </if>
+
+    </select>
+
+
+</mapper>
+
