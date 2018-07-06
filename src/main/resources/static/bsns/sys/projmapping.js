@@ -21,20 +21,7 @@ var showColumns = [
     //     sortable: false,
     //     sortName: "id" // sortName的值，需配置和数据库保持一致
     // }
-    , {
-        field: "reFlag",
-        title: "关系标识",
-        width: "10%",
-        sortable: false,
-        sortName: "re_flag"
-    }
-    , {
-        field: "cityCode",
-        title: "城市代码",
-        width: "10%",
-        sortable: false,
-        sortName: "city_code"
-    }
+
     , {
         field: "cityName",
         title: "城市名称",
@@ -150,7 +137,7 @@ var vm = new Vue({
 
         /* 定义页面操作参数 */
         , show: true// 切换页面中的查询和新建（编辑）页面
-        , showPwd: true // 显示修改密码框
+        , showStatus: false // 隐藏状态
         , errorMessage: null // 异常信息
         , title: null // 标题
         , vueQueryParam: { // 查询参数
@@ -174,6 +161,12 @@ var vm = new Vue({
             // 1. 隐藏表格，显示添加页面
             vm.show = false;
             vm.errorMessage = null;
+
+            // 显示状态
+            if(vm.showStatus == true)
+            {
+                vm.showStatus = false;
+            }
 
             // 2. 设置标题
             vm.title = PAGE_INSERT_TITLE;
@@ -237,8 +230,11 @@ var vm = new Vue({
         // 显示修改页面
         , update: function () {
 
-            // 隐藏密码框
-            vm.showPwd = false;
+            // 显示状态
+            if(vm.showStatus == false)
+            {
+                vm.showStatus = true;
+            }
             vm.errorMessage = null;
 
             // 获取所选择选择数据行的ID（可能选择多行）
