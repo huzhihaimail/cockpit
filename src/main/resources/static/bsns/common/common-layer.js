@@ -21,8 +21,13 @@ window.alert = function (msg, callback) {
  * @param callback
  */
 window.confirm = function (msg, callback) {
-    layer.confirm(msg, {btn: ['确定', '取消']},
-        function () {//确定事件
+    layer.confirm(msg
+        , {
+            skin: 'layui-layer-lan'
+            , closeBtn: 0
+            , btn: ['确定', '取消']
+        }
+        , function () {//确定事件
             if (typeof(callback) === "function") {
                 callback("ok");
             }
