@@ -89,7 +89,17 @@ var showColumns = [
         title: "状态",
         width: "15%",
         sortable: false,
-        sortName: "st_id"
+        sortName: "st_id",
+        formatter: function (value, row, index) {
+            switch (value) {
+                case 1:
+                    return "<span class='label label-success'>有效</span>";
+                    break;
+                case 0:
+                    return "<span class='label label-warning'>无效</span>";
+                    break;
+            }
+        }
     }
     // , {
     //     field: "createUser",
