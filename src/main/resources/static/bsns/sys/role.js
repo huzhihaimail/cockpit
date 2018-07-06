@@ -151,6 +151,18 @@ var vm = new Vue({
                 vm.errorMessage = "请输入角色名";
                 return;
             }
+            // 角色中文名
+            if (vm.model.nameCn == null || vm.model.nameCn == "") {
+                vm.errorMessage = "请输入角色中文名";
+                return;
+            }
+
+            //获取选择的菜单
+            var nodes = ztree.getCheckedNodes(true);
+            if (nodes==null || nodes==""){
+                vm.errorMessage = "请选择菜单";
+                return;
+            }
 
             // 执行新增操作
             if (vm.model.id == null) {
