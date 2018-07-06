@@ -157,13 +157,13 @@ var vm = new Vue({
             }
 
             // 校验表单菜单名称
-            if (vm.model.name == null || vm.model.name == "") {
+            if (vm.model.name.trim() == null || vm.model.name.trim() == "") {
                 vm.errorMessage = "请输入菜单名称！";
                 return;
             }
 
             // 校验表单父级菜单
-            if (vm.model.parentId == null || vm.model.parentId == "") {
+            if (vm.model.parentId.trim() == null || vm.model.parentId.trim() == "") {
                 vm.errorMessage = "请选择父级菜单！";
                 return;
             }

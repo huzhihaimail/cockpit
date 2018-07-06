@@ -150,11 +150,32 @@ var vm = new Vue({
         // 点击“确定”按钮
         , commit: function (el) {
 
-            // 校验表单
-            if (vm.model.userName == null || vm.model.userName == "") {
+            // 用户名
+            if (vm.model.userName.trim() == null || vm.model.userName.trim() == "") {
                 vm.errorMessage = "请输入用户名";
                 return;
             }
+            // 用户昵称
+            if (vm.model.nickName.trim() == null || vm.model.nickName.trim() == "") {
+                vm.errorMessage = "请输入用户昵称";
+                return;
+            }
+            // 密码
+            if (vm.model.password.trim() == null || vm.model.password.trim() == "") {
+                vm.errorMessage = "请输入密码";
+                return;
+            }
+            // 重复密码
+            if (vm.model.newPassword.trim() == null || vm.model.newPassword.trim() == "") {
+                vm.errorMessage = "请输入确认密码";
+                return;
+            }
+            // 手机号码
+            if (vm.model.mobile.trim() == null || vm.model.mobile.trim() == "") {
+                vm.errorMessage = "请输入手机号码";
+                return;
+            }
+
 
             // 执行新增操作
             if (vm.model.id == null) {

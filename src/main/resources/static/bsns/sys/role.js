@@ -26,18 +26,18 @@ var showColumns = [
         title: "角色名称",
         width: "10%",
     }
-    , {
-        field: "status",
-        title: "状态",
-        width: "5%",
-        formatter: function (value, row, index) {
-            if (value == '0') {
-                return "<span class='label label-success'>启用</span>";
-            } else {
-                return "<span class='label label-danger'>停用</span>";
-            }
-        }
-    }
+    // , {
+    //     field: "status",
+    //     title: "状态",
+    //     width: "5%",
+    //     formatter: function (value, row, index) {
+    //         if (value == '0') {
+    //             return "<span class='label label-success'>启用</span>";
+    //         } else {
+    //             return "<span class='label label-danger'>停用</span>";
+    //         }
+    //     }
+    // }
     , {
         field: "createDate",
         title: "创建时间",
@@ -147,12 +147,14 @@ var vm = new Vue({
         , commit: function (el) {
 
             // 校验表单
-            if (vm.model.name == null || vm.model.name == "") {
+            if (vm.model.name.trim() == null || vm.model.name.trim() == "") {
                 vm.errorMessage = "请输入角色名";
                 return;
+            }else{
+                //TODO去重
             }
             // 角色中文名
-            if (vm.model.nameCn == null || vm.model.nameCn == "") {
+            if (vm.model.nameCn.trim() == null || vm.model.nameCn.trim() == "") {
                 vm.errorMessage = "请输入角色中文名";
                 return;
             }
