@@ -310,7 +310,7 @@ var vm = new Vue({
                 return zNodes;
             }
 
-            ztree = $.fn.zTree.init($("#menuTree"), setting, getMenuJson(APP_NAME + "/sys/menu/queryMenu"));
+            ztree = $.fn.zTree.init($("#menuTree"), setting, getMenuJson(APP_NAME + "/sys/"+ vm.moduleName +"/queryMenu"));
             //展开所有节点
             ztree.expandAll(true);
         }
@@ -347,7 +347,7 @@ var vm = new Vue({
 $(function () {
 
     // 创建BootStrapTable
-    bsTable.createBootStrapTable(vm.columns, APP_NAME + "/sys/menu/list?rnd=" + Math.random(), vm.queryOption);
+    bsTable.createBootStrapTable(vm.columns, APP_NAME + "/sys/"+ vm.moduleName +"/list?rnd=" + Math.random(), vm.queryOption);
 });
 
 

@@ -193,7 +193,7 @@ var vm = new Vue({
                 return;
             }
 
-            if(vm.model.stId == null || vm.model.stId == "") {
+            if (vm.model.stId == null || vm.model.stId == "") {
                 vm.errorMessage = "请输入状态";
                 return;
             }
@@ -339,7 +339,7 @@ var vm = new Vue({
 $(function () {
 
     // 创建BootStrapTable
-    bsTable.createBootStrapTable(vm.columns, APP_NAME + "/sys/projmapping/list?rnd=" + Math.random(), vm.queryOption)
+    bsTable.createBootStrapTable(vm.columns, APP_NAME + "/sys/" + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption)
 });
 
 
