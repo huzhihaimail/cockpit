@@ -1,6 +1,7 @@
 package cn.com.njdhy.muscle.triceps.controller.api;
 
 import cn.com.njdhy.muscle.triceps.model.database.SysMenu;
+import cn.com.njdhy.muscle.triceps.model.database.UserInfo;
 import cn.com.njdhy.muscle.triceps.service.cockpit.UserService;
 import cn.com.njdhy.muscle.triceps.util.common.HttpResult;
 import io.swagger.annotations.Api;
@@ -33,8 +34,8 @@ public class UserManageController extends BaseController {
     )
     public HttpResult queryMenuForHaiHang(@ApiParam(value = "用户名", required = true) @RequestParam(value = "userName") String userName,
                                            @ApiParam(value = "当前位置", required = true) @RequestParam(value = "position") String position){
-        List<SysMenu> sysMenuList = userService.queryMenuForHaiHang(userName,position);
-        return new HttpResult(sysMenuList);
+        UserInfo userInfo = userService.queryMenuForHaiHang(userName,position);
+        return new HttpResult(userInfo);
     }
 
 }

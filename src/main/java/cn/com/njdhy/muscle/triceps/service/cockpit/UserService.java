@@ -1,6 +1,7 @@
 package cn.com.njdhy.muscle.triceps.service.cockpit;
 
 import cn.com.njdhy.muscle.triceps.model.database.SysMenu;
+import cn.com.njdhy.muscle.triceps.model.database.UserInfo;
 
 import java.util.List;
 
@@ -15,6 +16,6 @@ public interface UserService {
      * @param position
      * @return
      */
-    List<SysMenu> queryMenuForHaiHang(String userName, String position);
+    UserInfo queryMenuForHaiHang(String userName, String position);
 
 }

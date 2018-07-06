@@ -65,6 +65,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
 
         // 用户配置角色信息入库
         sysUserRoleService.batchInsert(sysUserRolesLst);
+
+
     }
 
     /**

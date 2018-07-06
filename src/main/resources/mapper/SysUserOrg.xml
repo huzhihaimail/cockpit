@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 配置dao接口路径-->
+<mapper namespace="cn.com.njdhy.muscle.triceps.dao.SysUserOrgDao">
+
+    <!-- type配置model层实体类名-->
+    <resultMap id="SysUserOrgMap" type="SysUserOrg">
+        <!-- 配置实体和数据库列的对应关系，property：实体属性名；column：数据库表列名；-->
+        <result property="employeeId" column="employee_id"></result>
+        <result property="orgCode" column="org_code"></result>
+        <result property="stId" column="st_id"></result>
+        <result property="createUser" column="create_user"></result>
+        <result property="createDate" column="create_date"></result>
+    </resultMap>
+
+    <!-- 配置表名 -->
+    <sql id="tableName">
+        sys_user_org
+    </sql>
+
+    <!-- for insert columns -->
+    <sql id="columns">
+        employee_id, org_code,st_id,create_user,create_date
+    </sql>
+
+    <!-- for insert value -->
+    <sql id="values">
+        #{employeeId}, #{orgCode},#{stId},#{createUser},#{createDate}
+    </sql>
+
+    <!-- for batchInsert value -->
+    <sql id="batchInsertValues">
+        #{item.employeeId}, #{item.orgCode},#{item.stId},#{item.createUser},#{item.createDate}
+    </sql>
+
+    <!-- for update set -->
+    <sql id="updates">
+        employee_id=#{employeeId}, org_code=#{orgCode},st_id=#{stId},create_user=#{createUser},create_date=#{createDate},
+    </sql>
+
+
+    <!-- 批量新建-->
+    <insert id="batchInsert">
+        insert into
+        <include refid="tableName"/>
+        (<include refid="columns"/>)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (<include refid="batchInsertValues"/>)
+        </foreach>
+    </insert>
+
+    <!-- 批量删除-->
+    <delete id="deleteByIds" parameterType="List">
+        DELETE FROM
+        <include refid="tableName"/>
+        WHERE 1=1
+        AND id IN
+        <foreach item="id" index="index" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
+

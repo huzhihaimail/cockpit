@@ -20,12 +20,21 @@ public class CityComDisRe {
     private String projectCode;
     @ApiModelProperty(value = "项目名称",example = "项目名称")
     private String projectName;
+
     @ApiModelProperty(value = "回款金额月",example = "回款金额月")
     private String hkjem;
     @ApiModelProperty(value = "回款金额目标值月",example = "回款金额目标值月")
     private String hkjetm;
     @ApiModelProperty(value = "回款金额完成率月",example = "回款金额完成率月")
     private String hkjelm;
+
+    @ApiModelProperty(value = "回款金额当期",example = "回款金额当期")
+    private String hkjedq;
+    @ApiModelProperty(value = "回款金额目标值当期",example = "回款金额目标值当期")
+    private String hkjetdq;
+    @ApiModelProperty(value = "回款金额完成率当期",example = "回款金额完成率当前")
+    private String hkjeldq;
+
     @ApiModelProperty(value = "回款金额年",example = "回款金额年")
     private String hkjey;
     @ApiModelProperty(value = "回款金额目标值年",example = "回款金额目标值年")
@@ -127,5 +136,29 @@ public class CityComDisRe {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
+    }
+
+    public String getHkjedq() {
+        return hkjedq;
+    }
+
+    public void setHkjedq(String hkjedq) {
+        this.hkjedq = hkjedq;
+    }
+
+    public String getHkjetdq() {
+        return hkjetdq;
+    }
+
+    public void setHkjetdq(String hkjetdq) {
+        this.hkjetdq = hkjetdq;
+    }
+
+    public String getHkjeldq() {
+        return hkjeldq;
+    }
+
+    public void setHkjeldq(String hkjeldq) {
+        this.hkjeldq = hkjeldq;
     }
 }

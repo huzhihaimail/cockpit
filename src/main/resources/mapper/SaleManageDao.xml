@@ -104,6 +104,11 @@
             SUM(HKJE_M)     hkjem,       --回款金额月
             SUM(HKJE_T_M)   hkjetm,     --回款金额目标值月
             SUM(HKJE_L_M)   hkjelm,     --回款金额完成率月
+
+            SUM(HKJE_DQ)    hkjedq,       --回款金额当期
+            SUM(HKJE_T_DQ)  hkjetdq,     --回款金额目标值当期
+            SUM(HKJE_L_DQ)  hkjeldq,     --回款金额完成率当期
+
             SUM(HKJE_Y)     hkjey,        --回款金额年
             SUM(HKJE_T_Y)   hkjety,      --回款金额目标值年
             SUM(HKJE_L_Y)   hkjely      --回款金额完成率年

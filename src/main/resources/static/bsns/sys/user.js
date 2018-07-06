@@ -70,6 +70,27 @@ var showColumns = [
     }*/
 ];
 
+var setting = {
+    view : {
+        selectedMulti : false
+    },
+    check : {
+        enable : true
+    },
+    data : {
+        simpleData : {
+            enable : true,
+            idKey : "menuId",
+            pIdKey : "parentId",
+            rootPId: -1
+        }
+    },
+    edit : {
+        enable : false
+    }
+};
+
+var ztree;
 
 // 通用表格对象
 var bsTable = new BootStrapTable();
@@ -121,6 +142,9 @@ var vm = new Vue({
 
             // 4. 加载角色列表
             vm.loadRoles();
+
+            //5.加载树控件
+            vm.loadTreeCompany('add');
         }
 
         // 点击“确定”按钮
@@ -191,6 +215,7 @@ var vm = new Vue({
             });
             // 加载角色列表
             vm.loadRoles();
+
         }
 
         // 执行修改操作
@@ -271,6 +296,35 @@ var vm = new Vue({
             $.get(APP_NAME + "/sys/" + vm.moduleName + "/loadRoles", function (r) {
                 vm.roles = r.page;
             });
+        }
+        , loadTreeCompany: function(type){
+            function getMenuJson(url,data) {
+                var zNodes;
+                var role={id:data};
+                $.ajax({
+                    url : url,
+                    dataType : 'JSON',
+                    type : 'POST',
+                    data : role,
+                    async:false,
+                    success : function(data, status) {
+                        var nodes = JSON.stringify(data.model);
+                        zNodes = eval(nodes);
+                    }
+                });
+                return zNodes;
+            }
+            if (type=='add'){
+                var data=null;
+                ztree = $.fn.zTree.init($("#menuTree"), setting,getMenuJson(APP_NAME + "/sys/menu/queryAllMenuInsert",data) );
+            }
+            // else if (type=='update'){
+            //     var ids = bsTable.getMultiRowIds();
+            //     var data = ids[0];
+            //     /*ztree = $.fn.zTree.init($("#menuTree"), setting,getMenuJson(APP_NAME + "/sys/menu/queryAllMenuUpdate",data) );*/
+            //     ztree = $.fn.zTree.init($("#menuTree"), setting,getMenuJson(APP_NAME + "/sys/menu/queryAllMenuUpdate",data) );
+            // }
+
         }
     }
 });
