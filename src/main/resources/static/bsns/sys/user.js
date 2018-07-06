@@ -71,22 +71,22 @@ var showColumns = [
 ];
 
 var setting = {
-    view : {
-        selectedMulti : false
+    view: {
+        selectedMulti: false
     },
-    check : {
-        enable : true
+    check: {
+        enable: true
     },
-    data : {
-        simpleData : {
-            enable : true,
-            idKey : "menuId",
-            pIdKey : "parentId",
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "menuId",
+            pIdKey: "parentId",
             rootPId: -1
         }
     },
-    edit : {
-        enable : false
+    edit: {
+        enable: false
     }
 };
 
@@ -297,26 +297,27 @@ var vm = new Vue({
                 vm.roles = r.page;
             });
         }
-        , loadTreeCompany: function(type){
-            function getMenuJson(url,data) {
+        , loadTreeCompany: function (type) {
+            function getMenuJson(url, data) {
                 var zNodes;
-                var role={id:data};
+                var role = {id: data};
                 $.ajax({
-                    url : url,
-                    dataType : 'JSON',
-                    type : 'POST',
-                    data : role,
-                    async:false,
-                    success : function(data, status) {
+                    url: url,
+                    dataType: 'JSON',
+                    type: 'POST',
+                    data: role,
+                    async: false,
+                    success: function (data, status) {
                         var nodes = JSON.stringify(data.model);
                         zNodes = eval(nodes);
                     }
                 });
                 return zNodes;
             }
-            if (type=='add'){
-                var data=null;
-                ztree = $.fn.zTree.init($("#menuTree"), setting,getMenuJson(APP_NAME + "/sys/menu/queryAllMenuInsert",data) );
+
+            if (type == 'add') {
+                var data = null;
+                ztree = $.fn.zTree.init($("#menuTree"), setting, getMenuJson(APP_NAME + "/sys/menu/queryAllMenuInsert", data));
             }
             // else if (type=='update'){
             //     var ids = bsTable.getMultiRowIds();
@@ -335,7 +336,7 @@ var vm = new Vue({
 $(function () {
 
     // 创建BootStrapTable
-    bsTable.createBootStrapTable(vm.columns, APP_NAME + "/sys/user/list?rnd=" + Math.random(), vm.queryOption)
+    bsTable.createBootStrapTable(vm.columns, APP_NAME + "/sys/" + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption)
 });
 
 
