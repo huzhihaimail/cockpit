@@ -14,90 +14,90 @@ var showColumns = [
             return index + 1;
         }
     }
-    , {
-        field: "id",
-        title: "关系号",
-        width: "10%",
-        sortable: true,
-        sortName: "id" // sortName的值，需配置和数据库保持一致
-    }
+    // , {
+    //     field: "id",
+    //     title: "关系号",
+    //     width: "10%",
+    //     sortable: false,
+    //     sortName: "id" // sortName的值，需配置和数据库保持一致
+    // }
     , {
         field: "reFlag",
         title: "关系标识",
         width: "10%",
-        sortable: true,
+        sortable: false,
         sortName: "re_flag"
     }
     , {
         field: "cityCode",
         title: "城市代码",
         width: "10%",
-        sortable: true,
+        sortable: false,
         sortName: "city_code"
     }
     , {
         field: "cityName",
         title: "城市名称",
         width: "20%",
-        sortable: true,
+        sortable: false,
         sortName: "city_name"
     }
     , {
         field: "jscProjName",
         title: "驾驶舱项目名称",
         width: "15%",
-        sortable: true,
+        sortable: false,
         sortName: "jsc_proj_name"
     }
     , {
         field: "yyProjName",
         title: "运营管理平台",
         width: "15%",
-        sortable: true,
+        sortable: false,
         sortName: "yy_proj_name"
     }
     , {
         field: "yxProjName",
         title: "营销管理系统",
         width: "15%",
-        sortable: true,
+        sortable: false,
         sortName: "yx_proj_name"
     }
     , {
         field: "jyProjName",
         title: "经营管理平台-项目",
         width: "15%",
-        sortable: true,
+        sortable: false,
         sortName: "jy_proj_name"
     }
     , {
         field: "cbProjName",
         title: "成本管理系统",
         width: "15%",
-        sortable: true,
+        sortable: false,
         sortName: "cb_proj_name"
     }
     , {
         field: "cwProjName",
         title: "财务收入预算",
         width: "15%",
-        sortable: true,
+        sortable: false,
         sortName: "cw_proj_name"
     }
     , {
         field: "stId",
         title: "状态",
         width: "15%",
-        sortable: true,
+        sortable: false,
         sortName: "st_id"
     }
-    , {
-        field: "createUser",
-        title: "创建人",
-        width: "15%",
-        sortable: true,
-        sortName: "create_user"
-    }
+    // , {
+    //     field: "createUser",
+    //     title: "创建人",
+    //     width: "15%",
+    //     sortable: false,
+    //     sortName: "create_user"
+    // }
     , {
         field: "createDate",
         title: "创建时间",
@@ -106,13 +106,13 @@ var showColumns = [
             return new moment(value).format('YYYY-MM-DD HH:mm:ss');
         }
     }
-    , {
-        field: "modifyUser",
-        title: "修改人",
-        width: "15%",
-        sortable: true,
-        sortName: "modify_user"
-    }
+    // , {
+    //     field: "modifyUser",
+    //     title: "修改人",
+    //     width: "15%",
+    //     sortable: false,
+    //     sortName: "modify_user"
+    // }
     , {
         field: "modifyDate",
         title: "修改时间",
