@@ -193,6 +193,11 @@ var vm = new Vue({
                 return;
             }
 
+            if(vm.model.stId == null || vm.model.stId == "") {
+                vm.errorMessage = "请输入状态";
+                return;
+            }
+
             // 执行新增操作
             if (vm.model.id == null) {
                 vm.doSave();
