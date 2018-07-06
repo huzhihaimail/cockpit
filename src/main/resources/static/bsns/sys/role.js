@@ -205,6 +205,9 @@ var vm = new Vue({
                     }
                 }
             });
+
+            // 清除查询条件
+            vm.queryOption.keyword="";
         }
 
         // 显示修改页面

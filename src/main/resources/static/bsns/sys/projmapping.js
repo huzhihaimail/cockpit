@@ -163,8 +163,7 @@ var vm = new Vue({
             vm.errorMessage = null;
 
             // 显示状态
-            if(vm.showStatus == true)
-            {
+            if (vm.showStatus == true) {
                 vm.showStatus = false;
             }
 
@@ -225,14 +224,16 @@ var vm = new Vue({
                     }
                 }
             });
+
+            // 清除查询条件
+            vm.queryOption.keyword = "";
         }
 
         // 显示修改页面
         , update: function () {
 
             // 显示状态
-            if(vm.showStatus == false)
-            {
+            if (vm.showStatus == false) {
                 vm.showStatus = true;
             }
             vm.errorMessage = null;

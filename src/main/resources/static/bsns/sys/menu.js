@@ -151,7 +151,7 @@ var vm = new Vue({
         // 点击“确定”按钮
         , commit: function (el) {
 
-            if (vm.model.type !=0 && vm.model.type !=1 && vm.model.type !=2) {
+            if (vm.model.type != 0 && vm.model.type != 1 && vm.model.type != 2) {
                 vm.errorMessage = "请选择菜单类型！";
                 return;
             }
@@ -199,6 +199,9 @@ var vm = new Vue({
                     }
                 }
             });
+
+            // 清除查询条件
+            vm.queryOption.keyword = "";
         }
 
         // 显示修改页面
@@ -310,7 +313,7 @@ var vm = new Vue({
                 return zNodes;
             }
 
-            ztree = $.fn.zTree.init($("#menuTree"), setting, getMenuJson(APP_NAME + "/sys/"+ vm.moduleName +"/queryMenu"));
+            ztree = $.fn.zTree.init($("#menuTree"), setting, getMenuJson(APP_NAME + "/sys/" + vm.moduleName + "/queryMenu"));
             //展开所有节点
             ztree.expandAll(true);
         }
@@ -347,7 +350,7 @@ var vm = new Vue({
 $(function () {
 
     // 创建BootStrapTable
-    bsTable.createBootStrapTable(vm.columns, APP_NAME + "/sys/"+ vm.moduleName +"/list?rnd=" + Math.random(), vm.queryOption);
+    bsTable.createBootStrapTable(vm.columns, APP_NAME + "/sys/" + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption);
 });
 
 
