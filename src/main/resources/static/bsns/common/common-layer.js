@@ -4,7 +4,10 @@
  * @param callback
  */
 window.alert = function (msg, callback) {
-    layer.alert(msg, function (index) {
+    layer.alert(msg, {
+        skin: 'layui-layer-lan'
+        , closeBtn: 0
+    }, function (index) {
         layer.close(index);
         if (typeof(callback) === "function") {
             callback("ok");
