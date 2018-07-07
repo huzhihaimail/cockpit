@@ -147,6 +147,16 @@ var vm = new Vue({
 
         // 定义模块名称
         , moduleName: "projmapping"
+        , options: []
+
+    }
+    ,created:function(){
+        //加载下拉框城市名称
+        var _self=this;
+        $.get(APP_NAME + "/api/dimorg/cityName", function (r) {
+            _self.options = r.result;
+        });
+
     }
     // 定义方法
     , methods: {
@@ -158,6 +168,7 @@ var vm = new Vue({
 
         // 点击“新增”按钮
         , save: function (event) {
+
             // 1. 隐藏表格，显示添加页面
             //vm.showPwd = true;
             vm.show = false;
@@ -176,11 +187,11 @@ var vm = new Vue({
 
             // 4. 加载角色列表
             //vm.loadRoles();
+
         }
 
         // 点击“确定”按钮
         , commit: function (el) {
-
             // 校验表单
             if (vm.model.jscProjName == null || vm.model.jscProjName == "") {
                 vm.errorMessage = "请输入驾驶舱项目名称";

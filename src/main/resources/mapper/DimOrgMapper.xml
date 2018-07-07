@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 配置dao接口路径-->
+<mapper namespace="cn.com.njdhy.muscle.triceps.dao.DimOrgDao">
+
+    <!-- type配置model层实体类名-->
+    <resultMap id="DimOrgMap" type="DimOrg">
+
+        <!-- 配置实体和数据库列的对应关系，property：实体属性名；column：数据库表列名；-->
+        <result property="orgCode" column="ORG_CODE"></result>
+        <result property="orgName" column="ORG_NAME"></result>
+        <result property="shortOrgName" column="SHORT_ORG_NAME"></result>
+        <result property="pOrgCode" column="P_ORG_CODE"></result>
+        <result property="seqNum" column="SEQ_NUM"></result>
+        <result property="orgLevel" column="ORG_LEVEL"></result>
+        <result property="stId" column="ST_ID"></result>
+        <result property="f1" column="F1"></result>
+        <result property="f2" column="F2"></result>
+        <result property="f3" column="F3"></result>
+        <result property="f4" column="F4"></result>
+        <result property="f5" column="F5"></result>
+        <result property="yearMonth" column="Year_MONTH"></result>
+        <result property="etlTime" column="etl_time"></result>
+
+    </resultMap>
+
+    <!-- 配置表名 -->
+    <sql id="tableName">
+        dim_org
+    </sql>
+
+    <!-- for insert columns -->
+    <sql id="columns">
+        ORG_CODE, ORG_NAME, SHORT_ORG_NAME, P_ORG_CODE, SEQ_NUM, ORG_LEVEL, ST_ID, F1, F2, F3, F4, F5, Year_MONTH, etl_time
+    </sql>
+
+    <!-- for insert value -->
+    <sql id="values">
+        #{orgCode}, #{orgName}, #{shortOrgName}, #{pOrgCode}, #{seqNum}, #{orgLevel}, #{stId}, #{f1}, #{f2}, #{f3}, #{f4}, #{f5}, #{yearMonth}, #{etlTime}
+    </sql>
+
+    <!-- for update set -->
+    <sql id="updates">
+        ORG_CODE=#{orgCode}, ORG_NAME=#{orgName}, SHORT_ORG_NAME=#{shortOrgName}, P_ORG_CODE=#{pOrgCode}, SEQ_NUM=#{seqNum}, ORG_LEVEL=#{orgLevel}, ST_ID=#{stId}, F1=#{f1}, F2=#{f2}, F3=#{f3}, F4=#{f4}, F5=#{f5}, Year_MONTH=#{yearMonth}, etl_time=#{etlTime}
+    </sql>
+
+
+    <!-- 根据条件查询 -->
+    <select id="queryList" resultMap="DimOrgMap" parameterType="map">
+        SELECT
+        t.ORG_CODE,
+        t.ORG_NAME,
+        t.SHORT_ORG_NAME,
+        t.P_ORG_CODE,
+        t.SEQ_NUM,
+        t.ORG_LEVEL,
+        t.ST_ID,
+        t.F1,
+        t.F2,
+        t.F3,
+        t.F4,
+        t.F5,
+        t.Year_MONTH,
+        t.etl_time
+        FROM
+        dim_org t
+        WHERE 1=1
+        <if test="orgCode!=null and orgCode!=''">
+            AND t.ORG_CODE = #{orgCode}
+        </if>
+        <if test="orgName!=null and orgName!=''">
+            AND t.ORG_NAME = #{orgName}
+        </if>
+        <if test="orgLevel!=null and orgLevel!=''">
+            AND t.ORG_LEVEL = #{orgLevel}
+        </if>
+        <if test="stId!=null and stId!=''">
+            AND t.ST_ID = #{stId}
+        </if>
+
+
+    </select>
+
+
+</mapper>
+
