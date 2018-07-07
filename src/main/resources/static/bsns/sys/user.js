@@ -131,7 +131,7 @@ var vm = new Vue({
                 vm.title = PAGE_INSERT_TITLE;
                 // 3. 清空表单数据
                 vm.model = {};
-                vm.userRoles=[];
+                vm.userRoles = [];
 
                 // 4. 加载角色列表
                 vm.loadRoles();
@@ -153,7 +153,27 @@ var vm = new Vue({
                         vm.errorMessage = "请输入用户名";
                         return;
                     } else {
+                        var flag = null;
                         //判断是否重复
+                        $.ajax({
+                            url: APP_NAME + "/sys/" + vm.moduleName + "/queryUserInfoByUserName",
+                            dataType: 'JSON',
+                            async: false,
+                            type: 'POST',
+                            data: {
+                                "userName": vm.model.userName.trim()
+                            },
+                            success: function (data, status) {
+                                if (data.code != 0) {
+                                    vm.errorMessage = "用户名已重复";
+                                    flag = false;
+                                }
+                            }
+                        });
+                        if (flag != null && !flag) {
+                            flag = null;
+                            return;
+                        }
                     }
                 }
                 // 用户昵称
@@ -284,7 +304,7 @@ var vm = new Vue({
                         }
                     }
                 });
-                vm.vueQueryParam.keyword=null;
+                vm.vueQueryParam.keyword = null;
             }
 
             // 显示修改页面

@@ -6,6 +6,7 @@ import cn.com.njdhy.muscle.triceps.model.common.Result;
 import cn.com.njdhy.muscle.triceps.model.database.SysUser;
 import cn.com.njdhy.muscle.triceps.model.exception.ApplicationException;
 import cn.com.njdhy.muscle.triceps.service.sys.SysUserService;
+import cn.com.njdhy.muscle.triceps.util.EmptyUtils;
 import cn.com.njdhy.muscle.triceps.util.ShiroUtil;
 import com.github.pagehelper.PageInfo;
 import cn.com.njdhy.muscle.triceps.model.database.SysRole;
@@ -145,6 +146,28 @@ public class UserCtl {
         }
 
         return Result.success();
+    }
+
+    /**
+     * 校验用户名是否重复
+     * @param userName
+     * @return
+     */
+    @RequestMapping("/queryUserInfoByUserName")
+    public Result queryUserInfoByUserName(String userName) {
+
+        try {
+            SysUser user = sysUserService.queryByName(userName);
+            if (EmptyUtils.isEmpty(user)){
+                return Result.success();
+            }else{
+                return Result.error("用户名已重复");
+            }
+        } catch (ApplicationException e) {
+            return Result.error(e.getCode(), e.getMsg());
+        } catch (Exception e) {
+            return Result.error(e.getMessage());
+        }
     }
 
     /**

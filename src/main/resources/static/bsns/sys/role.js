@@ -152,6 +152,28 @@ var vm = new Vue({
                 if (vm.model.name.trim() == null || vm.model.name.trim() == "") {
                     vm.errorMessage = "请输入角色名";
                     return;
+                }else{
+                    var flag = null;
+                    //判断是否重复
+                    $.ajax({
+                        url: APP_NAME + "/sys/" + vm.moduleName + "/queryRoleInfoByRoleName",
+                        dataType: 'JSON',
+                        async: false,
+                        type: 'POST',
+                        data: {
+                            "roleName": vm.model.name.trim()
+                        },
+                        success: function (data, status) {
+                            if (data.code != 0) {
+                                vm.errorMessage = "角色名已重复";
+                                flag = false;
+                            }
+                        }
+                    });
+                    if (flag != null && !flag) {
+                        flag = null;
+                        return;
+                    }
                 }
             }
             // 角色中文名
