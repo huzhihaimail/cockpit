@@ -82,12 +82,22 @@
                     </div>
                 </div>-->
 
+                <!--<div class="form-group">-->
+                    <!--<div class="col-sm-3 control-label">城市名称</div>-->
+                    <!--<div class="col-sm-6">-->
+                        <!--<input type="text" class="form-control" v-model="model.cityName" placeholder="请输入城市名称"/>-->
+                    <!--</div>-->
+                <!--</div>-->
+
                 <div class="form-group">
                     <div class="col-sm-3 control-label">城市名称</div>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" v-model="model.cityName" placeholder="请输入城市名称"/>
-                    </div>
+                    <select v-model="model.cityName">
+                        <option v-for="option in options">
+                            {{ option.orgName }}
+                        </option>
+                    </select>
                 </div>
+
 
                 <div class="form-group">
                     <div class="col-sm-3 control-label">驾驶舱项目代码</div>
