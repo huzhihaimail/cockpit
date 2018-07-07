@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author 胡志海
  */
-public class DimCode extends BaseModel {
+public class DimOrg extends BaseModel {
 
     /**
      * code
