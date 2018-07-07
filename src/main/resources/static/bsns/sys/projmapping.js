@@ -159,6 +159,7 @@ var vm = new Vue({
         // 点击“新增”按钮
         , save: function (event) {
             // 1. 隐藏表格，显示添加页面
+            //vm.showPwd = true;
             vm.show = false;
             vm.errorMessage = null;
 
@@ -174,7 +175,7 @@ var vm = new Vue({
             vm.model = {};
 
             // 4. 加载角色列表
-            vm.loadRoles();
+            //vm.loadRoles();
         }
 
         // 点击“确定”按钮
@@ -186,10 +187,6 @@ var vm = new Vue({
                 return;
             }
 
-            if (vm.model.stId == null || vm.model.stId == "") {
-                vm.errorMessage = "请输入状态";
-                return;
-            }
 
             // 执行新增操作
             if (vm.model.id == null) {
@@ -205,7 +202,7 @@ var vm = new Vue({
         , doSave: function () {
 
             // 获取到的用户配置的角色列表添加到后台参数
-            vm.model.userRoles = vm.userRoles;
+            //vm.model.userRoles = vm.userRoles;
 
             // 2. 入库
             $.ajax({
