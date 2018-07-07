@@ -24,23 +24,17 @@ var showColumns = [
     , {
         field: "nickName",
         title: "昵称",
-        width: "10%",
-        sortable: true,
-        sortName: "nickName"
+        width: "10%"
     }
     , {
         field: "mobile",
         title: "手机号",
-        width: "20%",
-        sortable: true,
-        sortName: "mobile"
+        width: "20%"
     }
     , {
         field: "email",
         title: "邮箱",
-        width: "15%",
-        sortable: true,
-        sortName: "email"
+        width: "15%"
     }
     , {
         field: "createDate",
@@ -151,29 +145,55 @@ var vm = new Vue({
         , commit: function (el) {
 
             // 用户名
-            if (vm.model.userName.trim() == null || vm.model.userName.trim() == "") {
+            if (vm.model.userName == null || vm.model.userName == "") {
                 vm.errorMessage = "请输入用户名";
                 return;
+            }else{
+                // 用户名
+                if (vm.model.userName.trim() == null || vm.model.userName.trim() == "") {
+                    vm.errorMessage = "请输入用户名";
+                    return;
+                }
             }
             // 用户昵称
-            if (vm.model.nickName.trim() == null || vm.model.nickName.trim() == "") {
+            if (vm.model.nickName == null || vm.model.nickName == "") {
                 vm.errorMessage = "请输入用户昵称";
                 return;
+            }else{
+                if (vm.model.nickName.trim() == null || vm.model.nickName.trim() == "") {
+                    vm.errorMessage = "请输入用户昵称";
+                    return;
+                }
             }
             // 密码
-            if (vm.model.password.trim() == null || vm.model.password.trim() == "") {
+            if (vm.model.password == null || vm.model.password == "") {
                 vm.errorMessage = "请输入密码";
                 return;
+            }else{
+                if (vm.model.password.trim() == null || vm.model.password.trim() == "") {
+                    vm.errorMessage = "请输入密码";
+                    return;
+                }
             }
             // 重复密码
-            if (vm.model.newPassword.trim() == null || vm.model.newPassword.trim() == "") {
+            if (vm.model.newPassword == null || vm.model.newPassword == "") {
                 vm.errorMessage = "请输入确认密码";
                 return;
+            }else{
+                if (vm.model.newPassword.trim() == null || vm.model.newPassword.trim() == "") {
+                    vm.errorMessage = "请输入确认密码";
+                    return;
+                }
             }
             // 手机号码
-            if (vm.model.mobile.trim() == null || vm.model.mobile.trim() == "") {
+            if (vm.model.mobile == null || vm.model.mobile == "") {
                 vm.errorMessage = "请输入手机号码";
                 return;
+            }else{
+                if (vm.model.mobile.trim() == null || vm.model.mobile.trim() == "") {
+                    vm.errorMessage = "请输入手机号码";
+                    return;
+                }
             }
 
 

@@ -17,9 +17,7 @@ var showColumns = [
     , {
         field: "name",
         title: "角色名称",
-        width: "20%",
-        sortable: true,
-        sortName: "name" // sortName的值，需配置和数据库保持一致
+        width: "20%"
     }
     , {
         field: "nameCn",
@@ -147,18 +145,25 @@ var vm = new Vue({
         , commit: function (el) {
 
             // 校验表单
-            if (vm.model.name.trim() == null || vm.model.name.trim() == "") {
+            if (vm.model.name == null || vm.model.name == "") {
                 vm.errorMessage = "请输入角色名";
                 return;
             }else{
-                //TODO去重
+                if (vm.model.name.trim() == null || vm.model.name.trim() == "") {
+                    vm.errorMessage = "请输入角色名";
+                    return;
+                }
             }
             // 角色中文名
-            if (vm.model.nameCn.trim() == null || vm.model.nameCn.trim() == "") {
+            if (vm.model.nameCn == null || vm.model.nameCn == "") {
                 vm.errorMessage = "请输入角色中文名";
                 return;
+            }else{
+                if (vm.model.nameCn.trim() == null || vm.model.nameCn.trim() == "") {
+                    vm.errorMessage = "请输入角色中文名";
+                    return;
+                }
             }
-
             //获取选择的菜单
             var nodes = ztree.getCheckedNodes(true);
             if (nodes==null || nodes==""){
