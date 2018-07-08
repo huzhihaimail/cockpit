@@ -44,14 +44,14 @@ var showColumns = [
             return new moment(value).format('YYYY-MM-DD HH:mm:ss');
         }
     }
-    , {
-        field: "updateDate",
-        title: "最近修改时间",
-        width: "20%",
-        formatter: function (value, row, index) {
-            return new moment(value).format('YYYY-MM-DD HH:mm:ss');
-        }
-    }
+    // , {
+    //     field: "updateDate",
+    //     title: "最近修改时间",
+    //     width: "20%",
+    //     formatter: function (value, row, index) {
+    //         return new moment(value).format('YYYY-MM-DD HH:mm:ss');
+    //     }
+    // }
     /*, {
         field: "operate",
         title: "操作",

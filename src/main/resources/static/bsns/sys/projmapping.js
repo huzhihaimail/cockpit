@@ -233,6 +233,7 @@ var vm = new Vue({
                     }
                 }
             });
+            vm.vueQueryParam.keyword = null;
         }
 
         // 显示修改页面

@@ -51,11 +51,12 @@
         DELETE FROM
         <include refid="tableName"/>
         WHERE 1=1
-        AND id IN
+        AND user_id IN
         <foreach item="id" index="index" collection="list" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
+
 
     <!-- 批量新建  -->
     <insert id="batchInsert">
@@ -90,6 +91,16 @@
         LEFT JOIN sys_user u ON u.id = t.user_id
         LEFT JOIN sys_ROLE r ON r.id = t.role_id
         WHERE 1=1
+    </select>
+
+    <!-- 根据ID查询-->
+    <select id="queryRoleByUserId" resultMap="SysUserRoleMap" parameterType="String">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE 1 = 1
+        AND user_id=#{id}
     </select>
 
 </mapper>

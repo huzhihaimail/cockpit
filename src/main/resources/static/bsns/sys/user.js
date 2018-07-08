@@ -42,24 +42,22 @@ var showColumns = [
             return new moment(value).format('YYYY-MM-DD HH:mm:ss');
         }
     }
-    , {
-        field: "updateDate",
-        title: "最近修改时间",
-        width: "20%",
-        formatter: function (value, row, index) {
-            return new moment(value).format('YYYY-MM-DD HH:mm:ss');
-        }
-    }
-    /*, {
-        field: "operate",
-        title: "操作",
-        width: "15%",
-        formatter: function () {
-            return '<a class="btn btn-success btn-sm" @click="save"><i class="fa fa-floppy-o"></i></a>\n' +
-                '<a class="btn btn-warning btn-sm" @click="update"><i class="fa fa-pencil-square-o"></i></a>\n' +
-                '<a class="btn btn-danger btn-sm" @click="del"><i class="fa fa-trash"></i></a>';
-        }
-    }*/
+    // , {
+    //     field: "updateDate",
+    //     title: "最近修改时间",
+    //     width: "20%",
+    //     formatter: function (value, row, index) {
+    //         return new moment(value).format('YYYY-MM-DD HH:mm:ss');
+    //     }
+    // }
+    // , {
+    //     field: "operate",
+    //     title: "操作",
+    //     width: "15%",
+    //     formatter: function () {
+    //         return '<a href="#" class="btn btn-success btn-sm" @click="initPassword"><i class="fa fa-floppy-o"></i>密码初始化</a>';
+    //     }
+    // }
 ];
 
 var setting = {
@@ -142,37 +140,38 @@ var vm = new Vue({
 
             // 点击“确定”按钮
             , commit: function (el) {
-
-                // 用户名
-                if (vm.model.userName == null || vm.model.userName == "") {
-                    vm.errorMessage = "请输入用户名";
-                    return;
-                } else {
+                if (vm.model.id == null) {
                     // 用户名
-                    if (vm.model.userName.trim() == null || vm.model.userName.trim() == "") {
+                    if (vm.model.userName == null || vm.model.userName == "") {
                         vm.errorMessage = "请输入用户名";
                         return;
                     } else {
-                        var flag = null;
-                        //判断是否重复
-                        $.ajax({
-                            url: APP_NAME + "/sys/" + vm.moduleName + "/queryUserInfoByUserName",
-                            dataType: 'JSON',
-                            async: false,
-                            type: 'POST',
-                            data: {
-                                "userName": vm.model.userName.trim()
-                            },
-                            success: function (data, status) {
-                                if (data.code != 0) {
-                                    vm.errorMessage = "用户名已重复";
-                                    flag = false;
-                                }
-                            }
-                        });
-                        if (flag != null && !flag) {
-                            flag = null;
+                        // 用户名
+                        if (vm.model.userName.trim() == null || vm.model.userName.trim() == "") {
+                            vm.errorMessage = "请输入用户名";
                             return;
+                        } else {
+                            var flag = null;
+                            //判断是否重复
+                            $.ajax({
+                                url: APP_NAME + "/sys/" + vm.moduleName + "/queryUserInfoByUserName",
+                                dataType: 'JSON',
+                                async: false,
+                                type: 'POST',
+                                data: {
+                                    "userName": vm.model.userName.trim()
+                                },
+                                success: function (data, status) {
+                                    if (data.code != 0) {
+                                        vm.errorMessage = "用户名已重复";
+                                        flag = false;
+                                    }
+                                }
+                            });
+                            if (flag != null && !flag) {
+                                flag = null;
+                                return;
+                            }
                         }
                     }
                 }
@@ -282,7 +281,6 @@ var vm = new Vue({
             // 执行保存操作
             ,
             doSave: function () {
-
                 // 获取到的用户配置的角色列表添加到后台参数
                 vm.model.userRoles = vm.userRoles;
 
@@ -323,14 +321,16 @@ var vm = new Vue({
                     alert(PAGE_SELECT_ONE);
                     return;
                 }
+                // 加载角色列表
+                vm.loadRoles();
 
                 $.get(APP_NAME + "/sys/" + vm.moduleName + "/" + ids[0], function (r) {
                     vm.show = false;
                     vm.title = PAGE_UPDATE_TITLE;
                     vm.model = r.model;
+                    vm.userRoles = r.model.rolesList;
                 });
-                // 加载角色列表
-                vm.loadRoles();
+
 
             }
 
@@ -446,6 +446,32 @@ var vm = new Vue({
                 //     /*ztree = $.fn.zTree.init($("#menuTree"), setting,getMenuJson(APP_NAME + "/sys/menu/queryAllMenuUpdate",data) );*/
                 //     ztree = $.fn.zTree.init($("#menuTree"), setting,getMenuJson(APP_NAME + "/sys/menu/queryAllMenuUpdate",data) );
                 // }
+
+            }
+            ,
+            initPassword: function () {
+                // 获取所选择选择数据行的ID（可能选择多行）
+                var ids = bsTable.getMultiRowIds();
+                // 校验只能选择一行
+                if (ids.length != 1) {
+                    alert(PAGE_SELECT_ONE);
+                    return;
+                }
+                $.ajax({
+                    type: "POST",
+                    url: APP_NAME + "/sys/" + vm.moduleName + "/initPassword",
+                    contentType: "application/json",
+                    data: JSON.stringify(ids),
+                    success: function (r) {
+                        if (r.code == 0) {
+                            alert("初始化成功", function (index) {
+                                vm.reload();
+                            });
+                        } else if (r.code) {
+                            alert(r.msg);
+                        }
+                    }
+                });
 
             }
         }

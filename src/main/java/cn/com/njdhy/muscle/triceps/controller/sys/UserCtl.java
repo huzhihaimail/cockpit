@@ -117,7 +117,7 @@ public class UserCtl {
             // TODO: 2018/3/14
 
             // 执行修改
-            sysUserService.update(sysUser);
+            sysUserService.updateUser(sysUser);
         } catch (RuntimeException e) {
             return Result.error(UserErrorCode.SYS_USER_UPDATE_APP_ERROR_CODE, UserErrorCode.SYS_USER_UPDATE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
@@ -200,4 +200,26 @@ public class UserCtl {
         }
     }
 
+    /**
+     * 修改操作
+     *
+     * @param ids 请求数据对象
+     * @return 结果对象
+     */
+    @RequestMapping("/initPassword")
+    public Result initPassword(@RequestBody List<String> ids) {
+
+        try {
+            SysUser user = new SysUser();
+            user.setId(Integer.valueOf(ids.get(0)));
+            // 执行修改
+            sysUserService.initPassword(user);
+        } catch (RuntimeException e) {
+            return Result.error(UserErrorCode.SYS_USER_UPDATE_APP_ERROR_CODE, UserErrorCode.SYS_USER_UPDATE_APP_ERROR_MESSAGE);
+        } catch (Exception e) {
+            return Result.error(UserErrorCode.SYS_USER_UPDATE_ERROR_CODE, UserErrorCode.SYS_USER_UPDATE_ERROR_MESSAGE);
+        }
+
+        return Result.success();
+    }
 }
