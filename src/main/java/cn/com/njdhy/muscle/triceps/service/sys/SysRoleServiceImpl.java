@@ -5,6 +5,7 @@ import cn.com.njdhy.muscle.triceps.dao.SysRoleDao;
 import cn.com.njdhy.muscle.triceps.dao.SysRoleMenuDao;
 import cn.com.njdhy.muscle.triceps.model.database.SysRole;
 import cn.com.njdhy.muscle.triceps.model.database.SysRoleMenu;
+import cn.com.njdhy.muscle.triceps.model.exception.ApplicationException;
 import cn.com.njdhy.muscle.triceps.service.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,8 +65,8 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
                 list.add(roleMenu);
             }
             roleMenuDao.batchInsert(list);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ApplicationException e) {
+            throw new ApplicationException("新增角色失败");
         }
 
     }
@@ -101,8 +102,8 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
             }
             roleMenuDao.batchInsert(roleMenuList);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ApplicationException e) {
+            throw new ApplicationException("修改角色失败");
         }
     }
 }

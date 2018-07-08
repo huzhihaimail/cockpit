@@ -5,6 +5,7 @@ import cn.com.njdhy.muscle.triceps.dao.SysRoleMenuDao;
 import cn.com.njdhy.muscle.triceps.model.database.SysMenu;
 import cn.com.njdhy.muscle.triceps.model.database.SysRole;
 import cn.com.njdhy.muscle.triceps.model.database.SysRoleMenu;
+import cn.com.njdhy.muscle.triceps.model.exception.ApplicationException;
 import cn.com.njdhy.muscle.triceps.service.BaseServiceImpl;
 import cn.com.njdhy.muscle.triceps.dao.SysMenuDao;
 import cn.com.njdhy.muscle.triceps.util.EmptyUtils;
@@ -50,16 +51,20 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
 
     @Override
     public List<String> queryMenuByRole(String roleId) {
-        SysRoleMenu roleMenu = new SysRoleMenu();
-        roleMenu.setRoleId(roleId);
-        List<SysRoleMenu> roleMenuList = sysRoleMenuDao.queryMenuByRole(roleMenu);
+        try {
+            SysRoleMenu roleMenu = new SysRoleMenu();
+            roleMenu.setRoleId(roleId);
+            List<SysRoleMenu> roleMenuList = sysRoleMenuDao.queryMenuByRole(roleMenu);
 
-        List<String> menuList = new ArrayList<>();
-        if (!EmptyUtils.isEmpty(roleMenuList)){
-            for (SysRoleMenu detail:roleMenuList){
-                menuList.add(detail.getMenuId());
+            List<String> menuList = new ArrayList<>();
+            if (!EmptyUtils.isEmpty(roleMenuList)){
+                for (SysRoleMenu detail:roleMenuList){
+                    menuList.add(detail.getMenuId());
+                }
             }
+            return menuList;
+        } catch (ApplicationException e) {
+            throw new ApplicationException("根据角色查询菜单失败");
         }
-        return menuList;
     }
 }

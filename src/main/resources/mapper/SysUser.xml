@@ -101,7 +101,7 @@
             <if test="salt!=null and salt!=''">
                 salt=#{salt},
             </if>
-            <if test="status!=null and status!=''">
+            <if test="status!=null">
                 status=#{status},
             </if>
             <if test="email!=null and email!=''">
@@ -110,7 +110,7 @@
             <if test="deleteFlag!=null and deleteFlag!=''">
                 delete_flag=#{deleteFlag},
             </if>
-              update_date=GETDATE()
+            update_date=GETDATE()
         </set>
         WHERE id = #{id}
     </update>

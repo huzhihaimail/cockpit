@@ -1,10 +1,12 @@
 
 package cn.com.njdhy.muscle.triceps.service.sys;
 
+import cn.com.njdhy.muscle.triceps.Application;
 import cn.com.njdhy.muscle.triceps.dao.SysUserDao;
 import cn.com.njdhy.muscle.triceps.dao.SysUserRoleDao;
 import cn.com.njdhy.muscle.triceps.model.database.SysUser;
 import cn.com.njdhy.muscle.triceps.model.database.SysUserRole;
+import cn.com.njdhy.muscle.triceps.model.exception.ApplicationException;
 import cn.com.njdhy.muscle.triceps.service.BaseServiceImpl;
 import cn.com.njdhy.muscle.triceps.util.EmptyUtils;
 import org.apache.shiro.codec.CodecException;
@@ -42,33 +44,37 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     public void saveUser(SysUser sysUser) {
 
-        // 获取密码盐
-        String salt = new SecureRandomNumberGenerator().nextBytes(3).toHex();
-        sysUser.setSalt(salt);
+        try {
+            // 获取密码盐
+            String salt = new SecureRandomNumberGenerator().nextBytes(3).toHex();
+            sysUser.setSalt(salt);
 
-        // 获取密码
-        String pwd = new SimpleHash("md5", sysUser.getPassword(), sysUser.getUserName() + salt, 3).toHex();
-        sysUser.setPassword(pwd);
+            // 获取密码
+            String pwd = new SimpleHash("md5", sysUser.getPassword(), sysUser.getUserName() + salt, 3).toHex();
+            sysUser.setPassword(pwd);
 
-        // 用户信息入库
-        dao.insert(sysUser);
+            // 用户信息入库
+            dao.insert(sysUser);
 
-        List<SysUserRole> sysUserRolesLst = new ArrayList<>();
+            List<SysUserRole> sysUserRolesLst = new ArrayList<>();
 
-        // 获取角色信息
-        List<String> roles = sysUser.getUserRoles();
-        // 获取用户ID
-        String userId = String.valueOf(sysUser.getId());
+            // 获取角色信息
+            List<String> roles = sysUser.getUserRoles();
+            // 获取用户ID
+            String userId = String.valueOf(sysUser.getId());
 
-        for (String roleId : roles) {
-            SysUserRole sysUserRole = new SysUserRole();
-            sysUserRole.setUserId(userId);
-            sysUserRole.setRoleId(roleId);
-            sysUserRolesLst.add(sysUserRole);
+            for (String roleId : roles) {
+                SysUserRole sysUserRole = new SysUserRole();
+                sysUserRole.setUserId(userId);
+                sysUserRole.setRoleId(roleId);
+                sysUserRolesLst.add(sysUserRole);
+            }
+
+            // 用户配置角色信息入库
+            sysUserRoleService.batchInsert(sysUserRolesLst);
+        } catch (ApplicationException e) {
+            throw new ApplicationException("新增用户失败");
         }
-
-        // 用户配置角色信息入库
-        sysUserRoleService.batchInsert(sysUserRolesLst);
 
 
     }
@@ -82,16 +88,20 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
     @Override
     public SysUser queryUserInfo(SysUser sysUser) {
 
-        SysUser user = this.dao.queryById(String.valueOf(sysUser.getId()));
-        List<SysUserRole> userRoleList = sysUserRoleDao.queryRoleByUserId(String.valueOf(sysUser.getId()));
-        List<String> rolesList = new ArrayList<>();
-        if (!EmptyUtils.isEmpty(userRoleList)){
-            for (SysUserRole userRole:userRoleList){
-                rolesList.add(userRole.getRoleId());
+        try {
+            SysUser user = this.dao.queryById(String.valueOf(sysUser.getId()));
+            List<SysUserRole> userRoleList = sysUserRoleDao.queryRoleByUserId(String.valueOf(sysUser.getId()));
+            List<String> rolesList = new ArrayList<>();
+            if (!EmptyUtils.isEmpty(userRoleList)) {
+                for (SysUserRole userRole : userRoleList) {
+                    rolesList.add(userRole.getRoleId());
+                }
             }
+            user.setRolesList(rolesList);
+            return user;
+        } catch (ApplicationException e) {
+            throw new ApplicationException("根据用户id查询用户信息失败");
         }
-        user.setRolesList(rolesList);
-        return user;
     }
 
     /**
@@ -107,14 +117,12 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
             sysUser.setSalt(salt);
             sysUser.setPassword("111111");
             // 获取密码
-            String pwd = new SimpleHash("md5",sysUser.getPassword(), sysUser.getUserName() + salt, 3).toHex();
+            String pwd = new SimpleHash("md5", sysUser.getPassword(), sysUser.getUserName() + salt, 3).toHex();
             sysUser.setPassword(pwd);
 
             this.dao.update(sysUser);
-        } catch (CodecException e) {
-            e.printStackTrace();
-        } catch (UnknownAlgorithmException e) {
-            e.printStackTrace();
+        } catch (ApplicationException e) {
+            throw new ApplicationException("密码初始化失败");
         }
     }
 
@@ -137,25 +145,23 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
             List<SysUserRole> sysUserRolesLst = new ArrayList<>();
 
             // 获取角色信息
-            List<String> roles = sysUser.getRolesList();
+            List<String> roles = sysUser.getUserRoles();
             // 获取用户ID
             String userId = String.valueOf(sysUser.getId());
 
-            if (!EmptyUtils.isEmpty(roles)){
+            if (!EmptyUtils.isEmpty(roles)) {
                 for (String roleId : roles) {
                     SysUserRole sysUserRole = new SysUserRole();
                     sysUserRole.setUserId(userId);
                     sysUserRole.setRoleId(roleId);
                     sysUserRolesLst.add(sysUserRole);
                 }
+                // 用户配置角色信息入库
+                sysUserRoleService.batchInsert(sysUserRolesLst);
             }
-            // 用户配置角色信息入库
-            sysUserRoleService.batchInsert(sysUserRolesLst);
 
-        } catch (CodecException e) {
-            e.printStackTrace();
-        } catch (UnknownAlgorithmException e) {
-            e.printStackTrace();
+        } catch (ApplicationException e) {
+            throw new ApplicationException("修改用户失败");
         }
     }
 

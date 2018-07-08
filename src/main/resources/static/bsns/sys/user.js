@@ -253,7 +253,7 @@ var vm = new Vue({
                         return;
                     } else {
                         // 定义校验规则
-                        var regPhone = /^1[3|4|5|7|8]\d{9}$/;
+                        var regPhone = /^1[3|4|5|6|7|8|9]\d{9}$/;
                         flag = regPhone.test(vm.model.mobile);
                         // 规则校验：不符合规则则给出提示
                         if (!flag) {
@@ -304,7 +304,6 @@ var vm = new Vue({
                 });
                 vm.vueQueryParam.keyword = null;
             }
-
             // 显示修改页面
             ,
             update: function () {
@@ -330,14 +329,11 @@ var vm = new Vue({
                     vm.model = r.model;
                     vm.userRoles = r.model.rolesList;
                 });
-
-
             }
-
             // 执行修改操作
             ,
             doUpdate: function () {
-
+                vm.model.userRoles = vm.userRoles;
                 // 执行修改
                 $.ajax({
                     type: "POST",
