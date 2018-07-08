@@ -290,6 +290,7 @@ var vm = new Vue({
                     }
                 }
             });
+            vm.vueQueryParam.keyword = null;
         }
 
         // 点击“删除”按钮

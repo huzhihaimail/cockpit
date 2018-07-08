@@ -138,10 +138,7 @@
             OR t.mobile LIKE CONCAT('%',#{keyword},'%')
             OR t.email LIKE CONCAT('%',#{keyword},'%')
         </if>
-        <if test="sortName!=null and sorName!='' and sortOrder !=null and sortOrder!=''">
-            ORDER BY #{sortName} #{sortOrder}
-        </if>
-
+        order by t.id desc
     </select>
 
 

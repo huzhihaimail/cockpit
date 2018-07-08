@@ -25,58 +25,42 @@ var showColumns = [
     , {
         field: "cityName",
         title: "城市名称",
-        width: "20%",
-        sortable: false,
-        sortName: "city_name"
+        width: "20%"
     }
     , {
         field: "jscProjName",
         title: "驾驶舱项目名称",
-        width: "15%",
-        sortable: false,
-        sortName: "jsc_proj_name"
+        width: "15%"
     }
     , {
         field: "yyProjName",
         title: "运营管理平台",
-        width: "15%",
-        sortable: false,
-        sortName: "yy_proj_name"
+        width: "15%"
     }
     , {
         field: "yxProjName",
         title: "营销管理系统",
-        width: "15%",
-        sortable: false,
-        sortName: "yx_proj_name"
+        width: "15%"
     }
     , {
         field: "jyProjName",
         title: "经营管理平台-项目",
-        width: "15%",
-        sortable: false,
-        sortName: "jy_proj_name"
+        width: "15%"
     }
     , {
         field: "cbProjName",
         title: "成本管理系统",
-        width: "15%",
-        sortable: false,
-        sortName: "cb_proj_name"
+        width: "15%"
     }
     , {
         field: "cwProjName",
         title: "财务收入预算",
-        width: "15%",
-        sortable: false,
-        sortName: "cw_proj_name"
+        width: "15%"
     }
     , {
         field: "stId",
         title: "状态",
         width: "15%",
-        sortable: false,
-        sortName: "st_id",
         formatter: function (value, row, index) {
             switch (value) {
                 case 1:
@@ -283,6 +267,7 @@ var vm = new Vue({
                     }
                 }
             });
+            vm.vueQueryParam.keyword = null;
         }
 
         // 点击“删除”按钮

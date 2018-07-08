@@ -61,9 +61,7 @@
             AND t.name LIKE CONCAT('%',#{keyword},'%')
             OR t.url LIKE CONCAT('%',#{keyword},'%')
         </if>
-        <if test="sortName!=null and sorName!='' and sortOrder !=null and sortOrder!=''">
-            ORDER BY #{sortName} #{sortOrder}
-        </if>
+        order by t.id desc
     </select>
 
     <!-- 根据ID查询-->
