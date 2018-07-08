@@ -1,7 +1,7 @@
 package cn.com.njdhy.muscle.triceps.controller.api;
 
 import cn.com.njdhy.muscle.triceps.model.database.DimOrg;
-import cn.com.njdhy.muscle.triceps.service.cockpit.dim.DimOrgService;
+import cn.com.njdhy.muscle.triceps.service.sys.DimOrgService;
 import cn.com.njdhy.muscle.triceps.util.common.HttpResult;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class DimOrgController {
         ConcurrentHashMap concurrentHashMap = new ConcurrentHashMap();
         concurrentHashMap.put("orgLevel","C");
         concurrentHashMap.put("stId",1);
-        List<DimOrg> list = dimOrgService.queryList(concurrentHashMap);
+        List<DimOrg> list = dimOrgService.queryListForProjMapping(concurrentHashMap);
         return new HttpResult(list);
     }
 

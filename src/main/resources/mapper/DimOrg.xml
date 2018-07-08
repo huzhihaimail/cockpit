@@ -15,13 +15,6 @@
         <result property="seqNum" column="seq_num"></result>
         <result property="orgLevel" column="org_level"></result>
         <result property="stId" column="st_id"></result>
-        <result property="F1" column="F1"></result>
-        <result property="F2" column="F2"></result>
-        <result property="F3" column="F3"></result>
-        <result property="F4" column="F4"></result>
-        <result property="F5" column="F5"></result>
-        <result property="yearMonth" column="year_month"></result>
-        <result property="etlTime" column="etl_time"></result>
     </resultMap>
 
     <!-- 配置表名 -->
@@ -37,6 +30,35 @@
     <!-- 查询树控件展示在新增用户页面 -->
     <select id="queryOrgTreeForUser" resultMap="DimOrgMap">
         select o.ORG_CODE,o.ORG_NAME,o.SHORT_ORG_NAME,o.P_ORG_CODE from sys_org o where o.ST_ID=1
+    </select>
+
+    <!-- 根据条件查询 -->
+    <select id="queryListForProjMapping" resultMap="DimOrgMap" parameterType="map">
+        SELECT
+        t.ORG_CODE,
+        t.ORG_NAME,
+        t.SHORT_ORG_NAME,
+        t.P_ORG_CODE,
+        t.SEQ_NUM,
+        t.ORG_LEVEL,
+        t.ST_ID
+        FROM
+        sys_org t
+        WHERE 1=1
+        <if test="orgCode!=null and orgCode!=''">
+            AND t.ORG_CODE = #{orgCode}
+        </if>
+        <if test="orgName!=null and orgName!=''">
+            AND t.ORG_NAME = #{orgName}
+        </if>
+        <if test="orgLevel!=null and orgLevel!=''">
+            AND t.ORG_LEVEL = #{orgLevel}
+        </if>
+        <if test="stId!=null and stId!=''">
+            AND t.ST_ID = #{stId}
+        </if>
+
+
     </select>
 </mapper>
 

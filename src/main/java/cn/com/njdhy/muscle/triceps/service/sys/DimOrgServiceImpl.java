@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <类功能简述> 组织机构
@@ -33,5 +34,15 @@ public class DimOrgServiceImpl extends BaseServiceImpl<DimOrgDao, DimOrg> implem
     @Override
     public List<DimOrg> queryOrgTreeForUser() {
         return dimOrgDao.queryOrgTreeForUser();
+    }
+
+    /**
+     * 组织结构管理页面城市公司下拉框
+     * @param map
+     * @return
+     */
+    @Override
+    public List<DimOrg> queryListForProjMapping(Map<String, Object> map) {
+        return dimOrgDao.queryListForProjMapping(map);
     }
 }

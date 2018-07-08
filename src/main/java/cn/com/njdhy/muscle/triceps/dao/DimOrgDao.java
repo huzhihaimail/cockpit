@@ -3,6 +3,7 @@ package cn.com.njdhy.muscle.triceps.dao;
 import cn.com.njdhy.muscle.triceps.model.database.DimOrg;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <类功能简述>
@@ -16,5 +17,11 @@ public interface DimOrgDao extends BaseDao<DimOrg> {
      * @return
      */
     List<DimOrg> queryOrgTreeForUser();
+
+    /**
+     *
+     * @return
+     */
+    List<DimOrg> queryListForProjMapping(Map<String, Object> map);
 
 }
