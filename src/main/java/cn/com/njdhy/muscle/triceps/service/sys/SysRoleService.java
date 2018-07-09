@@ -2,6 +2,7 @@
 package cn.com.njdhy.muscle.triceps.service.sys;
 
 import cn.com.njdhy.muscle.triceps.model.database.SysRole;
+import cn.com.njdhy.muscle.triceps.model.database.SysUserRole;
 import cn.com.njdhy.muscle.triceps.service.BaseService;
 
 import java.util.List;
@@ -43,5 +44,12 @@ public interface SysRoleService extends BaseService<SysRole> {
      * @param role
      */
     void updateRoleInfo(SysRole role);
+
+    /**
+     * 根据角色id查询信息
+     * @param roleId
+     * @return
+     */
+    List<SysUserRole> queryByRoleId(String roleId);
 
 }

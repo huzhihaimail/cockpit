@@ -116,6 +116,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
             String salt = new SecureRandomNumberGenerator().nextBytes(3).toHex();
             sysUser.setSalt(salt);
             sysUser.setPassword("111111");
+            sysUser.setStatus(1);
             // 获取密码
             String pwd = new SimpleHash("md5", sysUser.getPassword(), sysUser.getUserName() + salt, 3).toHex();
             sysUser.setPassword(pwd);

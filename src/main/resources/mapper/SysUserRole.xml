@@ -46,6 +46,16 @@
         AND user_id=#{id}
     </select>
 
+    <!-- 根据RoleID查询-->
+    <select id="queryByRoleId" resultMap="SysUserRoleMap" parameterType="String">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE 1 = 1
+        AND role_id=#{roleId}
+    </select>
+
     <!-- 批量删除-->
     <delete id="deleteByIds" parameterType="List">
         DELETE FROM

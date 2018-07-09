@@ -3,6 +3,7 @@ package cn.com.njdhy.muscle.triceps.controller.sys;
 
 import cn.com.njdhy.muscle.triceps.model.common.Query;
 import cn.com.njdhy.muscle.triceps.model.database.SysUser;
+import cn.com.njdhy.muscle.triceps.model.database.SysUserRole;
 import cn.com.njdhy.muscle.triceps.util.EmptyUtils;
 import com.github.pagehelper.PageInfo;
 import cn.com.njdhy.muscle.triceps.model.common.Result;
@@ -138,6 +139,10 @@ public class RoleCtl {
 
         try {
             // 校验参数 todo
+            List<SysUserRole> list = sysRoleService.queryByRoleId(ids.get(0));
+            if (!EmptyUtils.isEmpty(list)){
+                throw new ApplicationException("角色已被占用，不能删除");
+            }
             sysRoleService.deleteByIds(ids);
         } catch (ApplicationException e) {
             return Result.error(RoleErrorCode.SYS_ROLE_DELETE_APP_ERROR_CODE, RoleErrorCode.SYS_ROLE_DELETE_APP_ERROR_MESSAGE);

@@ -233,7 +233,7 @@ var vm = new Vue({
                         return;
                     } else {
                         // 定义校验规则
-                        var regEmail = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+                        var regEmail = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
                         flag = regEmail.test(vm.model.email);
                         // 规则校验：不符合规则则给出提示
                         if (!flag) {

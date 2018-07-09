@@ -17,4 +17,11 @@ public interface SysUserRoleDao extends BaseDao<SysUserRole> {
      * @return
      */
     List<SysUserRole> queryRoleByUserId(String id);
+
+    /**
+     * 根据角色id查询角色用户关联信息
+     * @param roleId
+     * @return
+     */
+    List<SysUserRole> queryByRoleId(String roleId);
 }

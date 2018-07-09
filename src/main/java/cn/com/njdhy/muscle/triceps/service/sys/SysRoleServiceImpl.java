@@ -3,8 +3,10 @@ package cn.com.njdhy.muscle.triceps.service.sys;
 
 import cn.com.njdhy.muscle.triceps.dao.SysRoleDao;
 import cn.com.njdhy.muscle.triceps.dao.SysRoleMenuDao;
+import cn.com.njdhy.muscle.triceps.dao.SysUserRoleDao;
 import cn.com.njdhy.muscle.triceps.model.database.SysRole;
 import cn.com.njdhy.muscle.triceps.model.database.SysRoleMenu;
+import cn.com.njdhy.muscle.triceps.model.database.SysUserRole;
 import cn.com.njdhy.muscle.triceps.model.exception.ApplicationException;
 import cn.com.njdhy.muscle.triceps.service.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
 
     @Autowired
     protected SysRoleMenuDao roleMenuDao;
+
+    @Autowired
+    protected SysUserRoleDao sysUserRoleDao;
 
     @Override
     public List<SysRole> loadRoles(Map<String, Object> userName) {
@@ -105,5 +110,15 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRole> imp
         } catch (ApplicationException e) {
             throw new ApplicationException("修改角色失败");
         }
+    }
+
+    /**
+     * 根据角色id查询信息
+     * @param roleId
+     * @return
+     */
+    @Override
+    public List<SysUserRole> queryByRoleId(String roleId) {
+        return this.sysUserRoleDao.queryByRoleId(roleId);
     }
 }
