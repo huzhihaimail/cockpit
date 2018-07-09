@@ -74,11 +74,18 @@ var showColumns = [
     }
     // , {
     //     field: "createUser",
-    //     title: "创建人",
+    //     title: "创建人ID",
     //     width: "15%",
     //     sortable: false,
     //     sortName: "create_user"
     // }
+    , {
+        field: "createUserName",
+        title: "创建人",
+        width: "15%",
+        sortable: false,
+        sortName: "create_user_name"
+    }
     , {
         field: "createDate",
         title: "创建时间",

@@ -26,6 +26,11 @@
         <result property="modifyDate" column="modify_date"></result>
     </resultMap>
 
+
+    <resultMap id="SysProjMappingMapExt" type="SysProjMapping" extends="SysProjMappingMap">
+        <result property="createUserName" column="create_user_name"/>
+    </resultMap>
+
     <!-- 配置表名 -->
     <sql id="tableName">
         sys_proj_mapping
@@ -97,7 +102,7 @@
     </update>
 
     <!-- 根据条件查询 -->
-    <select id="queryList" resultMap="SysProjMappingMap" parameterType="map">
+    <select id="queryList" resultMap="SysProjMappingMapExt" parameterType="map">
         SELECT
         t.id,
         t.city_code,
@@ -114,10 +119,11 @@
         t.create_user,
         t.create_date,
         t.modify_user,
-        t.modify_date
+        t.modify_date,
+        u.user_name as create_user_name
         FROM
-        sys_proj_mapping t
-        WHERE 1=1
+        sys_proj_mapping t LEFT JOIN sys_user u
+        ON 1=1 AND t.create_user = u.id
         <if test="keyword!=null and keyword!=''">
             AND t.jsc_proj_name LIKE CONCAT('%',#{keyword},'%')
             OR t.yy_proj_name LIKE CONCAT('%',#{keyword},'%')
@@ -130,7 +136,7 @@
         <!--<if test="sortName!=null and sorName!='' and sortOrder !=null and sortOrder!=''">-->
             <!--ORDER BY #{sortName} #{sortOrder}-->
         <!--</if>-->
-
+        ORDER by t.id desc
     </select>
 
 
