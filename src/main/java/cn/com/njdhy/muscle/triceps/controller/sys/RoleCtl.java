@@ -141,7 +141,7 @@ public class RoleCtl {
             // 校验参数 todo
             List<SysUserRole> list = sysRoleService.queryByRoleId(ids.get(0));
             if (!EmptyUtils.isEmpty(list)){
-                throw new ApplicationException("角色已被占用，不能删除");
+                return Result.error("500","角色已被占用，不能删除");
             }
             sysRoleService.deleteByIds(ids);
         } catch (ApplicationException e) {
