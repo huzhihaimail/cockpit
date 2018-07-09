@@ -154,7 +154,7 @@ public class RoleCtl {
     }
 
     /**
-     * 校验用户名是否重复
+     * 校验角色名是否重复
      * @param roleName
      * @return
      */
