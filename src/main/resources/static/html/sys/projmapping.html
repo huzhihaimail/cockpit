@@ -5,6 +5,7 @@
     <link href="../../plugin/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../plugin/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="../../plugin/bootstrap-table/1.12.1/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../../plugin/jquery-easyui-1.5.5.4/themes/default/easyui.css" rel="stylesheet">
 </head>
 <body style="padding-top: 15px;">
 <div id="app" class="container-fluid" v-cloak>
@@ -91,11 +92,12 @@
 
                 <div class="form-group">
                     <div class="col-sm-3 control-label">城市名称</div>
-                    <select v-model="model.cityName">
-                        <option v-for="option in options">
-                            {{ option.orgName }}
-                        </option>
-                    </select>
+                    <!--<select class="easyui-combobox" labelPosition="top" v-model="model.cityName">-->
+                        <!--&lt;!&ndash;<option v-for="option in options">&ndash;&gt;-->
+                            <!--&lt;!&ndash;{{ option.orgName }}&ndash;&gt;-->
+                        <!--&lt;!&ndash;</option>&ndash;&gt;-->
+                    <!--</select>-->
+                    <input id="cityNameSelect" class="easyui-combobox" name="cityName" v-model="model.cityName">
                 </div>
 
 
@@ -184,5 +186,6 @@
 <script src="../../bsns/common/common-layer.js"></script>
 <script src="../../bsns/common/common-bootstrap-table.js"></script>
 <script src="../../plugin/moment/moment.min.js"></script>
+<script src="../../plugin/jquery-easyui-1.5.5.4/jquery.easyui.min.js"></script>
 <script src="../../bsns/sys/projmapping.js"></script>
 </html>

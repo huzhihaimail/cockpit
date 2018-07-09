@@ -67,12 +67,12 @@ public class SysOrgCtl {
             notes = "组织结构管理页面新增获取城市公司名称下拉框数据",
             response = HttpResult.class
     )
-    public HttpResult getCityName() {
+    public List<SysOrg> getCityName() {
         ConcurrentHashMap concurrentHashMap = new ConcurrentHashMap();
         concurrentHashMap.put("orgLevel","C");
         concurrentHashMap.put("stId",1);
         List<SysOrg> list = sysOrgService.queryListForProjMapping(concurrentHashMap);
-        return new HttpResult(list);
+        return list;
     }
 
 }
