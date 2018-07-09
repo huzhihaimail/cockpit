@@ -123,7 +123,8 @@
         u.user_name as create_user_name
         FROM
         sys_proj_mapping t LEFT JOIN sys_user u
-        ON 1=1 AND t.create_user = u.id
+        ON t.create_user = u.id
+        where 1=1
         <if test="keyword!=null and keyword!=''">
             AND t.jsc_proj_name LIKE CONCAT('%',#{keyword},'%')
             OR t.yy_proj_name LIKE CONCAT('%',#{keyword},'%')

@@ -94,6 +94,7 @@ public class SysProjMappingCtl {
      */
     @RequestMapping("/update")
     public Result update(@RequestBody SysProjMapping sysProjMapping) {
+        sysProjMapping.setCreateUser(ShiroUtil.getUserId());
         sysProjMappingService.update(sysProjMapping);
         return Result.success();
     }
