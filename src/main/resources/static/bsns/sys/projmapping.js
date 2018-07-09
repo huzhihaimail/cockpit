@@ -137,7 +137,7 @@ var vm = new Vue({
     ,created:function(){
         //加载下拉框城市名称
         var _self=this;
-        $.get(APP_NAME + "/api/dimorg/cityName", function (r) {
+        $.get(APP_NAME + "/sys/org/cityName", function (r) {
             _self.options = r.result;
         });
 

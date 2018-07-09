@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- 配置dao接口路径-->
-<mapper namespace="cn.com.njdhy.muscle.triceps.dao.DimOrgDao">
+<mapper namespace="cn.com.njdhy.muscle.triceps.dao.SysOrgDao">
 
     <!-- type配置model层实体类名-->
-    <resultMap id="DimOrgMap" type="DimOrg">
+    <resultMap id="SysOrgMap" type="SysOrg">
 
         <!-- 配置实体和数据库列的对应关系，property：实体属性名；column：数据库表列名；-->
         <result property="orgCode" column="org_code"></result>
@@ -24,16 +24,16 @@
 
     <!-- for insert columns -->
     <sql id="columns">
-        orgCode, orgName, shortOrgName, pOrgCode, seqNum, orgLevel, stId, F1, F2, F3, F4,F5,yearMonth,etlTime
+        orgCode, orgName, shortOrgName, pOrgCode, seqNum, orgLevel, stId
     </sql>
 
     <!-- 查询树控件展示在新增用户页面 -->
-    <select id="queryOrgTreeForUser" resultMap="DimOrgMap">
+    <select id="queryOrgTreeForUser" resultMap="SysOrgMap">
         select o.ORG_CODE,o.ORG_NAME,o.SHORT_ORG_NAME,o.P_ORG_CODE from sys_org o where o.ST_ID=1
     </select>
 
     <!-- 根据条件查询 -->
-    <select id="queryListForProjMapping" resultMap="DimOrgMap" parameterType="map">
+    <select id="queryListForProjMapping" resultMap="SysOrgMap" parameterType="map">
         SELECT
         t.ORG_CODE,
         t.ORG_NAME,
