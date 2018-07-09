@@ -3,6 +3,8 @@ package cn.com.njdhy.muscle.triceps.dao;
 
 import cn.com.njdhy.muscle.triceps.model.database.SysUserRole;
 
+import java.util.List;
+
 /**
  * <类功能简述> 用户角色管理数据访问层接口
  *
@@ -10,5 +12,16 @@ import cn.com.njdhy.muscle.triceps.model.database.SysUserRole;
  */
 public interface SysUserRoleDao extends BaseDao<SysUserRole> {
 
+    /**
+     * 根据用户id查询角色
+     * @return
+     */
+    List<SysUserRole> queryRoleByUserId(String id);
 
+    /**
+     * 根据角色id查询角色用户关联信息
+     * @param roleId
+     * @return
+     */
+    List<SysUserRole> queryByRoleId(String roleId);
 }

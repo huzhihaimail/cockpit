@@ -60,6 +60,8 @@ public class SysUser extends BaseModel {
      */
     private List<String> userRoles;
 
+    private List<String> rolesList;
+
     public String getRoleId() {
         return roleId;
     }
@@ -78,6 +80,14 @@ public class SysUser extends BaseModel {
      * 记住我
      */
     private String isRememberMe;
+
+    public List<String> getRolesList() {
+        return rolesList;
+    }
+
+    public void setRolesList(List<String> rolesList) {
+        this.rolesList = rolesList;
+    }
 
     public String getUserName() {
         return userName;

@@ -6,6 +6,7 @@ import cn.com.njdhy.muscle.triceps.model.common.Result;
 import cn.com.njdhy.muscle.triceps.model.database.SysUser;
 import cn.com.njdhy.muscle.triceps.model.exception.ApplicationException;
 import cn.com.njdhy.muscle.triceps.service.sys.SysUserService;
+import cn.com.njdhy.muscle.triceps.util.EmptyUtils;
 import cn.com.njdhy.muscle.triceps.util.ShiroUtil;
 import com.github.pagehelper.PageInfo;
 import cn.com.njdhy.muscle.triceps.model.database.SysRole;
@@ -116,7 +117,7 @@ public class UserCtl {
             // TODO: 2018/3/14
 
             // 执行修改
-            sysUserService.update(sysUser);
+            sysUserService.updateUser(sysUser);
         } catch (RuntimeException e) {
             return Result.error(UserErrorCode.SYS_USER_UPDATE_APP_ERROR_CODE, UserErrorCode.SYS_USER_UPDATE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
@@ -145,6 +146,28 @@ public class UserCtl {
         }
 
         return Result.success();
+    }
+
+    /**
+     * 校验用户名是否重复
+     * @param userName
+     * @return
+     */
+    @RequestMapping("/queryUserInfoByUserName")
+    public Result queryUserInfoByUserName(String userName) {
+
+        try {
+            SysUser user = sysUserService.queryByName(userName);
+            if (EmptyUtils.isEmpty(user)){
+                return Result.success();
+            }else{
+                return Result.error("用户名已重复");
+            }
+        } catch (ApplicationException e) {
+            return Result.error(e.getCode(), e.getMsg());
+        } catch (Exception e) {
+            return Result.error(e.getMessage());
+        }
     }
 
     /**
@@ -177,4 +200,26 @@ public class UserCtl {
         }
     }
 
+    /**
+     * 修改操作
+     *
+     * @param ids 请求数据对象
+     * @return 结果对象
+     */
+    @RequestMapping("/initPassword")
+    public Result initPassword(@RequestBody List<String> ids) {
+
+        try {
+            SysUser user = new SysUser();
+            user.setId(Integer.valueOf(ids.get(0)));
+            // 执行修改
+            sysUserService.initPassword(user);
+        } catch (RuntimeException e) {
+            return Result.error(UserErrorCode.SYS_USER_UPDATE_APP_ERROR_CODE, UserErrorCode.SYS_USER_UPDATE_APP_ERROR_MESSAGE);
+        } catch (Exception e) {
+            return Result.error(UserErrorCode.SYS_USER_UPDATE_ERROR_CODE, UserErrorCode.SYS_USER_UPDATE_ERROR_MESSAGE);
+        }
+
+        return Result.success();
+    }
 }

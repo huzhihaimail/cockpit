@@ -28,4 +28,16 @@ public interface SysUserService extends BaseService<SysUser> {
      */
     SysUser queryUserInfo(SysUser sysUser);
 
+    /**
+     * 初始化密码
+     * @param sysUser
+     */
+    void initPassword(SysUser sysUser);
+
+    /**
+     * 修改用户
+     * @param sysUser
+     */
+    void updateUser(SysUser sysUser);
+
 }

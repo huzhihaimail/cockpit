@@ -25,58 +25,42 @@ var showColumns = [
     , {
         field: "cityName",
         title: "城市名称",
-        width: "20%",
-        sortable: false,
-        sortName: "city_name"
+        width: "20%"
     }
     , {
         field: "jscProjName",
         title: "驾驶舱项目名称",
-        width: "15%",
-        sortable: false,
-        sortName: "jsc_proj_name"
+        width: "15%"
     }
     , {
         field: "yyProjName",
         title: "运营管理平台",
-        width: "15%",
-        sortable: false,
-        sortName: "yy_proj_name"
+        width: "15%"
     }
     , {
         field: "yxProjName",
         title: "营销管理系统",
-        width: "15%",
-        sortable: false,
-        sortName: "yx_proj_name"
+        width: "15%"
     }
     , {
         field: "jyProjName",
         title: "经营管理平台-项目",
-        width: "15%",
-        sortable: false,
-        sortName: "jy_proj_name"
+        width: "15%"
     }
     , {
         field: "cbProjName",
         title: "成本管理系统",
-        width: "15%",
-        sortable: false,
-        sortName: "cb_proj_name"
+        width: "15%"
     }
     , {
         field: "cwProjName",
         title: "财务收入预算",
-        width: "15%",
-        sortable: false,
-        sortName: "cw_proj_name"
+        width: "15%"
     }
     , {
         field: "stId",
         title: "状态",
         width: "15%",
-        sortable: false,
-        sortName: "st_id",
         formatter: function (value, row, index) {
             switch (value) {
                 case 1:
@@ -147,6 +131,16 @@ var vm = new Vue({
 
         // 定义模块名称
         , moduleName: "projmapping"
+        , options: []
+
+    }
+    ,created:function(){
+        //加载下拉框城市名称
+        var _self=this;
+        $.get(APP_NAME + "/api/dimorg/cityName", function (r) {
+            _self.options = r.result;
+        });
+
     }
     // 定义方法
     , methods: {
@@ -158,12 +152,15 @@ var vm = new Vue({
 
         // 点击“新增”按钮
         , save: function (event) {
+
             // 1. 隐藏表格，显示添加页面
+            //vm.showPwd = true;
             vm.show = false;
             vm.errorMessage = null;
 
             // 显示状态
-            if (vm.showStatus == true) {
+            if(vm.showStatus == true)
+            {
                 vm.showStatus = false;
             }
 
@@ -173,22 +170,18 @@ var vm = new Vue({
             vm.model = {};
 
             // 4. 加载角色列表
-            vm.loadRoles();
+            //vm.loadRoles();
+
         }
 
         // 点击“确定”按钮
         , commit: function (el) {
-
             // 校验表单
             if (vm.model.jscProjName == null || vm.model.jscProjName == "") {
                 vm.errorMessage = "请输入驾驶舱项目名称";
                 return;
             }
 
-            if (vm.model.stId == null || vm.model.stId == "") {
-                vm.errorMessage = "请输入状态";
-                return;
-            }
 
             // 执行新增操作
             if (vm.model.id == null) {
@@ -204,7 +197,7 @@ var vm = new Vue({
         , doSave: function () {
 
             // 获取到的用户配置的角色列表添加到后台参数
-            vm.model.userRoles = vm.userRoles;
+            //vm.model.userRoles = vm.userRoles;
 
             // 2. 入库
             $.ajax({
@@ -224,16 +217,15 @@ var vm = new Vue({
                     }
                 }
             });
-
-            // 清除查询条件
-            vm.queryOption.keyword = "";
+            vm.vueQueryParam.keyword = null;
         }
 
         // 显示修改页面
         , update: function () {
 
             // 显示状态
-            if (vm.showStatus == false) {
+            if(vm.showStatus == false)
+            {
                 vm.showStatus = true;
             }
             vm.errorMessage = null;
@@ -275,6 +267,7 @@ var vm = new Vue({
                     }
                 }
             });
+            vm.vueQueryParam.keyword = null;
         }
 
         // 点击“删除”按钮

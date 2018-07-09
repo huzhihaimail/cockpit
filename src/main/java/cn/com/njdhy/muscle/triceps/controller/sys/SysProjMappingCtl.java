@@ -74,6 +74,7 @@ public class SysProjMappingCtl {
      */
     @RequestMapping("/insert")
     public Result insert(@RequestBody SysProjMapping sysProjMapping) {
+            sysProjMapping.setStId(1);//新增默认有效
             sysProjMappingService.insert(sysProjMapping);
             return Result.success();
     }

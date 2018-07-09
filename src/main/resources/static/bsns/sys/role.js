@@ -17,9 +17,7 @@ var showColumns = [
     , {
         field: "name",
         title: "角色名称",
-        width: "20%",
-        sortable: true,
-        sortName: "name" // sortName的值，需配置和数据库保持一致
+        width: "20%"
     }
     , {
         field: "nameCn",
@@ -46,14 +44,14 @@ var showColumns = [
             return new moment(value).format('YYYY-MM-DD HH:mm:ss');
         }
     }
-    , {
-        field: "updateDate",
-        title: "最近修改时间",
-        width: "20%",
-        formatter: function (value, row, index) {
-            return new moment(value).format('YYYY-MM-DD HH:mm:ss');
-        }
-    }
+    // , {
+    //     field: "updateDate",
+    //     title: "最近修改时间",
+    //     width: "20%",
+    //     formatter: function (value, row, index) {
+    //         return new moment(value).format('YYYY-MM-DD HH:mm:ss');
+    //     }
+    // }
     /*, {
         field: "operate",
         title: "操作",
@@ -72,22 +70,22 @@ var bsTable = new BootStrapTable();
 // 如果有特殊表格需要处理，此处可以覆写覆写自己的表格属性 BootStrapTable.prototype.initBootstrapTable = function (columns, url, queryOpt) {}
 
 var setting = {
-    view : {
-        selectedMulti : false
+    view: {
+        selectedMulti: false
     },
-    check : {
-        enable : true
+    check: {
+        enable: true
     },
-    data : {
-        simpleData : {
-            enable : true,
-            idKey : "menuId",
-            pIdKey : "parentId",
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "menuId",
+            pIdKey: "parentId",
             rootPId: -1
         }
     },
-    edit : {
-        enable : false
+    edit: {
+        enable: false
     }
 };
 
@@ -135,7 +133,7 @@ var vm = new Vue({
             vm.title = PAGE_INSERT_TITLE;
             // 3. 清空表单数据
             vm.model = {
-                menuIdList:new Array()
+                menuIdList: new Array()
             };
 
             //5.加载树控件
@@ -146,22 +144,53 @@ var vm = new Vue({
         // 点击“确定”按钮
         , commit: function (el) {
 
-            // 校验表单
-            if (vm.model.name.trim() == null || vm.model.name.trim() == "") {
-                vm.errorMessage = "请输入角色名";
-                return;
-            }else{
-                //TODO去重
+            if (vm.model.id == null) {
+                // 校验表单
+                if (vm.model.name == null || vm.model.name == "") {
+                    vm.errorMessage = "请输入角色名";
+                    return;
+                } else {
+                    if (vm.model.name.trim() == null || vm.model.name.trim() == "") {
+                        vm.errorMessage = "请输入角色名";
+                        return;
+                    } else {
+                        var flag = null;
+                        //判断是否重复
+                        $.ajax({
+                            url: APP_NAME + "/sys/" + vm.moduleName + "/queryRoleInfoByRoleName",
+                            dataType: 'JSON',
+                            async: false,
+                            type: 'POST',
+                            data: {
+                                "roleName": vm.model.name.trim()
+                            },
+                            success: function (data, status) {
+                                if (data.code != 0) {
+                                    vm.errorMessage = "角色名已重复";
+                                    flag = false;
+                                }
+                            }
+                        });
+                        if (flag != null && !flag) {
+                            flag = null;
+                            return;
+                        }
+                    }
+                }
             }
             // 角色中文名
-            if (vm.model.nameCn.trim() == null || vm.model.nameCn.trim() == "") {
+            if (vm.model.nameCn == null || vm.model.nameCn == "") {
                 vm.errorMessage = "请输入角色中文名";
                 return;
+            } else {
+                if (vm.model.nameCn.trim() == null || vm.model.nameCn.trim() == "") {
+                    vm.errorMessage = "请输入角色中文名";
+                    return;
+                }
             }
-
             //获取选择的菜单
             var nodes = ztree.getCheckedNodes(true);
-            if (nodes==null || nodes==""){
+            if (nodes == null || nodes == "") {
                 vm.errorMessage = "请选择菜单";
                 return;
             }
@@ -182,10 +211,10 @@ var vm = new Vue({
             //获取选择的菜单
             var nodes = ztree.getCheckedNodes(true);
             var menuIdList = new Array();
-            for(var i=0; i<nodes.length; i++) {
+            for (var i = 0; i < nodes.length; i++) {
                 menuIdList.push(nodes[i].menuId);
             }
-            vm.model.menuIdList=menuIdList;
+            vm.model.menuIdList = menuIdList;
 
             // 2. 入库
             $.ajax({
@@ -205,9 +234,7 @@ var vm = new Vue({
                     }
                 }
             });
-
-            // 清除查询条件
-            vm.queryOption.keyword="";
+            vm.vueQueryParam.keyword = null;
         }
 
         // 显示修改页面
@@ -242,10 +269,10 @@ var vm = new Vue({
             //获取选择的菜单
             var nodes = ztree.getCheckedNodes(true);
             var menuIdList = new Array();
-            for(var i=0; i<nodes.length; i++) {
+            for (var i = 0; i < nodes.length; i++) {
                 menuIdList.push(nodes[i].menuId);
             }
-            vm.model.menuIdList=menuIdList;
+            vm.model.menuIdList = menuIdList;
 
             // 执行修改
             $.ajax({
@@ -265,6 +292,7 @@ var vm = new Vue({
                     }
                 }
             });
+            vm.vueQueryParam.keyword = null;
         }
 
         // 点击“删除”按钮
@@ -323,33 +351,34 @@ var vm = new Vue({
                 vm.roles = r.page;
             });
         }
-        , loadTreeMenu: function(type){
-            function getMenuJson(url,data) {
+        , loadTreeMenu: function (type) {
+            function getMenuJson(url, data) {
                 var zNodes;
-                var role={id:data};
+                var role = {id: data};
                 $.ajax({
-                    url : url,
-                    dataType : 'JSON',
-                    type : 'POST',
-                    data : role,
-                    async:false,
-                    success : function(data, status) {
+                    url: url,
+                    dataType: 'JSON',
+                    type: 'POST',
+                    data: role,
+                    async: false,
+                    success: function (data, status) {
                         var nodes = JSON.stringify(data.model);
                         zNodes = eval(nodes);
                     }
                 });
                 return zNodes;
             }
-            if (type=='add'){
-                var data=null;
-                ztree = $.fn.zTree.init($("#menuTree"), setting,getMenuJson(APP_NAME + "/sys/menu/queryAllMenuInsert",data) );
+
+            if (type == 'add') {
+                var data = null;
+                ztree = $.fn.zTree.init($("#menuTree"), setting, getMenuJson(APP_NAME + "/sys/menu/queryAllMenuInsert", data));
                 //展开所有节点
                 ztree.expandAll(true);
-            } else if (type=='update'){
+            } else if (type == 'update') {
                 var ids = bsTable.getMultiRowIds();
                 var data = ids[0];
                 /*ztree = $.fn.zTree.init($("#menuTree"), setting,getMenuJson(APP_NAME + "/sys/menu/queryAllMenuUpdate",data) );*/
-                ztree = $.fn.zTree.init($("#menuTree"), setting,getMenuJson(APP_NAME + "/sys/menu/queryAllMenuUpdate",data) );
+                ztree = $.fn.zTree.init($("#menuTree"), setting, getMenuJson(APP_NAME + "/sys/menu/queryAllMenuUpdate", data));
                 //展开所有节点
                 ztree.expandAll(true);
             }

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 配置dao接口路径-->
+<mapper namespace="cn.com.njdhy.muscle.triceps.dao.DimOrgDao">
+
+    <!-- type配置model层实体类名-->
+    <resultMap id="DimOrgMap" type="DimOrg">
+
+        <!-- 配置实体和数据库列的对应关系，property：实体属性名；column：数据库表列名；-->
+        <result property="orgCode" column="org_code"></result>
+        <result property="orgName" column="org_name"></result>
+        <result property="shortOrgName" column="short_org_name"></result>
+        <result property="pOrgCode" column="p_org_code"></result>
+        <result property="seqNum" column="seq_num"></result>
+        <result property="orgLevel" column="org_level"></result>
+        <result property="stId" column="st_id"></result>
+    </resultMap>
+
+    <!-- 配置表名 -->
+    <sql id="tableName">
+        dim_org
+    </sql>
+
+    <!-- for insert columns -->
+    <sql id="columns">
+        orgCode, orgName, shortOrgName, pOrgCode, seqNum, orgLevel, stId, F1, F2, F3, F4,F5,yearMonth,etlTime
+    </sql>
+
+    <!-- 查询树控件展示在新增用户页面 -->
+    <select id="queryOrgTreeForUser" resultMap="DimOrgMap">
+        select o.ORG_CODE,o.ORG_NAME,o.SHORT_ORG_NAME,o.P_ORG_CODE from sys_org o where o.ST_ID=1
+    </select>
+
+    <!-- 根据条件查询 -->
+    <select id="queryListForProjMapping" resultMap="DimOrgMap" parameterType="map">
+        SELECT
+        t.ORG_CODE,
+        t.ORG_NAME,
+        t.SHORT_ORG_NAME,
+        t.P_ORG_CODE,
+        t.SEQ_NUM,
+        t.ORG_LEVEL,
+        t.ST_ID
+        FROM
+        sys_org t
+        WHERE 1=1
+        <if test="orgCode!=null and orgCode!=''">
+            AND t.ORG_CODE = #{orgCode}
+        </if>
+        <if test="orgName!=null and orgName!=''">
+            AND t.ORG_NAME = #{orgName}
+        </if>
+        <if test="orgLevel!=null and orgLevel!=''">
+            AND t.ORG_LEVEL = #{orgLevel}
+        </if>
+        <if test="stId!=null and stId!=''">
+            AND t.ST_ID = #{stId}
+        </if>
+
+
+    </select>
+</mapper>
+

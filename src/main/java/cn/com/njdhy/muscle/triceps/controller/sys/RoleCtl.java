@@ -2,6 +2,9 @@
 package cn.com.njdhy.muscle.triceps.controller.sys;
 
 import cn.com.njdhy.muscle.triceps.model.common.Query;
+import cn.com.njdhy.muscle.triceps.model.database.SysUser;
+import cn.com.njdhy.muscle.triceps.model.database.SysUserRole;
+import cn.com.njdhy.muscle.triceps.util.EmptyUtils;
 import com.github.pagehelper.PageInfo;
 import cn.com.njdhy.muscle.triceps.model.common.Result;
 import cn.com.njdhy.muscle.triceps.model.database.SysRole;
@@ -136,6 +139,10 @@ public class RoleCtl {
 
         try {
             // 校验参数 todo
+            List<SysUserRole> list = sysRoleService.queryByRoleId(ids.get(0));
+            if (!EmptyUtils.isEmpty(list)){
+                return Result.error("500","角色已被占用，不能删除");
+            }
             sysRoleService.deleteByIds(ids);
         } catch (ApplicationException e) {
             return Result.error(RoleErrorCode.SYS_ROLE_DELETE_APP_ERROR_CODE, RoleErrorCode.SYS_ROLE_DELETE_APP_ERROR_MESSAGE);
@@ -146,4 +153,25 @@ public class RoleCtl {
         return Result.success();
     }
 
+    /**
+     * 校验角色名是否重复
+     * @param roleName
+     * @return
+     */
+    @RequestMapping("/queryRoleInfoByRoleName")
+    public Result queryRoleInfoByRoleName(String roleName) {
+
+        try {
+            SysRole role = sysRoleService.queryByName(roleName);
+            if (EmptyUtils.isEmpty(role)){
+                return Result.success();
+            }else{
+                return Result.error("角色名已重复");
+            }
+        } catch (ApplicationException e) {
+            return Result.error(e.getCode(), e.getMsg());
+        } catch (Exception e) {
+            return Result.error(e.getMessage());
+        }
+    }
 }

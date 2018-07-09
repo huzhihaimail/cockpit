@@ -17,29 +17,22 @@ var showColumns = [
     , {
         field: "parentId",
         title: "父级菜单",
-        width: "10%",
-        sortable: true,
-        sortName: "parent_id" // sortName的值，需配置和数据库保持一致
+        width: "10%"
     }
     , {
         field: "name",
         title: "菜单名称",
-        width: "20%",
-        sortable: true,
-        sortName: "name"
+        width: "20%"
     }
     , {
         field: "url",
         title: "链接地址",
-        width: "20%",
-        sortable: true,
-        sortName: "url"
+        width: "20%"
     }
     , {
         field: "type",
         title: "菜单类型",
         width: "20%",
-        sortable: true,
         formatter: function (value, row, index) { // 设置列序号值，index从0开始
             if (value == 0) {
                 return "目录";
@@ -55,9 +48,7 @@ var showColumns = [
     , {
         field: "icon",
         title: "图标",
-        width: "15%",
-        sortable: true,
-        sortName: "icon"
+        width: "15%"
     }
 
     , {
@@ -151,21 +142,33 @@ var vm = new Vue({
         // 点击“确定”按钮
         , commit: function (el) {
 
-            if (vm.model.type != 0 && vm.model.type != 1 && vm.model.type != 2) {
+            if (vm.model.type !=0 && vm.model.type !=1 && vm.model.type !=2) {
                 vm.errorMessage = "请选择菜单类型！";
                 return;
             }
 
             // 校验表单菜单名称
-            if (vm.model.name.trim() == null || vm.model.name.trim() == "") {
+            if (vm.model.name == null || vm.model.name == "") {
                 vm.errorMessage = "请输入菜单名称！";
                 return;
+            }else{
+                // 校验表单菜单名称
+                if (vm.model.name.trim() == null || vm.model.name.trim() == "") {
+                    vm.errorMessage = "请输入菜单名称！";
+                    return;
+                }
             }
 
             // 校验表单父级菜单
-            if (vm.model.parentId.trim() == null || vm.model.parentId.trim() == "") {
+            if (vm.model.parentId == null || vm.model.parentId == "") {
                 vm.errorMessage = "请选择父级菜单！";
                 return;
+            }else{
+                // 校验表单父级菜单
+                if (vm.model.parentId.trim() == null || vm.model.parentId.trim() == "") {
+                    vm.errorMessage = "请选择父级菜单！";
+                    return;
+                }
             }
 
             // 执行新增操作
@@ -199,9 +202,7 @@ var vm = new Vue({
                     }
                 }
             });
-
-            // 清除查询条件
-            vm.queryOption.keyword = "";
+            vm.vueQueryParam.keyword = null;
         }
 
         // 显示修改页面
@@ -246,6 +247,7 @@ var vm = new Vue({
                     }
                 }
             });
+            vm.vueQueryParam.keyword = null;
         }
 
         // 点击“删除”按钮
@@ -313,7 +315,7 @@ var vm = new Vue({
                 return zNodes;
             }
 
-            ztree = $.fn.zTree.init($("#menuTree"), setting, getMenuJson(APP_NAME + "/sys/" + vm.moduleName + "/queryMenu"));
+            ztree = $.fn.zTree.init($("#menuTree"), setting, getMenuJson(APP_NAME + "/sys/"+ vm.moduleName +"/queryMenu"));
             //展开所有节点
             ztree.expandAll(true);
         }
@@ -350,7 +352,7 @@ var vm = new Vue({
 $(function () {
 
     // 创建BootStrapTable
-    bsTable.createBootStrapTable(vm.columns, APP_NAME + "/sys/" + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption);
+    bsTable.createBootStrapTable(vm.columns, APP_NAME + "/sys/"+ vm.moduleName +"/list?rnd=" + Math.random(), vm.queryOption);
 });
 
 
