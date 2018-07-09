@@ -461,7 +461,7 @@ var vm = new Vue({
                     data: JSON.stringify(ids),
                     success: function (r) {
                         if (r.code == 0) {
-                            alert("初始化成功", function (index) {
+                            alert("初始化成功，密码重置为：111111", function (index) {
                                 vm.reload();
                             });
                         } else if (r.code) {
