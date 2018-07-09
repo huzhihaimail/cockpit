@@ -201,7 +201,7 @@ public class UserCtl {
     }
 
     /**
-     * 修改操作
+     * 初始化密码
      *
      * @param ids 请求数据对象
      * @return 结果对象
