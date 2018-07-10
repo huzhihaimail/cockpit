@@ -351,6 +351,10 @@ $(function () {
         textField:'orgName',
         method:'get'
     });
+    //解决IE11下新建页面城市公司名称组合框样式和数据看不到的问题
+     $(".combo").css("width","200px")
+     $("#_easyui_textbox_input1").css("width","200px")
+
 });
 
 
