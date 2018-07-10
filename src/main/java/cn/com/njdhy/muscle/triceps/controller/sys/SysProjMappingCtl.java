@@ -84,7 +84,7 @@ public class SysProjMappingCtl {
      */
     @RequestMapping("/insert")
     public Result insert(@RequestBody SysProjMapping sysProjMapping) {
-            sysOrgService.checkOrgNameForProjMapping(sysProjMapping.getCityName());
+            //sysOrgService.checkOrgNameForProjMapping(sysProjMapping.getCityName());
             sysProjMapping.setCreateUser(ShiroUtil.getUserId());
             sysProjMapping.setStId(1);//新增默认有效
             sysProjMappingService.insert(sysProjMapping);
@@ -100,7 +100,7 @@ public class SysProjMappingCtl {
      */
     @RequestMapping("/update")
     public Result update(@RequestBody SysProjMapping sysProjMapping) {
-        sysOrgService.checkOrgNameForProjMapping(sysProjMapping.getCityName());
+        //sysOrgService.checkOrgNameForProjMapping(sysProjMapping.getCityName());
         sysProjMapping.setCreateUser(ShiroUtil.getUserId());
         sysProjMappingService.update(sysProjMapping);
         return Result.success();
