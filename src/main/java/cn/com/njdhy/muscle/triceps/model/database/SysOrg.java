@@ -45,6 +45,11 @@ public class SysOrg extends BaseModel {
      */
     private int stId;
 
+    /**
+     * 年月
+     */
+    private String yearMonth;
+
     public String getOrgCode() {
         return orgCode;
     }
@@ -99,5 +104,13 @@ public class SysOrg extends BaseModel {
 
     public void setStId(int stId) {
         this.stId = stId;
+    }
+
+    public String getYearMonth() {
+        return yearMonth;
+    }
+
+    public void setYearMonth(String yearMonth) {
+        this.yearMonth = yearMonth;
     }
 }
