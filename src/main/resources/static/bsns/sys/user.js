@@ -353,6 +353,14 @@ var vm = new Vue({
             ,
             doUpdate: function () {
                 vm.model.userRoles = vm.userRoles;
+
+                var nodes = ztree.getCheckedNodes(true);
+
+                var orgIdList = new Array();
+                for (var i = 0; i < nodes.length; i++) {
+                    orgIdList.push(nodes[i].menuId);
+                }
+                vm.model.orgIdList = orgIdList;
                 // 执行修改
                 $.ajax({
                     type: "POST",

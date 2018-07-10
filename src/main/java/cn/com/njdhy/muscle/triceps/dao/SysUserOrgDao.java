@@ -19,4 +19,10 @@ public interface SysUserOrgDao extends BaseDao<SysUserOrg> {
      * @return
      */
     List<SysUserOrg> queryOrgListByUserId(ConcurrentHashMap map);
+
+    /**
+     * 删除用户时删除用户城市配置
+     * @param map
+     */
+    void deleteUserOrgByUserId(ConcurrentHashMap map);
 }

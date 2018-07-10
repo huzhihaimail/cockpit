@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <类功能简述> 用户角色业务层实现类
@@ -82,17 +83,21 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
             //用户配置组织机构
             List<String> orgList = sysUser.getOrgIdList();
             List<SysUserOrg> userOrgList = new ArrayList<>();
-            for (String orgId: orgList){
-                SysUserOrg userOrg = new SysUserOrg();
-                userOrg.setEmployeeId(userId);
-                userOrg.setOrgCode(orgId);
-                userOrg.setStId(1);
-                userOrg.setCreateDate(new Date());
-                userOrg.setCreateUser(ShiroUtil.getUserId());
-                userOrgList.add(userOrg);
+            //用户配置的组织机构不为空
+            if (!EmptyUtils.isEmpty(orgList)) {
+                for (String orgId : orgList) {
+                    SysUserOrg userOrg = new SysUserOrg();
+                    userOrg.setEmployeeId(userId);
+                    userOrg.setOrgCode(orgId);
+                    userOrg.setStId(1);
+                    userOrg.setCreateDate(new Date());
+                    userOrg.setCreateUser(ShiroUtil.getUserId());
+                    userOrgList.add(userOrg);
+                }
+
+                sysUserOrgDao.batchInsert(userOrgList);
             }
 
-            sysUserOrgDao.batchInsert(userOrgList);
         } catch (ApplicationException e) {
             throw new ApplicationException("新增用户失败");
         }
@@ -184,6 +189,33 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
                 // 用户配置角色信息入库
                 sysUserRoleService.batchInsert(sysUserRolesLst);
             }
+
+            //删除用户城市配置信息
+            int id = sysUser.getId();
+            ConcurrentHashMap map = new ConcurrentHashMap();
+            if (!EmptyUtils.isEmpty(id)){
+                map.put("id",id);
+                sysUserOrgDao.deleteUserOrgByUserId(map);
+            }
+
+            //重新增加用户城市配置信息
+            List<String> orgList = sysUser.getOrgIdList();
+            List<SysUserOrg> userOrgList = new ArrayList<>();
+            //用户配置的组织机构不为空
+            if (!EmptyUtils.isEmpty(orgList)) {
+                for (String orgId : orgList) {
+                    SysUserOrg userOrg = new SysUserOrg();
+                    userOrg.setEmployeeId(userId);
+                    userOrg.setOrgCode(orgId);
+                    userOrg.setStId(1);
+                    userOrg.setCreateDate(new Date());
+                    userOrg.setCreateUser(ShiroUtil.getUserId());
+                    userOrgList.add(userOrg);
+                }
+
+                sysUserOrgDao.batchInsert(userOrgList);
+            }
+
 
         } catch (ApplicationException e) {
             throw new ApplicationException("修改用户失败");

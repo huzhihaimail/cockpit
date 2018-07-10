@@ -51,7 +51,7 @@
         </foreach>
     </insert>
 
-    <!-- 批量删除-->
+    <!-- 批量删除
     <delete id="deleteByIds" parameterType="List">
         DELETE FROM
         <include refid="tableName"/>
@@ -60,11 +60,20 @@
         <foreach item="id" index="index" collection="list" open="(" separator="," close=")">
             #{id}
         </foreach>
-    </delete>
+    </delete>-->
 
     <!-- 根据用户id查询组织机构信息 -->
     <select id="queryOrgListByUserId" resultMap="SysUserOrgMap" parameterType="java.util.Map">
-        select uo.employee_id,uo.org_code,uo.st_id from sys_user_org uo where uo.employee_id=#{id}
+        select uo.employee_id,uo.org_code,uo.st_id from sys_user_org uo where uo.employee_id=#{id} and uo.st_id=1
     </select>
+
+    <!-- 删除用户时删除用户城市配置关系 -->
+    <update id="deleteUserOrgByUserId" parameterType="java.util.Map">
+        UPDATE sys_user_org
+        set
+              st_id = 0
+        WHERE
+            employee_id = #{id}
+    </update>
 </mapper>
 
