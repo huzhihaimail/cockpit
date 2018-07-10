@@ -2,6 +2,8 @@
 package cn.com.njdhy.muscle.triceps.service.sys;
 
 import cn.com.njdhy.muscle.triceps.model.database.SysOrg;
+import cn.com.njdhy.muscle.triceps.model.database.SysUser;
+import cn.com.njdhy.muscle.triceps.model.database.SysUserOrg;
 import cn.com.njdhy.muscle.triceps.service.BaseService;
 
 import java.util.List;
@@ -32,4 +34,11 @@ public interface SysOrgService extends BaseService<SysOrg> {
      * @param OrgName
      */
     void checkOrgNameForProjMapping(String OrgName);
+
+    /**
+     * 根据用户id查询该用户选择的城市
+     * @param id
+     * @return
+     */
+    List<SysUserOrg> queryOrgListByUserId(String id);
 }

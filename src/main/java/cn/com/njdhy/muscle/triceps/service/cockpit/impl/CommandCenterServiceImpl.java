@@ -31,6 +31,16 @@ public class CommandCenterServiceImpl extends BaseServiceImpl implements IComman
     }
 
     /**
+     * 获取城市集团所有信息
+     *
+     * @return
+     */
+    @Override
+    public List<AllDataDetails> getAllData1() {
+        return commandCenterDao.getAllData1();
+    }
+
+    /**
      * 六率指标模块
      *
      * @param yearCode
@@ -214,6 +224,15 @@ public class CommandCenterServiceImpl extends BaseServiceImpl implements IComman
             map.put("areaCode", areaCode);
         }
         return commandCenterDao.getProjectByAreaCode(map);
+    }
+
+    @Override
+    public List<AllDataDetails> getProjectByAreaCode1(String areaCode) {
+        ConcurrentHashMap map = new ConcurrentHashMap();
+        if (areaCode != null && !areaCode.equals("")) {
+            map.put("areaCode", areaCode);
+        }
+        return commandCenterDao.getProjectByAreaCode1(map);
     }
 
 }

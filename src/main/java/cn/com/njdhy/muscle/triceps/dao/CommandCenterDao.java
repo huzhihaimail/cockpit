@@ -42,6 +42,10 @@ public interface CommandCenterDao {
      */
     List<AllDataDetails> getAllData(ConcurrentHashMap map);
 
+    List<AllDataDetails> getAllData1();
+
+    List<AllDataDetails> getProjectByAreaCode1(ConcurrentHashMap map);
+
     /**
      * 根据城市id和年月查询该城市所有项目
      *

@@ -3,12 +3,15 @@ package cn.com.njdhy.muscle.triceps.service.sys;
 
 import cn.com.njdhy.muscle.triceps.Application;
 import cn.com.njdhy.muscle.triceps.dao.SysUserDao;
+import cn.com.njdhy.muscle.triceps.dao.SysUserOrgDao;
 import cn.com.njdhy.muscle.triceps.dao.SysUserRoleDao;
 import cn.com.njdhy.muscle.triceps.model.database.SysUser;
+import cn.com.njdhy.muscle.triceps.model.database.SysUserOrg;
 import cn.com.njdhy.muscle.triceps.model.database.SysUserRole;
 import cn.com.njdhy.muscle.triceps.model.exception.ApplicationException;
 import cn.com.njdhy.muscle.triceps.service.BaseServiceImpl;
 import cn.com.njdhy.muscle.triceps.util.EmptyUtils;
+import cn.com.njdhy.muscle.triceps.util.ShiroUtil;
 import org.apache.shiro.codec.CodecException;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.UnknownAlgorithmException;
@@ -34,6 +37,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
 
     @Autowired
     private SysUserRoleDao sysUserRoleDao;
+
+    @Autowired
+    private SysUserOrgDao sysUserOrgDao;
 
     /**
      * 插入用户
@@ -72,6 +78,21 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
 
             // 用户配置角色信息入库
             sysUserRoleService.batchInsert(sysUserRolesLst);
+
+            //用户配置组织机构
+            List<String> orgList = sysUser.getOrgIdList();
+            List<SysUserOrg> userOrgList = new ArrayList<>();
+            for (String orgId: orgList){
+                SysUserOrg userOrg = new SysUserOrg();
+                userOrg.setEmployeeId(userId);
+                userOrg.setOrgCode(orgId);
+                userOrg.setStId(1);
+                userOrg.setCreateDate(new Date());
+                userOrg.setCreateUser(ShiroUtil.getUserId());
+                userOrgList.add(userOrg);
+            }
+
+            sysUserOrgDao.batchInsert(userOrgList);
         } catch (ApplicationException e) {
             throw new ApplicationException("新增用户失败");
         }

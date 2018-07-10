@@ -43,8 +43,8 @@ public class SysOrgCtl {
         try {
             //查询列表数据
             List<SysOrg> orgList = sysOrgService.queryOrgTreeForUser();
-            if (!EmptyUtils.isEmpty(orgList)){
-                for (SysOrg org:orgList){
+            if (!EmptyUtils.isEmpty(orgList)) {
+                for (SysOrg org : orgList) {
                     ZTree tree = new ZTree();
                     tree.setMenuId(org.getOrgCode());
                     tree.setParentId(org.getpOrgCode());
@@ -57,7 +57,56 @@ public class SysOrgCtl {
         } catch (Exception e) {
             return Result.error(UserErrorCode.SYS_USER_LOAD_ROLES_ERROR_CODE, UserErrorCode.SYS_USER_LOAD_ROLES_ERROR_MESSAGE);
         }
-        return Result.success().put("model",treeList );
+        return Result.success().put("model", treeList);
+    }
+
+    /**
+     * 修改页面加载组织机构树控件
+     *
+     * @return
+     */
+    @RequestMapping("/queryOrgTreeForUpdateUser")
+    public Result queryOrgTreeForUpdateUser(@RequestParam String id) {
+
+        List<ZTree> treeList = new ArrayList<>();
+        try {
+            //查询列表数据
+            List<SysOrg> orgList = sysOrgService.queryOrgTreeForUser();
+
+            //根据用户id查询该用户所在哪些城市公司
+            List<SysUserOrg> userOrgList = sysOrgService.queryOrgListByUserId(id);
+            List<String> orgIdList = new ArrayList<>();
+            for (SysUserOrg userOrg:userOrgList){
+                orgIdList.add(userOrg.getOrgCode());
+            }
+
+            if (!EmptyUtils.isEmpty(orgList)) {
+                if (!EmptyUtils.isEmpty(userOrgList)) {
+                    for (SysOrg org : orgList) {
+                        if (orgIdList.contains(org.getOrgCode())) {
+                            ZTree tree = new ZTree();
+                            tree.setMenuId(org.getOrgCode());
+                            tree.setParentId(org.getpOrgCode());
+                            tree.setName(org.getOrgName());
+                            tree.setChecked(true);
+                            treeList.add(tree);
+                        }else{
+                            ZTree tree = new ZTree();
+                            tree.setMenuId(org.getOrgCode());
+                            tree.setParentId(org.getpOrgCode());
+                            tree.setName(org.getOrgName());
+                            tree.setChecked(false);
+                            treeList.add(tree);
+                        }
+                    }
+                }
+            }
+        } catch (RuntimeException e) {
+            return Result.error(UserErrorCode.SYS_USER_LOAD_ROLES_APP_ERROR_CODE, UserErrorCode.SYS_USER_LOAD_ROLES_APP_ERROR_MESSAGE);
+        } catch (Exception e) {
+            return Result.error(UserErrorCode.SYS_USER_LOAD_ROLES_ERROR_CODE, UserErrorCode.SYS_USER_LOAD_ROLES_ERROR_MESSAGE);
+        }
+        return Result.success().put("model", treeList);
     }
 
 
@@ -69,8 +118,8 @@ public class SysOrgCtl {
     )
     public List<SysOrg> getCityName() {
         ConcurrentHashMap concurrentHashMap = new ConcurrentHashMap();
-        concurrentHashMap.put("orgLevel","C");
-        concurrentHashMap.put("stId",1);
+        concurrentHashMap.put("orgLevel", "C");
+        concurrentHashMap.put("stId", 1);
         List<SysOrg> list = sysOrgService.queryListForProjMapping(concurrentHashMap);
         return list;
     }

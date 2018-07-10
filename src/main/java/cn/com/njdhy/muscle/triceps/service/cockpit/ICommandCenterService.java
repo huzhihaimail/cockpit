@@ -13,6 +13,8 @@ public interface ICommandCenterService {
 
     List<AllDataDetails> getAllData(String yearCode,String monthCode);
 
+    List<AllDataDetails> getAllData1();
+
     SixRateIndex getSixRateIndex(String yearCode, String monthCode, String areaCode);
 
     BudgetRevenue getBudgetRevenue(String yearCode, String monthCode, String areaCode);
@@ -36,4 +38,6 @@ public interface ICommandCenterService {
     List<KeyWorkLand> getInventory(String yearCode, String monthCode, String areaCode);
 
     List<AllDataDetails> getProjectByAreaCode(String yearCode,String monthCode,String areaCode);
+
+    List<AllDataDetails> getProjectByAreaCode1(String areaCode);
 }
