@@ -27,5 +27,9 @@ public interface SysOrgService extends BaseService<SysOrg> {
      */
     List<SysOrg> queryListForProjMapping(Map<String, Object> map);
 
+    /**
+     * 组织管理页面新增或是修改校验sys_org是否存在城市名称，不存在则新增一条记录
+     * @param OrgName
+     */
     void checkOrgNameForProjMapping(String OrgName);
 }
