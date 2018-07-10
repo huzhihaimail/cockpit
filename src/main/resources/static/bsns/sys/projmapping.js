@@ -319,6 +319,13 @@ var vm = new Vue({
         // 重新加载(ok)
         , reload: function () {
 
+            //重新加载城市名称下拉框数据
+            $('#cityNameSelect').combobox({
+                url:APP_NAME + '/sys/org/cityName',
+                valueField:'orgName',
+                textField:'orgName',
+                method:'get'
+            });
             $('#cityNameSelect').combobox('select', '');
 
             // 展示查询列表
@@ -345,6 +352,7 @@ $(function () {
 
     // 创建BootStrapTable
     bsTable.createBootStrapTable(vm.columns, APP_NAME + "/sys/" + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption)
+    //加载城市名称下拉框数据
     $('#cityNameSelect').combobox({
         url:APP_NAME + '/sys/org/cityName',
         valueField:'orgName',

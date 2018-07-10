@@ -2,7 +2,9 @@ package cn.com.njdhy.muscle.triceps.controller.sys;
 
 import cn.com.njdhy.muscle.triceps.model.common.Query;
 import cn.com.njdhy.muscle.triceps.model.common.Result;
+import cn.com.njdhy.muscle.triceps.model.database.SysOrg;
 import cn.com.njdhy.muscle.triceps.model.database.SysProjMapping;
+import cn.com.njdhy.muscle.triceps.service.sys.SysOrgService;
 import cn.com.njdhy.muscle.triceps.service.sys.SysProjMappingService;
 import cn.com.njdhy.muscle.triceps.service.sys.SysUserService;
 import cn.com.njdhy.muscle.triceps.util.ShiroUtil;
@@ -14,6 +16,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author richard.li
@@ -29,6 +32,8 @@ public class SysProjMappingCtl {
     private SysProjMappingService sysProjMappingService;
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private SysOrgService sysOrgService;
 
 
 
@@ -79,6 +84,7 @@ public class SysProjMappingCtl {
      */
     @RequestMapping("/insert")
     public Result insert(@RequestBody SysProjMapping sysProjMapping) {
+            sysOrgService.checkOrgNameForProjMapping(sysProjMapping.getCityName());
             sysProjMapping.setCreateUser(ShiroUtil.getUserId());
             sysProjMapping.setStId(1);//新增默认有效
             sysProjMappingService.insert(sysProjMapping);
@@ -94,6 +100,7 @@ public class SysProjMappingCtl {
      */
     @RequestMapping("/update")
     public Result update(@RequestBody SysProjMapping sysProjMapping) {
+        sysOrgService.checkOrgNameForProjMapping(sysProjMapping.getCityName());
         sysProjMapping.setCreateUser(ShiroUtil.getUserId());
         sysProjMappingService.update(sysProjMapping);
         return Result.success();

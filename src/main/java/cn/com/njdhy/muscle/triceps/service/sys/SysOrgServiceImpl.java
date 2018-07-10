@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <类功能简述> 组织机构
@@ -38,5 +39,25 @@ public class SysOrgServiceImpl extends BaseServiceImpl<SysOrgDao, SysOrg> implem
     @Override
     public List<SysOrg> queryListForProjMapping(Map<String, Object> map) {
         return sysOrgDao.queryListForProjMapping(map);
+    }
+
+    /**
+     * 组织管理页面新增或是修改校验sys_org是否存在城市名称，不存在则新增一条记录
+     * @param orgName
+     */
+    @Override
+    public void checkOrgNameForProjMapping(String orgName) {
+        ConcurrentHashMap concurrentHashMap = new ConcurrentHashMap();
+        concurrentHashMap.put("orgLevel","C");
+        concurrentHashMap.put("stId",1);
+        concurrentHashMap.put("orgName",orgName);
+        List<SysOrg> list = this.queryListForProjMapping(concurrentHashMap);
+        if(null == list || 0 == list.size()) {
+            SysOrg sysOrg = new SysOrg();
+            sysOrg.setOrgName(orgName);
+            sysOrg.setStId(1);
+            sysOrg.setOrgLevel("C");
+            this.insert(sysOrg);
+        }
     }
 }

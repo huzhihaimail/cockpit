@@ -60,5 +60,13 @@
 
 
     </select>
+
+    <insert id="insert" parameterType="SysOrg" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_org
+        (ORG_NAME, SHORT_ORG_NAME,ORG_LEVEL, ST_ID, ETL_TIME)
+        VALUES
+        (#{orgName}, #{shortOrgName}, #{orgLevel},#{stId}, GETDATE())
+    </insert>
+
 </mapper>
 

@@ -26,4 +26,6 @@ public interface SysOrgService extends BaseService<SysOrg> {
      * @return
      */
     List<SysOrg> queryListForProjMapping(Map<String, Object> map);
+
+    void checkOrgNameForProjMapping(String OrgName);
 }
