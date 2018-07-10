@@ -1,8 +1,10 @@
 package cn.com.njdhy.muscle.triceps.service.cockpit;
 
 import cn.com.njdhy.muscle.triceps.model.database.*;
+import cn.com.njdhy.muscle.triceps.service.cockpit.entity.GetDimOrgOutPut;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by cherlin on 2018/6/13.
@@ -105,5 +107,34 @@ public interface ICommandCenterDialogService {
      * @return
      */
     List<KeyWorkLandOfMonth> getKeyWorkLandDialogOfMonth(String yearCode);
+
+    /**
+     * 获取所有城市公司信息
+     *
+     * @return
+     */
+    List<GetDimOrgOutPut> getDimOrg(String yearCode,String monthCode);
+
+    /**
+     * 查询所有工作分类信息
+     * @return
+     */
+    List<SysDomain> getWorkInfo();
+
+    /**
+     * 查询所有进度状态信息
+     * @return
+     */
+    List<SysDomain> getScheduleStatus();
+
+    /**
+     * 查询明细
+     * @param yearMonth
+     * @param cityCode
+     * @param jobType
+     * @param jobProcessing
+     * @return
+     */
+    List<FactHnaImportantList> getDetailByDoMain(String yearCode,String monthCode,String cityCode,String jobType,String jobProcessing);
 
 }

@@ -24,8 +24,10 @@ public class CommandCenterServiceImpl extends BaseServiceImpl implements IComman
      * @return
      */
     @Override
-    public List<AllDataDetails> getAllData() {
-        return commandCenterDao.getAllData();
+    public List<AllDataDetails> getAllData(String yearCode,String monthCode) {
+        ConcurrentHashMap map = new ConcurrentHashMap();
+        map.put("yearMonth", yearCode+monthCode);
+        return commandCenterDao.getAllData(map);
     }
 
     /**
@@ -205,9 +207,10 @@ public class CommandCenterServiceImpl extends BaseServiceImpl implements IComman
     }
 
     @Override
-    public List<AllDataDetails> getProjectByAreaCode(String areaCode) {
+    public List<AllDataDetails> getProjectByAreaCode(String yearCode,String monthCode,String areaCode) {
         ConcurrentHashMap map = new ConcurrentHashMap();
         if (areaCode != null && !areaCode.equals("")) {
+            map.put("yearMonth", yearCode+monthCode);
             map.put("areaCode", areaCode);
         }
         return commandCenterDao.getProjectByAreaCode(map);

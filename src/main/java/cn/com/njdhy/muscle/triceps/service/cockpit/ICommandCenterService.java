@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface ICommandCenterService {
 
-    List<AllDataDetails> getAllData();
+    List<AllDataDetails> getAllData(String yearCode,String monthCode);
 
     SixRateIndex getSixRateIndex(String yearCode, String monthCode, String areaCode);
 
@@ -35,5 +35,5 @@ public interface ICommandCenterService {
 
     List<KeyWorkLand> getInventory(String yearCode, String monthCode, String areaCode);
 
-    List<AllDataDetails> getProjectByAreaCode(String areaCode);
+    List<AllDataDetails> getProjectByAreaCode(String yearCode,String monthCode,String areaCode);
 }
