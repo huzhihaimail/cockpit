@@ -269,6 +269,13 @@ var vm = new Vue({
                     return;
                 }
 
+                // 城市公司
+                var nodes = ztree.getCheckedNodes(true);
+                if (nodes == null || nodes == "") {
+                    vm.errorMessage = "请选择城市公司";
+                    return;
+                }
+
                 // 执行新增操作
                 if (vm.model.id == null) {
                     vm.doSave();
@@ -283,6 +290,14 @@ var vm = new Vue({
             doSave: function () {
                 // 获取到的用户配置的角色列表添加到后台参数
                 vm.model.userRoles = vm.userRoles;
+
+                var nodes = ztree.getCheckedNodes(true);
+
+                var orgIdList = new Array();
+                for (var i = 0; i < nodes.length; i++) {
+                    orgIdList.push(nodes[i].menuId);
+                }
+                vm.model.orgIdList = orgIdList;
 
                 // 2. 入库
                 $.ajax({
@@ -329,11 +344,23 @@ var vm = new Vue({
                     vm.model = r.model;
                     vm.userRoles = r.model.rolesList;
                 });
+
+                //加载城市公司信息
+                vm.loadTreeCompany('update');
+
             }
             // 执行修改操作
             ,
             doUpdate: function () {
                 vm.model.userRoles = vm.userRoles;
+
+                var nodes = ztree.getCheckedNodes(true);
+
+                var orgIdList = new Array();
+                for (var i = 0; i < nodes.length; i++) {
+                    orgIdList.push(nodes[i].menuId);
+                }
+                vm.model.orgIdList = orgIdList;
                 // 执行修改
                 $.ajax({
                     type: "POST",
@@ -418,12 +445,12 @@ var vm = new Vue({
             loadTreeCompany: function (type) {
                 function getMenuJson(url, data) {
                     var zNodes;
-                    var role = {id: data};
+                    var user = {id: data};
                     $.ajax({
                         url: url,
                         dataType: 'JSON',
                         type: 'POST',
-                        data: role,
+                        data: user,
                         async: false,
                         success: function (data, status) {
                             var nodes = JSON.stringify(data.model);
@@ -435,14 +462,13 @@ var vm = new Vue({
 
                 if (type == 'add') {
                     var data = null;
-                    ztree = $.fn.zTree.init($("#menuTree"), setting, getMenuJson(APP_NAME + "/sys/menu/queryAllMenuInsert", data));
+                    ztree = $.fn.zTree.init($("#menuTree"), setting, getMenuJson(APP_NAME + "/sys/org/queryOrgTreeForUser", data));
                 }
-                // else if (type=='update'){
-                //     var ids = bsTable.getMultiRowIds();
-                //     var data = ids[0];
-                //     /*ztree = $.fn.zTree.init($("#menuTree"), setting,getMenuJson(APP_NAME + "/sys/menu/queryAllMenuUpdate",data) );*/
-                //     ztree = $.fn.zTree.init($("#menuTree"), setting,getMenuJson(APP_NAME + "/sys/menu/queryAllMenuUpdate",data) );
-                // }
+                else if (type=='update'){
+                    var ids = bsTable.getMultiRowIds();
+                    var data = ids[0];
+                    ztree = $.fn.zTree.init($("#menuTree"), setting, getMenuJson(APP_NAME + "/sys/org/queryOrgTreeForUpdateUser", data));
+                }
 
             }
             ,
@@ -461,7 +487,7 @@ var vm = new Vue({
                     data: JSON.stringify(ids),
                     success: function (r) {
                         if (r.code == 0) {
-                            alert("初始化成功", function (index) {
+                            alert("初始化成功，密码重置为：111111", function (index) {
                                 vm.reload();
                             });
                         } else if (r.code) {

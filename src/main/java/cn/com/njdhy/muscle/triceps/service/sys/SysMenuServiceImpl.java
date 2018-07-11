@@ -46,7 +46,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
      */
     @Override
     public List<SysMenu> queryAllMenu() {
-        return dao.queryMenu();
+        return dao.queryAllMenu();
     }
 
     @Override

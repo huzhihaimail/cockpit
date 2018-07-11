@@ -74,11 +74,18 @@ var showColumns = [
     }
     // , {
     //     field: "createUser",
-    //     title: "创建人",
+    //     title: "创建人ID",
     //     width: "15%",
     //     sortable: false,
     //     sortName: "create_user"
     // }
+    , {
+        field: "createUserName",
+        title: "创建人",
+        width: "15%",
+        sortable: false,
+        sortName: "create_user_name"
+    }
     , {
         field: "createDate",
         title: "创建时间",
@@ -137,7 +144,7 @@ var vm = new Vue({
     ,created:function(){
         //加载下拉框城市名称
         var _self=this;
-        $.get(APP_NAME + "/api/dimorg/cityName", function (r) {
+        $.get(APP_NAME + "/sys/org/cityName", function (r) {
             _self.options = r.result;
         });
 
@@ -185,6 +192,8 @@ var vm = new Vue({
 
             // 执行新增操作
             if (vm.model.id == null) {
+                var cityName = $(".textbox-value").val();//获取组合框的城市公司名称赋值给vue.model
+                vm.model.cityName = cityName;
                 vm.doSave();
                 return;
             }
@@ -243,12 +252,16 @@ var vm = new Vue({
                 vm.show = false;
                 vm.title = PAGE_UPDATE_TITLE;
                 vm.model = r.model;
+                var cityName = vm.model.cityName;
+                $('#cityNameSelect').combobox('select', cityName);//编辑时设置组合框城市名称（combobox）的值
             });
         }
 
         // 执行修改操作
         , doUpdate: function () {
 
+            var cityName = $(".textbox-value").val();//获取组合框的城市公司名称赋值给vue.model
+            vm.model.cityName = cityName;
             // 执行修改
             $.ajax({
                 type: "POST",
@@ -306,6 +319,15 @@ var vm = new Vue({
         // 重新加载(ok)
         , reload: function () {
 
+            //重新加载城市名称下拉框数据
+            $('#cityNameSelect').combobox({
+                url:APP_NAME + '/sys/org/cityName',
+                valueField:'orgName',
+                textField:'orgName',
+                method:'get'
+            });
+            $('#cityNameSelect').combobox('select', '');
+
             // 展示查询列表
             vm.show = true;
 
@@ -330,6 +352,17 @@ $(function () {
 
     // 创建BootStrapTable
     bsTable.createBootStrapTable(vm.columns, APP_NAME + "/sys/" + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption)
+    //加载城市名称下拉框数据
+    $('#cityNameSelect').combobox({
+        url:APP_NAME + '/sys/org/cityName',
+        valueField:'orgName',
+        textField:'orgName',
+        method:'get'
+    });
+    //解决IE11下新建页面城市公司名称组合框样式和数据看不到的问题
+     $(".combo").css("width","200px")
+     $("#_easyui_textbox_input1").css("width","200px")
+
 });
 
 

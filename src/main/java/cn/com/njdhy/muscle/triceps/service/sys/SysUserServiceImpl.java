@@ -3,12 +3,15 @@ package cn.com.njdhy.muscle.triceps.service.sys;
 
 import cn.com.njdhy.muscle.triceps.Application;
 import cn.com.njdhy.muscle.triceps.dao.SysUserDao;
+import cn.com.njdhy.muscle.triceps.dao.SysUserOrgDao;
 import cn.com.njdhy.muscle.triceps.dao.SysUserRoleDao;
 import cn.com.njdhy.muscle.triceps.model.database.SysUser;
+import cn.com.njdhy.muscle.triceps.model.database.SysUserOrg;
 import cn.com.njdhy.muscle.triceps.model.database.SysUserRole;
 import cn.com.njdhy.muscle.triceps.model.exception.ApplicationException;
 import cn.com.njdhy.muscle.triceps.service.BaseServiceImpl;
 import cn.com.njdhy.muscle.triceps.util.EmptyUtils;
+import cn.com.njdhy.muscle.triceps.util.ShiroUtil;
 import org.apache.shiro.codec.CodecException;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.UnknownAlgorithmException;
@@ -20,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <类功能简述> 用户角色业务层实现类
@@ -34,6 +38,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
 
     @Autowired
     private SysUserRoleDao sysUserRoleDao;
+
+    @Autowired
+    private SysUserOrgDao sysUserOrgDao;
 
     /**
      * 插入用户
@@ -72,6 +79,25 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
 
             // 用户配置角色信息入库
             sysUserRoleService.batchInsert(sysUserRolesLst);
+
+            //用户配置组织机构
+            List<String> orgList = sysUser.getOrgIdList();
+            List<SysUserOrg> userOrgList = new ArrayList<>();
+            //用户配置的组织机构不为空
+            if (!EmptyUtils.isEmpty(orgList)) {
+                for (String orgId : orgList) {
+                    SysUserOrg userOrg = new SysUserOrg();
+                    userOrg.setEmployeeId(userId);
+                    userOrg.setOrgCode(orgId);
+                    userOrg.setStId(1);
+                    userOrg.setCreateDate(new Date());
+                    userOrg.setCreateUser(ShiroUtil.getUserId());
+                    userOrgList.add(userOrg);
+                }
+
+                sysUserOrgDao.batchInsert(userOrgList);
+            }
+
         } catch (ApplicationException e) {
             throw new ApplicationException("新增用户失败");
         }
@@ -112,13 +138,16 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
     @Override
     public void initPassword(SysUser sysUser) {
         try {
+
+            //根据用户id查询用户名
+            SysUser user = this.dao.queryById(String.valueOf(sysUser.getId()));
             // 获取密码盐
             String salt = new SecureRandomNumberGenerator().nextBytes(3).toHex();
             sysUser.setSalt(salt);
             sysUser.setPassword("111111");
             sysUser.setStatus(1);
             // 获取密码
-            String pwd = new SimpleHash("md5", sysUser.getPassword(), sysUser.getUserName() + salt, 3).toHex();
+            String pwd = new SimpleHash("md5", sysUser.getPassword(), user.getUserName() + salt, 3).toHex();
             sysUser.setPassword(pwd);
 
             this.dao.update(sysUser);
@@ -160,6 +189,33 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser> imp
                 // 用户配置角色信息入库
                 sysUserRoleService.batchInsert(sysUserRolesLst);
             }
+
+            //删除用户城市配置信息
+            int id = sysUser.getId();
+            ConcurrentHashMap map = new ConcurrentHashMap();
+            if (!EmptyUtils.isEmpty(id)){
+                map.put("id",id);
+                sysUserOrgDao.deleteUserOrgByUserId(map);
+            }
+
+            //重新增加用户城市配置信息
+            List<String> orgList = sysUser.getOrgIdList();
+            List<SysUserOrg> userOrgList = new ArrayList<>();
+            //用户配置的组织机构不为空
+            if (!EmptyUtils.isEmpty(orgList)) {
+                for (String orgId : orgList) {
+                    SysUserOrg userOrg = new SysUserOrg();
+                    userOrg.setEmployeeId(userId);
+                    userOrg.setOrgCode(orgId);
+                    userOrg.setStId(1);
+                    userOrg.setCreateDate(new Date());
+                    userOrg.setCreateUser(ShiroUtil.getUserId());
+                    userOrgList.add(userOrg);
+                }
+
+                sysUserOrgDao.batchInsert(userOrgList);
+            }
+
 
         } catch (ApplicationException e) {
             throw new ApplicationException("修改用户失败");

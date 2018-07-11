@@ -14,7 +14,7 @@
 <mapper namespace="cn.com.njdhy.muscle.triceps.dao.CommandCenterDao">
 
 
-    <select id="getAllData" resultType="AllDataDetails">
+    <select id="getAllData" resultType="AllDataDetails" parameterType="java.util.Map">
         SELECT
               DISTINCT(org_code) orgCode      --集团id
               ,Year_MONTH yearMonth  --月份
@@ -27,6 +27,43 @@
               --,project_name projectName    --项目名称
               --,short_project_name shortProjectName  --项目短名称（暂无，先用项目名称）
           FROM dim_v_org
+          where Year_MONTH=#{yearMonth}
+    </select>
+
+    <select id="getAllData1" resultType="AllDataDetails" parameterType="java.util.Map">
+        SELECT
+              DISTINCT(org_code) orgCode      --集团id
+              ,Year_MONTH yearMonth  --月份
+              ,org_name orgName      --集团名称
+              ,short_org_name shortOrgName --集团短名称
+              ,area_code areaCode      --城市公司id
+              ,area_name areaName       --城市公司名称
+              ,short_area_name shortAreaName  --城市公司短名称
+              --,project_code projectCode     --项目ID
+              --,project_name projectName    --项目名称
+              --,short_project_name shortProjectName  --项目短名称（暂无，先用项目名称）
+          FROM dim_v_org
+
+    </select>
+
+    <select id="getProjectByAreaCode1" resultType="AllDataDetails" parameterType="java.util.Map">
+        SELECT
+        org_code orgCode      --集团id
+        ,Year_MONTH yearMonth  --月份
+        ,org_name orgName      --集团名称
+        ,short_org_name shortOrgName --集团短名称
+        ,area_code areaCode      --城市公司id
+        ,area_name areaName       --城市公司名称
+        ,short_area_name shortAreaName  --城市公司短名称
+        ,project_code projectCode     --项目ID
+        ,project_name projectName    --项目名称
+        ,short_project_name shortProjectName  --项目短名称（暂无，先用项目名称）
+        FROM dim_v_org
+        <where>
+            <if test="areaCode!=null">
+                and area_code=#{areaCode}
+            </if>
+        </where>
     </select>
 
     <select id="getProjectByAreaCode" resultType="AllDataDetails" parameterType="java.util.Map">
@@ -44,7 +81,10 @@
         FROM dim_v_org
         <where>
             <if test="areaCode!=null">
-                area_code=#{areaCode}
+                and area_code=#{areaCode}
+            </if>
+            <if test="yearMonth!=null">
+                and Year_MONTH=#{yearMonth}
             </if>
         </where>
     </select>

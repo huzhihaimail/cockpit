@@ -3,6 +3,7 @@ package cn.com.njdhy.muscle.triceps.controller.api;
 
 import cn.com.njdhy.muscle.triceps.model.database.*;
 import cn.com.njdhy.muscle.triceps.service.cockpit.ICommandCenterDialogService;
+import cn.com.njdhy.muscle.triceps.service.cockpit.entity.GetDimOrgOutPut;
 import cn.com.njdhy.muscle.triceps.util.common.HttpResult;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -272,4 +273,60 @@ public class CommandCenterDialogController extends BaseController {
         List<KeyWorkLandOfMonth> keyWorkLandsOfMonth = iCommandCenterDialogService.getKeyWorkLandDialogOfMonth(yearCode);
         return new HttpResult(keyWorkLandsOfMonth);
     }
+
+    @RequestMapping(path = "/getDimOrg", method = RequestMethod.GET)
+    @ApiOperation(
+            value = "显示所有城市公司",
+            notes = "显示所有城市公司",
+            response = HttpResult.class
+    )
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "yearCode", value = "年", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "monthCode", value = "月", required = true)
+    })
+    public HttpResult getDimOrg(@RequestParam(value = "yearCode") String yearCode,@RequestParam(value = "monthCode") String monthCode) {
+        List<GetDimOrgOutPut> output = iCommandCenterDialogService.getDimOrg(yearCode,monthCode);
+        return new HttpResult(output);
+    }
+
+    @RequestMapping(path = "/getWorkInfo", method = RequestMethod.GET)
+    @ApiOperation(
+            value = "显示所有工作分类信息",
+            notes = "显示所有工作分类信息",
+            response = HttpResult.class
+    )
+    public HttpResult getWorkInfo() {
+        List<SysDomain> output = iCommandCenterDialogService.getWorkInfo();
+        return new HttpResult(output);
+    }
+
+    @RequestMapping(path = "/getDetailByDoMain", method = RequestMethod.GET)
+    @ApiOperation(
+            value = "查询明细",
+            notes = "查询明细",
+            response = HttpResult.class
+    )
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "yearCode", value = "年", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "monthCode", value = "月", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "cityCode", value = "城市公司编码"),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "jobType", value = "工作分类"),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "jobProcessing", value = "进度状态")
+    })
+    public HttpResult getDetailByDoMain(@RequestParam(value = "yearCode") String yearCode,@RequestParam(value = "monthCode") String monthCode,String cityCode,String jobType,String jobProcessing) {
+        List<FactHnaImportantList> list = iCommandCenterDialogService.getDetailByDoMain(yearCode,monthCode,cityCode,jobType,jobProcessing);
+        return new HttpResult(list);
+    }
+
+    @RequestMapping(path = "/getScheduleStatus", method = RequestMethod.GET)
+    @ApiOperation(
+            value = "显示所有进度状态信息",
+            notes = "显示所有进度状态信息",
+            response = HttpResult.class
+    )
+    public HttpResult getScheduleStatus() {
+        List<SysDomain> output = iCommandCenterDialogService.getScheduleStatus();
+        return new HttpResult(output);
+    }
+
 }

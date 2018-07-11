@@ -11,8 +11,6 @@ import java.util.Date;
  */
 public class SysProjMapping extends BaseModel {
 
-    private Integer id;
-
     private Integer reFlag;
 
     private String cityCode;
@@ -35,7 +33,9 @@ public class SysProjMapping extends BaseModel {
 
     private Integer stId;
 
-    private String createUser;
+    private Integer createUser;
+
+    private String createUserName;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createDate;
@@ -44,16 +44,6 @@ public class SysProjMapping extends BaseModel {
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date modifyDate;
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Integer getReFlag() {
         return reFlag;
@@ -127,11 +117,11 @@ public class SysProjMapping extends BaseModel {
         this.stId = stId;
     }
 
-    public String getCreateUser() {
+    public Integer getCreateUser() {
         return createUser;
     }
 
-    public void setCreateUser(String createUser) {
+    public void setCreateUser(Integer createUser) {
         this.createUser = createUser;
     }
 
@@ -175,5 +165,13 @@ public class SysProjMapping extends BaseModel {
 
     public void setCityName(String cityName) {
         this.cityName = cityName;
+    }
+
+    public String getCreateUserName() {
+        return createUserName;
+    }
+
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
     }
 }

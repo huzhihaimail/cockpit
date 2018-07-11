@@ -110,4 +110,32 @@ public interface CommandCenterDialogDao {
      * @return
      */
     List<SixRateIndexForDialogOfMonth> getSixRateIndexDialogOfMonth(ConcurrentHashMap map);
+
+    /**
+     * 获取所有的城市公司
+     * @param map
+     * @return
+     */
+    List<DimOrg> getDimOrg(ConcurrentHashMap map);
+
+    /**
+     * 查询所有工作分类信息
+     * @param map
+     * @return
+     */
+    List<SysDomain> getWorkInfo(ConcurrentHashMap map);
+
+    /**
+     * 查询所有的进度状态信息
+     * @param map 可能存在参数所以设置map
+     * @return
+     */
+    List<SysDomain> getScheduleStatus(ConcurrentHashMap map);
+
+    /**
+     * 查询明细
+     * @param map
+     * @return
+     */
+    List<FactHnaImportantList> getDetailByDoMain(ConcurrentHashMap map);
 }

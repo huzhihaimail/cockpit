@@ -4,9 +4,12 @@ package cn.com.njdhy.muscle.triceps.service.cockpit.impl;
 import cn.com.njdhy.muscle.triceps.dao.CommandCenterDialogDao;
 import cn.com.njdhy.muscle.triceps.model.database.*;
 import cn.com.njdhy.muscle.triceps.service.cockpit.ICommandCenterDialogService;
+import cn.com.njdhy.muscle.triceps.service.cockpit.entity.GetDimOrgOutPut;
+import cn.com.njdhy.muscle.triceps.util.EmptyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -262,5 +265,80 @@ public class CommandCenterDialogServiceImpl extends BaseServiceImpl implements I
         map.put("yearCode", Integer.parseInt(yearCode));
         return commandCenterDialogDao.getKeyWorkLandDialogOfMonth(map);
     }
+
+    /**
+     * 查询城市公司
+     * @param yearCode
+     * @param monthCode
+     * @return
+     */
+    @Override
+    public List<GetDimOrgOutPut> getDimOrg(String yearCode,String monthCode) {
+        ConcurrentHashMap map = new ConcurrentHashMap();
+        map.put("yearMonth", yearCode+monthCode);
+        List<DimOrg> list = commandCenterDialogDao.getDimOrg(map);
+
+        List<GetDimOrgOutPut> outputList = new ArrayList<>();
+        if (!EmptyUtils.isEmpty(list)){
+            for (DimOrg org:list){
+                GetDimOrgOutPut output = new GetDimOrgOutPut();
+                output.setYearMonth(org.getYearMonth());
+                output.setOrgCode(org.getOrgCode());
+                output.setOrgName(org.getOrgName());
+                output.setShortOrgName(org.getShortOrgName());
+                outputList.add(output);
+            }
+        }
+        return outputList;
+    }
+
+    /**
+     * 查询所有分类信息
+     * @return
+     */
+    @Override
+    public List<SysDomain> getWorkInfo() {
+        //不知道有没有参数，所以设置map待定
+        ConcurrentHashMap map = new ConcurrentHashMap();
+        return commandCenterDialogDao.getWorkInfo(map);
+    }
+
+    /**
+     * 查询所有进度状态信息
+     * @return
+     */
+    @Override
+    public List<SysDomain> getScheduleStatus() {
+        //不知道有没有参数，所以设置map待定
+        ConcurrentHashMap map = new ConcurrentHashMap();
+        return commandCenterDialogDao.getScheduleStatus(map);
+    }
+
+    /**
+     * 查询明细
+     * @param yearCode
+     * @param monthCode
+     * @param cityCode
+     * @param jobType
+     * @param jobProcessing
+     * @return
+     */
+    @Override
+    public List<FactHnaImportantList> getDetailByDoMain(String yearCode,String monthCode ,String cityCode, String jobType, String jobProcessing) {
+        ConcurrentHashMap map = new ConcurrentHashMap();
+        map.put("yearMonth", yearCode+monthCode);
+        if (!EmptyUtils.isEmpty(cityCode)){
+            map.put("cityCode", cityCode);
+        }
+        if (!EmptyUtils.isEmpty(jobType)){
+            map.put("jobType", jobType);
+        }
+        if (!EmptyUtils.isEmpty(jobProcessing)){
+            map.put("jobProcessing", jobProcessing);
+        }
+
+        return commandCenterDialogDao.getDetailByDoMain(map);
+    }
+
 
 }

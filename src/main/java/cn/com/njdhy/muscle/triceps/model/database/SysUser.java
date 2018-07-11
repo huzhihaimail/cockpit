@@ -62,13 +62,7 @@ public class SysUser extends BaseModel {
 
     private List<String> rolesList;
 
-    public String getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
-    }
+    private List<String> orgIdList;
 
     /**
      * 角色id
@@ -80,6 +74,22 @@ public class SysUser extends BaseModel {
      * 记住我
      */
     private String isRememberMe;
+
+    public List<String> getOrgIdList() {
+        return orgIdList;
+    }
+
+    public void setOrgIdList(List<String> orgIdList) {
+        this.orgIdList = orgIdList;
+    }
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
 
     public List<String> getRolesList() {
         return rolesList;

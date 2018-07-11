@@ -1,8 +1,6 @@
 
 package cn.com.njdhy.muscle.triceps.model.database;
 
-import java.util.List;
-
 /**
  * <类功能简述>
  *
@@ -44,6 +42,11 @@ public class DimOrg extends BaseModel {
      * 状态
      */
     private int stId;
+
+    /**
+     * 年月
+     */
+    private String yearMonth;
 
     public String getOrgCode() {
         return orgCode;
@@ -99,5 +102,13 @@ public class DimOrg extends BaseModel {
 
     public void setStId(int stId) {
         this.stId = stId;
+    }
+
+    public String getYearMonth() {
+        return yearMonth;
+    }
+
+    public void setYearMonth(String yearMonth) {
+        this.yearMonth = yearMonth;
     }
 }

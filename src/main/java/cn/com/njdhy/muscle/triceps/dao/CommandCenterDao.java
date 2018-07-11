@@ -35,10 +35,19 @@ public interface CommandCenterDao {
 
     List<KeyWorkLand> getInventory(ConcurrentHashMap map);
 
-    List<AllDataDetails> getAllData();
+    /**
+     * 根据年月查询城市公司
+     * @param map
+     * @return
+     */
+    List<AllDataDetails> getAllData(ConcurrentHashMap map);
+
+    List<AllDataDetails> getAllData1();
+
+    List<AllDataDetails> getProjectByAreaCode1(ConcurrentHashMap map);
 
     /**
-     * 根据城市id查询该城市所有项目
+     * 根据城市id和年月查询该城市所有项目
      *
      * @param map
      * @return
