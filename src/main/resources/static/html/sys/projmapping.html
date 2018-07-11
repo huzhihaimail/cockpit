@@ -5,7 +5,10 @@
     <link href="../../plugin/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../plugin/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="../../plugin/bootstrap-table/1.12.1/bootstrap-table.min.css" rel="stylesheet">
-    <link href="../../plugin/jquery-easyui-1.5.5.4/themes/default/easyui.css" rel="stylesheet">
+    <link href="../../plugin/bootstrap-select-1.12.4/css/bootstrap-select.min.css" rel="stylesheet">
+
+    <link rel="icon" href="../../images/favicon.png" type="image/x-icon"/>
+    <link rel="shortcut icon" href="../../images/favicon.png" type="image/x-icon"/>
 </head>
 <body style="padding-top: 15px;">
 <div id="app" class="container-fluid" v-cloak>
@@ -76,37 +79,32 @@
                     &ndash;&gt;
                 </div>-->
 
-               <!-- <div class="form-group">
-                    <div class="col-sm-3 control-label">城市代码</div>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" v-model="model.cityCode" placeholder="请输入城市代码"/>
-                    </div>
-                </div>-->
+                <!-- <div class="form-group">
+                     <div class="col-sm-3 control-label">城市代码</div>
+                     <div class="col-sm-6">
+                         <input type="text" class="form-control" v-model="model.cityCode" placeholder="请输入城市代码"/>
+                     </div>
+                 </div>-->
 
                 <!--<div class="form-group">-->
-                    <!--<div class="col-sm-3 control-label">城市名称</div>-->
-                    <!--<div class="col-sm-6">-->
-                        <!--<input type="text" class="form-control" v-model="model.cityName" placeholder="请输入城市名称"/>-->
-                    <!--</div>-->
+                <!--<div class="col-sm-3 control-label">城市名称</div>-->
+                <!--<div class="col-sm-6">-->
+                <!--<input type="text" class="form-control" v-model="model.cityName" placeholder="请输入城市名称"/>-->
+                <!--</div>-->
                 <!--</div>-->
 
                 <div class="form-group">
-                    <div class="col-sm-3 control-label" style="margin-right: 15px;">城市名称</div>
-                    <!--<select class="easyui-combobox" labelPosition="top" v-model="model.cityName">-->
-                        <!--&lt;!&ndash;<option v-for="option in options">&ndash;&gt;-->
-                            <!--&lt;!&ndash;{{ option.orgName }}&ndash;&gt;-->
-                        <!--&lt;!&ndash;</option>&ndash;&gt;-->
-                    <!--</select>-->
-                    <input id="cityNameSelect" class="form-control" name="cityName">
+                    <div class="col-sm-3 control-label">城市名称{{show}}</div>
+                    <div class="col-sm-6">
+                        <select class="selectpicker" data-live-search="true"
+                                data-live-search-placeholder="输入城市名称" title="请选择">
+                            <option  v-for="(item,index) in city" :id="item.id">{{item.id}}={{item.orgName}}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <icon class="fa fa-th-list"></icon>
+                    </div>
                 </div>
-
-
-                <!--<div class="form-group">-->
-                    <!--<div class="col-sm-3 control-label">驾驶舱项目代码</div>-->
-                    <!--<div class="col-sm-6">-->
-                        <!--<input type="text" class="form-control" v-model="model.jscProjCode" placeholder="请输入驾驶舱项目代码"/>-->
-                    <!--</div>-->
-                <!--</div>-->
 
                 <div class="form-group">
                     <div class="col-sm-3 control-label">驾驶舱项目名称</div>
@@ -186,6 +184,9 @@
 <script src="../../bsns/common/common-layer.js"></script>
 <script src="../../bsns/common/common-bootstrap-table.js"></script>
 <script src="../../plugin/moment/moment.min.js"></script>
-<script src="../../plugin/jquery-easyui-1.5.5.4/jquery.easyui.min.js"></script>
+<script src="../../plugin/bootstrap-select-1.12.4/js/bootstrap-select.min.js"></script>
+<!--<script src="../../bsns/common/common-bootstrap-select.js"></script>-->
 <script src="../../bsns/sys/projmapping.js"></script>
+
+
 </html>

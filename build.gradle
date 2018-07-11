@@ -19,7 +19,7 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'war'
 
 group = 'com.rd.www.muscle'
-version = '0.0.1-SNAPSHOT'
+version = ''
 sourceCompatibility = 1.8
 
 
@@ -29,7 +29,7 @@ repositories {
     //mavenCentral()
 }
 war {
-    archiveName = "triceps.war"
+    archiveName = "cockpit.war"
 }
 
 // version vars
@@ -56,6 +56,9 @@ dependencies {
 
     // web
     compile("org.springframework.boot:spring-boot-starter-web")
+
+    // tomcat
+    //runtime('org.springframework.boot:spring-boot-starter-tomcat')
 
     // aop
     compile("org.springframework.boot:spring-boot-starter-aop")

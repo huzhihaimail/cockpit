@@ -75,6 +75,7 @@ public class SysOrgServiceImpl extends BaseServiceImpl<SysOrgDao, SysOrg> implem
      * @param id
      * @return
      */
+    @Override
     public List<SysUserOrg> queryOrgListByUserId(String id) {
         ConcurrentHashMap map = new ConcurrentHashMap();
         if (!EmptyUtils.isEmpty(id)) {
