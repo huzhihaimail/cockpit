@@ -1,12 +1,16 @@
 
-package cn.com.njdhy.muscle.triceps.model.database;
+package cn.com.njdhy.muscle.triceps.service.cockpit.entity;
+
+import cn.com.njdhy.muscle.triceps.model.database.BaseModel;
 
 /**
  * <类功能简述> 系统菜单实体
  *
  * @author 胡志海
  */
-public class MenuInfo extends BaseModel {
+public class MenuInfo {
+
+    private int id;
 
     /**
      * 父级菜单ID
@@ -72,5 +76,13 @@ public class MenuInfo extends BaseModel {
 
     public void setOrderNum(String orderNum) {
         this.orderNum = orderNum;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

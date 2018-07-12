@@ -18,6 +18,7 @@
         <result property="deleteFlag" column="delete_flag"></result>
         <result property="createDate" column="create_date"></result>
         <result property="updateDate" column="update_date"></result>
+        <result property="userLevel" column="user_level"></result>
     </resultMap>
 
     <!-- 配置表名 -->
@@ -27,7 +28,7 @@
 
     <!-- for insert columns -->
     <sql id="columns">
-        id, user_name, nick_name, mobile, password, salt, status, email, create_date, update_date, delete_flag
+        id, user_name, nick_name, mobile, password, salt, status, email, create_date, update_date, delete_flag,user_level
     </sql>
 
     <!-- for insert value -->

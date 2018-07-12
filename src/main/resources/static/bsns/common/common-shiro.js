@@ -1,3 +1,4 @@
+var MENU_PERMISSIONS = [];
 /**
  * shiro权限
  */
@@ -7,4 +8,15 @@ function hasPermission(permission) {
     } else {
         return false;
     }
+}
+
+function isInArray(value) {
+    if (window.parent.MENU_PERMISSIONS.indexOf && typeof(window.parent.MENU_PERMISSIONS.indexOf) == 'function') {
+        var index = window.parent.MENU_PERMISSIONS.indexOf(value);
+        console.log(window.parent.MENU_PERMISSIONS[0]);
+        if (index >= 0) {
+            return true;
+        }
+    }
+    return false;
 }

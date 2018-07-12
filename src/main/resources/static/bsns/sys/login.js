@@ -5,8 +5,8 @@ var vm = new Vue({
         userName: "admin" // 定义用户
         , pwd: "123456" // 定义密码
         , message: ""
-    },
-    methods: {
+    }
+    , methods: {
 
         // 登陆
         login: function () {
@@ -21,7 +21,6 @@ var vm = new Vue({
                         vm.message = r.msg;
                         return;
                     }
-
                     // 跳转到首页
                     window.location.href = APP_NAME + "/html/sys/index.html";
                 }

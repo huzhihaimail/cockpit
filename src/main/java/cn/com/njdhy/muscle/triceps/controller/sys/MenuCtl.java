@@ -232,4 +232,16 @@ public class MenuCtl {
         return Result.success().put("model", zTreeList);
     }
 
+    @RequestMapping("queryPermissionByUserName")
+    public Result queryPermissionByUserName(){
+        List<String> permissionList = new ArrayList<>();
+
+        permissionList.add("sys:user:add");
+        permissionList.add("sys:user:delete");
+        permissionList.add("sys:user:update");
+        permissionList.add("sys:user:initPassword");
+
+        return Result.success().put("model", permissionList);
+    }
+
 }

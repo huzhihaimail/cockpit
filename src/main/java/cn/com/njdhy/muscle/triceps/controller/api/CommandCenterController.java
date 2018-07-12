@@ -26,7 +26,7 @@ public class CommandCenterController extends BaseController {
     private ICommandCenterService iCommandCenterService;
 
 
-    @RequestMapping(path = "/getAllData1", method = RequestMethod.GET)
+    @RequestMapping(path = "/getAllData", method = RequestMethod.GET)
     @ApiOperation(
             value = "获取所有城市信息",
             notes = "获取所有城市信息",
@@ -40,32 +40,40 @@ public class CommandCenterController extends BaseController {
         List<AllDataDetails> allDataDetails = iCommandCenterService.getAllData(yearCode,monthCode);
         return new HttpResult(allDataDetails);
     }
-    @RequestMapping(path = "/getAllData", method = RequestMethod.GET)
+    @RequestMapping(path = "/getAllData1", method = RequestMethod.GET)
     @ApiOperation(
             value = "获取所有城市信息",
             notes = "获取所有城市信息",
             response = HttpResult.class
     )
-    public HttpResult getAllData1() {
-        List<AllDataDetails> allDataDetails = iCommandCenterService.getAllData1();
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "yearCode", value = "年"),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "monthCode", value = "月"),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "userName", value = "用户名")
+    })
+    public HttpResult getAllData1(@RequestParam String yearCode,@RequestParam String monthCode,@RequestParam String userName) {
+        List<AllDataDetails> allDataDetails = iCommandCenterService.getAllData1(yearCode,monthCode,userName);
         return new HttpResult(allDataDetails);
     }
 
-    @RequestMapping(path = "/getProjectByAreaCode", method = RequestMethod.GET)
+    @RequestMapping(path = "/getProjectByAreaCode1", method = RequestMethod.GET)
     @ApiOperation(
             value = "根据城市公司code和年月查询项目",
             notes = "根据城市公司code和年月查询项目",
             response = HttpResult.class
     )
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", dataType = "String", name = "areaCode", value = "城市公司编码")
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "areaCode", value = "城市公司编码"),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "yearCode", value = "年月"),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "monthCode", value = "年月"),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "userName", value = "姓名")
     })
-    public HttpResult getProjectByAreaCode1(String areaCode) {
-        List<AllDataDetails> allProjectDetails = iCommandCenterService.getProjectByAreaCode1(areaCode);
+    public HttpResult getProjectByAreaCode1(String areaCode,String yearCode,String monthCode,String userName) {
+        List<AllDataDetails> allProjectDetails = iCommandCenterService.getProjectByAreaCode1(yearCode,monthCode,areaCode,userName);
         return new HttpResult(allProjectDetails);
     }
 
-    @RequestMapping(path = "/getProjectByAreaCode1", method = RequestMethod.GET)
+    @RequestMapping(path = "/getProjectByAreaCode", method = RequestMethod.GET)
     @ApiOperation(
             value = "根据城市公司code和年月查询项目",
             notes = "根据城市公司code和年月查询项目",

@@ -32,23 +32,29 @@
 
     <select id="getAllData1" resultType="AllDataDetails" parameterType="java.util.Map">
         SELECT
-              DISTINCT(org_code) orgCode      --集团id
+              DISTINCT(vo.org_code) orgCode      --集团id
               ,Year_MONTH yearMonth  --月份
               ,org_name orgName      --集团名称
               ,short_org_name shortOrgName --集团短名称
               ,area_code areaCode      --城市公司id
               ,area_name areaName       --城市公司名称
               ,short_area_name shortAreaName  --城市公司短名称
-              --,project_code projectCode     --项目ID
-              --,project_name projectName    --项目名称
-              --,short_project_name shortProjectName  --项目短名称（暂无，先用项目名称）
-          FROM dim_v_org
-
+          FROM dim_v_org vo
+          left join sys_user_org uo on vo.org_code = uo.org_code
+          left join sys_user u on u.id=uo.employee_id
+          <where>
+              <if test="yearMonth!=null">
+                  and Year_MONTH=#{yearMonth}
+              </if>
+              <if test="userName!=null">
+                  and u.user_name=#{userName}
+              </if>
+          </where>
     </select>
 
     <select id="getProjectByAreaCode1" resultType="AllDataDetails" parameterType="java.util.Map">
         SELECT
-        org_code orgCode      --集团id
+        vo.org_code orgCode      --集团id
         ,Year_MONTH yearMonth  --月份
         ,org_name orgName      --集团名称
         ,short_org_name shortOrgName --集团短名称
@@ -58,10 +64,18 @@
         ,project_code projectCode     --项目ID
         ,project_name projectName    --项目名称
         ,short_project_name shortProjectName  --项目短名称（暂无，先用项目名称）
-        FROM dim_v_org
+        FROM dim_v_org vo
+        left join sys_user_org uo on vo.org_code = uo.org_code
+        left join sys_user u on u.id=uo.employee_id
         <where>
             <if test="areaCode!=null">
                 and area_code=#{areaCode}
+            </if>
+            <if test="yearMonth!=null">
+                and Year_MONTH=#{yearMonth}
+            </if>
+            <if test="userName!=null">
+                and u.user_name=#{userName}
             </if>
         </where>
     </select>

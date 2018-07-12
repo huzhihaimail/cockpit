@@ -33,6 +33,25 @@ public interface SysMenuDao extends BaseDao<SysMenu> {
      */
     List<SysMenu> queryAllMenu();
 
-    List<SysMenu> queryMenuForHaiHang(ConcurrentHashMap map);
+    /**
+     * 查询一级菜单给前端
+     * @param map
+     * @return
+     */
+    List<SysMenu> queryFirstLevelMenu(ConcurrentHashMap map);
 
+
+    /**
+     * 根据一级菜单查询二级菜单提供给前端
+     * @param map
+     * @return
+     */
+    List<SysMenu> querySecondLevelMenuByFirstLevel(ConcurrentHashMap map);
+
+    /**
+     * 根据父级菜单查询子级菜单
+     * @param map
+     * @return
+     */
+    List<SysMenu> queryChildMenuByParentName(ConcurrentHashMap map);
 }

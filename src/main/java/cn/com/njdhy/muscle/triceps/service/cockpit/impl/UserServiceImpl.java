@@ -5,14 +5,15 @@ import cn.com.njdhy.muscle.triceps.dao.SysRoleDao;
 import cn.com.njdhy.muscle.triceps.dao.SysUserDao;
 import cn.com.njdhy.muscle.triceps.model.database.*;
 import cn.com.njdhy.muscle.triceps.service.cockpit.UserService;
+import cn.com.njdhy.muscle.triceps.service.cockpit.entity.MenuInfo;
+import cn.com.njdhy.muscle.triceps.service.cockpit.entity.UserDetail;
+import cn.com.njdhy.muscle.triceps.service.cockpit.entity.UserInfo;
 import cn.com.njdhy.muscle.triceps.util.EmptyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -31,48 +32,103 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
      * 查询菜单提供给前端
      *
      * @param userName
-     * @param position
      * @return
      */
     @Override
-    public UserInfo queryMenuForHaiHang(String userName, String position) {
+    public UserInfo queryFirstLevelMenu(String userName) {
         ConcurrentHashMap map = new ConcurrentHashMap();
         map.put("userName", userName);
-        map.put("position", position);
         //查询该用户拥有的菜单
         UserInfo userInfo = new UserInfo();
         List<MenuInfo> menuInfoList = new ArrayList<>();
-        List<SysMenu> menuList = sysMenuDao.queryMenuForHaiHang(map);
-        if (!EmptyUtils.isEmpty(menuList)) {
-            for (SysMenu menu : menuList) {
-                MenuInfo detail = new MenuInfo();
-                detail.setId(menu.getId());
-                detail.setParentId(menu.getParentId());
-                detail.setIcon(menu.getIcon());
-                detail.setName(menu.getName());
-                detail.setOrderNum(menu.getOrderNum());
-                detail.setUrl(menu.getUrl());
-                menuInfoList.add(detail);
+        List<SysMenu> menuList = sysMenuDao.queryFirstLevelMenu(map);
+
+        if (!EmptyUtils.isEmpty(menuList)){
+            for (SysMenu menu:menuList){
+                MenuInfo menuInfo = new MenuInfo();
+                menuInfo.setId(menu.getId());
+                menuInfo.setName(menu.getName());
+                menuInfo.setUrl(menu.getUrl());
+                menuInfo.setIcon(menu.getIcon());
+                menuInfo.setOrderNum(menu.getOrderNum());
+                menuInfo.setParentId(menu.getParentId());
+                menuInfoList.add(menuInfo);
             }
+            userInfo.setMenuList(menuInfoList);
         }
-        userInfo.setMenuList(menuInfoList);
-        //查询该用户的基本信息
-        SysUser sysUser = sysUserDao.queryByName(userName);
-        if (!EmptyUtils.isEmpty(sysUser)){
-            userInfo.setId(sysUser.getId());
-            userInfo.setUserName(sysUser.getUserName());
-            userInfo.setNickName(sysUser.getNickName());
-            userInfo.setEmail(sysUser.getEmail());
-            userInfo.setMobile(sysUser.getMobile());
-        }
-
-        //查询该用户的角色信息
-        SysRole role = sysRoleDao.queryRoleByUserName(userName);
-        if (!EmptyUtils.isEmpty(role)){
-            userInfo.setId(role.getId());
-            userInfo.setRoleName(role.getName());
-        }
-
         return userInfo;
+    }
+
+    /**
+     * 根据一级菜单查询二级菜单提供给前端
+     * @param userName
+     * @param menuId
+     * @return
+     */
+    @Override
+    public UserInfo querySecondLevelMenuByFirstLevel(String userName, String menuId) {
+        ConcurrentHashMap map = new ConcurrentHashMap();
+        map.put("userName", userName);
+        map.put("menuId", menuId);
+        //查询该用户拥有的菜单
+        UserInfo userInfo = new UserInfo();
+        List<MenuInfo> menuInfoList = new ArrayList<>();
+        List<SysMenu> menuList = sysMenuDao.querySecondLevelMenuByFirstLevel(map);
+
+        if (!EmptyUtils.isEmpty(menuList)){
+            for (SysMenu menu:menuList){
+                MenuInfo menuInfo = new MenuInfo();
+                menuInfo.setId(menu.getId());
+                menuInfo.setName(menu.getName());
+                menuInfo.setUrl(menu.getUrl());
+                menuInfo.setIcon(menu.getIcon());
+                menuInfo.setOrderNum(menu.getOrderNum());
+                menuInfo.setParentId(menu.getParentId());
+                menuInfoList.add(menuInfo);
+            }
+            userInfo.setMenuList(menuInfoList);
+        }
+        return userInfo;
+    }
+
+    /**
+     * 用户用户等级
+     * @param userName
+     * @return
+     */
+    @Override
+    public UserInfo queryByUserName(String userName) {
+        UserInfo info = new UserInfo();
+        SysUser sysUser = this.sysUserDao.queryByName(userName);
+        if (!EmptyUtils.isEmpty(sysUser)){
+            info.setUserLevel(sysUser.getUserLevel());
+        }
+        String parentName = null;
+        ConcurrentHashMap map = new ConcurrentHashMap();
+        if (sysUser.getUserLevel().equals("1")){
+            parentName = "集团";
+        }else if (sysUser.getUserLevel().equals("2")){
+            parentName = "分公司";
+        }else if (sysUser.getUserLevel().equals("3")){
+            parentName = "项目";
+        }
+        map.put("userName", userName);
+        map.put("parentName", parentName);
+        List<MenuInfo> menuInfoList = new ArrayList<>();
+        List<SysMenu> menuList = sysMenuDao.queryChildMenuByParentName(map);
+        if (!EmptyUtils.isEmpty(menuList)){
+            for (SysMenu menu:menuList){
+                MenuInfo menuInfo = new MenuInfo();
+                menuInfo.setId(menu.getId());
+                menuInfo.setName(menu.getName());
+                menuInfo.setUrl(menu.getUrl());
+                menuInfo.setParentId(menu.getParentId());
+                menuInfo.setOrderNum(menu.getOrderNum());
+                menuInfo.setIcon(menu.getIcon());
+                menuInfoList.add(menuInfo);
+            }
+            info.setMenuList(menuInfoList);
+        }
+        return info;
     }
 }

@@ -3,8 +3,8 @@ var vm = new Vue({
     data: {
         menus: {} // 用户授权菜单
         , loginUserName: null //登陆用户名称
-    },
-    methods: {
+    }
+    , methods: {
 
         // 加载用户授权菜单
         loadMenus: function () {
@@ -47,6 +47,9 @@ var vm = new Vue({
         }
     },
     created: function () { // vue实例化后执行
+        $.get(APP_NAME + "/sys/menu/queryPermissionByUserName", function (r) {
+            MENU_PERMISSIONS = r.model;
+        });
         this.loadMenus();
         this.getLoginUser();
     }

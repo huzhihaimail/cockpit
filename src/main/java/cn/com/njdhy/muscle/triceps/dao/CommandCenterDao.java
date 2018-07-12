@@ -42,7 +42,7 @@ public interface CommandCenterDao {
      */
     List<AllDataDetails> getAllData(ConcurrentHashMap map);
 
-    List<AllDataDetails> getAllData1();
+    List<AllDataDetails> getAllData1(ConcurrentHashMap map);
 
     List<AllDataDetails> getProjectByAreaCode1(ConcurrentHashMap map);
 

@@ -57,10 +57,10 @@ BootStrapTable.prototype.initBootstrapTable = function (columns, url, queryOpt) 
         , url: url // 请求服务端数据的URL地址
         , height: $(window).height() - 50 - 30
         , toolbar: '#toolbar'// 显示工具按钮
-        , showRefresh: true // 显示刷新按钮
-        , showPaginationSwitch: true // 显示和隐藏状态栏按钮
+        , showRefresh: false // 显示刷新按钮
+        , showPaginationSwitch: false // 显示和隐藏状态栏按钮
         , striped: true // 表格数据隔行换色
-        , pagination: true // 显示分页按钮
+        , pagination: true // 显示分页
         , paginationHAlign: "right"
         , pageNumber: PAGE_NUMBER
         , pageSize: TABLE_PAGE_SIZE

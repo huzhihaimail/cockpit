@@ -103,9 +103,14 @@ var vm = new Vue({
             , vueQueryParam: { // 查询参数
                 keyword: null,
             }
+            , btnAdd: true
+            , btnUpdate: true
+            , btnDelete: true
+            , btnInitPassword: true
             , model: {} //实体对象(用于新建、修改页面)
             , roles: [] // 加载角色列表对象
             , userRoles: [] // 用户选择的角色
+            , permission: []
 
             // 定义模块名称
             , moduleName: "user"
@@ -464,7 +469,7 @@ var vm = new Vue({
                     var data = null;
                     ztree = $.fn.zTree.init($("#menuTree"), setting, getMenuJson(APP_NAME + "/sys/org/queryOrgTreeForUser", data));
                 }
-                else if (type=='update'){
+                else if (type == 'update') {
                     var ids = bsTable.getMultiRowIds();
                     var data = ids[0];
                     ztree = $.fn.zTree.init($("#menuTree"), setting, getMenuJson(APP_NAME + "/sys/org/queryOrgTreeForUpdateUser", data));

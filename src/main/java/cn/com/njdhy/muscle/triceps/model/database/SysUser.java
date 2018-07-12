@@ -75,6 +75,11 @@ public class SysUser extends BaseModel {
      */
     private String isRememberMe;
 
+    /**
+     * 用户等级
+     */
+    private String userLevel;
+
     public List<String> getOrgIdList() {
         return orgIdList;
     }
@@ -185,5 +190,13 @@ public class SysUser extends BaseModel {
 
     public void setIsRememberMe(String isRememberMe) {
         this.isRememberMe = isRememberMe;
+    }
+
+    public String getUserLevel() {
+        return userLevel;
+    }
+
+    public void setUserLevel(String userLevel) {
+        this.userLevel = userLevel;
     }
 }

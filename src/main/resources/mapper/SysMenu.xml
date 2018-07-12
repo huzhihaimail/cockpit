@@ -154,68 +154,127 @@
         from sys_menu m where m.delete_flag=0 order by m.order_num asc
     </select>
 
-    <!-- 根据用户名查询前端菜单 -->
-    <select id="queryMenuForHaiHang" resultMap="SysMenuMap"  parameterType="java.util.Map">
-            select m.id,m.name,m.url,m.order_num,m.icon from sys_menu m where 1=1 and ( m.id=
-            (
-            SELECT
-                        m.id
-                    FROM
-                        sys_menu m
-                    WHERE
-                        1 = 1
-                    AND m.delete_flag = 0 and m.menu_type=1
-                    and m.name=#{position}
-                    AND m.id IN (
-                        SELECT DISTINCT
-                            rm.menu_id
-                        FROM
-                            sys_role r
-                        LEFT JOIN sys_role_menu rm ON r.id = rm.role_id
-                        WHERE
-                            r.delete_flag = 0
-                        AND r.id IN (
-                            SELECT DISTINCT
-                                ur.role_id
-                            FROM
-                                sys_user t
-                            LEFT JOIN sys_user_role ur ON t.id = ur.user_id
-                            WHERE
-                                t.delete_flag = 0
-                            AND t.user_name = #{userName}
-                        )
-                    )
-            ) or m.parent_id=
-            (
-                SELECT
-                        m.id
-                    FROM
-                        sys_menu m
-                    WHERE
-                        1 = 1
-                    AND m.delete_flag = 0 and m.menu_type=1
-                    and m.name=#{position}
-                    AND m.id IN (
-                        SELECT DISTINCT
-                            rm.menu_id
-                        FROM
-                            sys_role r
-                        LEFT JOIN sys_role_menu rm ON r.id = rm.role_id
-                        WHERE
-                            r.delete_flag = 0
-                        AND r.id IN (
-                            SELECT DISTINCT
-                                ur.role_id
-                            FROM
-                                sys_user t
-                            LEFT JOIN sys_user_role ur ON t.id = ur.user_id
-                            WHERE
-                                t.delete_flag = 0
-                            AND t.user_name = #{userName}
-                        )
-                    )
-            ))
+    <!-- 根据用户名查询一级菜单给前端-->
+    <select id="queryFirstLevelMenu" resultMap="SysMenuMap"  parameterType="java.util.Map">
+		SELECT
+			m.id,
+			m.name,
+			m.url,
+			m.order_num,
+			m.icon
+		FROM
+			sys_menu m
+		WHERE
+			1 = 1
+		AND m.type=0
+		AND m.delete_flag = 0
+		AND m.menu_type = 1
+		AND m.id IN (
+			SELECT DISTINCT
+				rm.menu_id
+			FROM
+				sys_role r
+			LEFT JOIN sys_role_menu rm ON r.id = rm.role_id
+			WHERE
+				r.delete_flag = 0
+			AND r.id IN (
+				SELECT DISTINCT
+					ur.role_id
+				FROM
+					sys_user t
+				LEFT JOIN sys_user_role ur ON t.id = ur.user_id
+				WHERE
+					t.delete_flag = 0
+				AND t.user_name = #{userName}
+			)
+		)
+		order by m.order_num
     </select>
+
+    <!-- 根据一级菜单查询二级菜单-->
+    <select id="querySecondLevelMenuByFirstLevel" resultMap="SysMenuMap"  parameterType="java.util.Map">
+        SELECT
+			m.id,
+			m.name,
+			m.url,
+			m.order_num,
+			m.icon
+		FROM
+			sys_menu m
+		WHERE
+			1 = 1
+		AND m.type=1
+		AND m.delete_flag = 0
+		AND m.menu_type = 1
+		AND m.parent_id=#{menuId}
+		AND m.id IN (
+            SELECT DISTINCT
+                rm.menu_id
+            FROM
+                sys_role r
+            LEFT JOIN sys_role_menu rm ON r.id = rm.role_id
+            WHERE
+                r.delete_flag = 0
+            AND r.id IN (
+                SELECT DISTINCT
+                    ur.role_id
+                FROM
+                    sys_user t
+                LEFT JOIN sys_user_role ur ON t.id = ur.user_id
+                WHERE
+                    t.delete_flag = 0
+                AND t.user_name = #{userName}
+            )
+        )
+        order by m.order_num
+    </select>
+
+    <!-- 根据父级菜单名称查询子级菜单-->
+    <select id="queryChildMenuByParentName" resultMap="SysMenuMap"  parameterType="java.util.Map">
+        SELECT
+			m.id,
+			m.name,
+			m.url,
+			m.order_num,
+			m.icon
+		FROM
+			sys_menu m
+		WHERE
+			1 = 1
+		AND m.type=1
+		AND m.delete_flag = 0
+		AND m.menu_type = 1
+		AND m.parent_id=
+		(
+			SELECT
+				m1.id
+			FROM
+				sys_menu m1
+			WHERE
+				m1.name = #{parentName}
+		)
+		AND m.id IN (
+            SELECT DISTINCT
+                rm.menu_id
+            FROM
+                sys_role r
+            LEFT JOIN sys_role_menu rm ON r.id = rm.role_id
+            WHERE
+                r.delete_flag = 0
+            AND r.id IN (
+                SELECT DISTINCT
+                    ur.role_id
+                FROM
+                    sys_user t
+                LEFT JOIN sys_user_role ur ON t.id = ur.user_id
+                WHERE
+                    t.delete_flag = 0
+                AND t.user_name = #{userName}
+            )
+        )
+        order by m.order_num
+    </select>
+
 
 </mapper>
 
