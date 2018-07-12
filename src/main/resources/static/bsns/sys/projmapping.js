@@ -140,6 +140,8 @@ var vm = new Vue({
             , moduleName: "projmapping"
             // 定义城市区域
             , city: {}
+
+            , showSelect: true
         }
         , created: function () {
             //加载下拉框城市名称
@@ -179,7 +181,7 @@ var vm = new Vue({
                 $.get(APP_NAME + "/sys/org/cityName", function (r) {
                     vm.city = r.page;
                     // 刷新表格
-                    $(".selectpicker").selectpicker('val','');
+                    $(".selectpicker").selectpicker('val', '');
                     $('.selectpicker').selectpicker('refresh');
                 });
             }
@@ -249,7 +251,7 @@ var vm = new Vue({
                     vm.model = r.model;
                     var cityName = vm.model.cityName;
                     //编辑修改时设置默认选中
-                    $(".selectpicker").selectpicker('val',cityName);//默认选中
+                    $(".selectpicker").selectpicker('val', cityName);//默认选中
                     $(".selectpicker").selectpicker('refresh');
                 });
             }
@@ -313,6 +315,10 @@ var vm = new Vue({
                         }
                     });
                 });
+            }
+            // 切换input和select
+            , inputAndSelectToggle: function () {
+                vm.showSelect = !vm.showSelect
             }
 
             // 重新加载(ok)
