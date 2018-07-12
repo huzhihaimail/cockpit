@@ -179,6 +179,7 @@ var vm = new Vue({
                 $.get(APP_NAME + "/sys/org/cityName", function (r) {
                     vm.city = r.page;
                     // 刷新表格
+                    $(".selectpicker").selectpicker('val','');
                     $('.selectpicker').selectpicker('refresh');
                 });
             }
@@ -246,14 +247,18 @@ var vm = new Vue({
                     vm.show = false;
                     vm.title = PAGE_UPDATE_TITLE;
                     vm.model = r.model;
+                    var cityName = vm.model.cityName;
+                    //编辑修改时设置默认选中
+                    $(".selectpicker").selectpicker('val',cityName);//默认选中
+                    $(".selectpicker").selectpicker('refresh');
                 });
             }
 
             // 执行修改操作
             ,
             doUpdate: function () {
-
-                var cityName = $(".textbox-value").val();//获取组合框的城市公司名称赋值给vue.model
+                //修改时获取下拉框选中值
+                var cityName = $('.selectpicker').val();
                 vm.model.cityName = cityName;
                 // 执行修改
                 $.ajax({
