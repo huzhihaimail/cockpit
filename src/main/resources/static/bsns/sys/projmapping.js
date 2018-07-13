@@ -190,12 +190,12 @@ var vm = new Vue({
             ,
             commit: function (el) {
                 // 校验表单
-                if (vm.model.jscProjName == null || vm.model.jscProjName == "") {
+                if (vm.model.jscProjName == null || vm.model.jscProjName.trim() == "") {
                     vm.errorMessage = "请输入驾驶舱项目名称";
                     return;
                 }
 
-                if(vm.model.cityName == null || vm.model.cityName ==  "") {
+                if(vm.model.cityName == null || vm.model.cityName.trim() ==  "") {
                     vm.errorMessage = "请输入城市名称";
                     return;
                 }
