@@ -19,32 +19,60 @@ public class SixRateIndexForDialog {
     private String zcfz;
     @ApiModelProperty(value = "资产周转率预警（1是正常 0是预警）", example = "资产周转率预警（1是正常 0是预警）")
     private String zcfzyj;
+    @ApiModelProperty(value = "负债总额", example = "资产负债率")
+    private String fzze;
+    @ApiModelProperty(value = "资产周转率预警（1是正常 0是预警）", example = "资产周转率预警（1是正常 0是预警）")
+    private String zcze;
 
+    @ApiModelProperty(value = "营业收入", example = "营业收入")
+    private String yysr;
+    @ApiModelProperty(value = "平均总资产", example = "平均总资产")
+    private String pjzzc;
     @ApiModelProperty(value = "资产周转率", example = "资产周转率")
     private String zczz;
     @ApiModelProperty(value = "资产周转率预警（1是正常 0是预警）", example = "资产周转率预警（1是正常 0是预警）")
     private String zczzyj;
 
+    @ApiModelProperty(value = "净利润", example = "净利润")
+    private String jlr;
+    @ApiModelProperty(value = "平均资本", example = "平均资本")
+    private String pjzb;
     @ApiModelProperty(value = "资本利润率", example = "资本利润率")
     private String zblr;
     @ApiModelProperty(value = "资本利润率预警（1是正常 0是预警）", example = "资本利润率预警（1是正常 0是预警）")
     private String zblryj;
 
+    @ApiModelProperty(value = "净利润", example = "净利润")
+    private String jzcjlr;
+    @ApiModelProperty(value = "平均所有者权益", example = "平均所有者权益")
+    private String pjsyzqy;
     @ApiModelProperty(value = "净资产收益率", example = "净资产收益率")
     private String jzcsy;
     @ApiModelProperty(value = "净资产收益率预警（1是正常 0是预警）", example = "净资产收益率预警（1是正常 0是预警）")
     private String jzcsyyj;
 
+    @ApiModelProperty(value = "营业收入", example = "营业收入")
+    private String rjyysr;
+    @ApiModelProperty(value = "人数", example = "人数")
+    private String rs;
     @ApiModelProperty(value = "人均收入（劳动生产率）", example = "人均收入（劳动生产率）")
     private String rjsr;
     @ApiModelProperty(value = "人均收入（劳动生产率）预警（1是正常 0是预警）", example = "人均收入（劳动生产率）预警（1是正常 0是预警）")
     private String rjsryj;
 
+    @ApiModelProperty(value = "利润金额", example = "利润金额")
+    private String lrje;
+    @ApiModelProperty(value = "人数", example = "人数")
+    private String rjrs;
     @ApiModelProperty(value = "人均利润", example = "人均利润")
     private String rjlr;
     @ApiModelProperty(value = "人均利润预警（1是正常 0是预警）", example = "人均利润预警（1是正常 0是预警）")
     private String rjlryj;
 
+    @ApiModelProperty(value = "海航地产销售额", example = "海航地产销售额")
+    private String hanxse;
+    @ApiModelProperty(value = "全国地产销售额", example = "全国地产销售额")
+    private String qgxse;
     @ApiModelProperty(value = "市场占有率", example = "市场占有率")
     private String sczy;
     @ApiModelProperty(value = "市场占有率预警（1是正常 0是预警）", example = "市场占有率预警（1是正常 0是预警）")
@@ -176,5 +204,117 @@ public class SixRateIndexForDialog {
 
     public void setSczyyj(String sczyyj) {
         this.sczyyj = sczyyj;
+    }
+
+    public String getFzze() {
+        return fzze;
+    }
+
+    public void setFzze(String fzze) {
+        this.fzze = fzze;
+    }
+
+    public String getZcze() {
+        return zcze;
+    }
+
+    public void setZcze(String zcze) {
+        this.zcze = zcze;
+    }
+
+    public String getYysr() {
+        return yysr;
+    }
+
+    public void setYysr(String yysr) {
+        this.yysr = yysr;
+    }
+
+    public String getPjzzc() {
+        return pjzzc;
+    }
+
+    public void setPjzzc(String pjzzc) {
+        this.pjzzc = pjzzc;
+    }
+
+    public String getJlr() {
+        return jlr;
+    }
+
+    public void setJlr(String jlr) {
+        this.jlr = jlr;
+    }
+
+    public String getPjzb() {
+        return pjzb;
+    }
+
+    public void setPjzb(String pjzb) {
+        this.pjzb = pjzb;
+    }
+
+    public String getJzcjlr() {
+        return jzcjlr;
+    }
+
+    public void setJzcjlr(String jzcjlr) {
+        this.jzcjlr = jzcjlr;
+    }
+
+    public String getPjsyzqy() {
+        return pjsyzqy;
+    }
+
+    public void setPjsyzqy(String pjsyzqy) {
+        this.pjsyzqy = pjsyzqy;
+    }
+
+    public String getRjyysr() {
+        return rjyysr;
+    }
+
+    public void setRjyysr(String rjyysr) {
+        this.rjyysr = rjyysr;
+    }
+
+    public String getRs() {
+        return rs;
+    }
+
+    public void setRs(String rs) {
+        this.rs = rs;
+    }
+
+    public String getLrje() {
+        return lrje;
+    }
+
+    public void setLrje(String lrje) {
+        this.lrje = lrje;
+    }
+
+    public String getRjrs() {
+        return rjrs;
+    }
+
+    public void setRjrs(String rjrs) {
+        this.rjrs = rjrs;
+    }
+
+    public String getHanxse() {
+        return hanxse;
+    }
+
+    public void setHanxse(String hanxse) {
+        this.hanxse = hanxse;
+    }
+
+    public String getQgxse() {
+        return qgxse;
+    }
+
+    public void setQgxse(String qgxse) {
+        this.qgxse = qgxse;
     }
 }

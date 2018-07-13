@@ -20,6 +20,15 @@ public class CarryOverProfitOfMonth {
     @ApiModelProperty(value = "结转利润目标完成率预警（1是正常 0是预警）", example = "结转利润目标完成率预警（1是正常 0是预警）")
     private String mjzlrlyj;
 
+    @ApiModelProperty(value = "结转利润销售收入", example = "结转利润销售收入")
+    private String xsjzlr;
+    @ApiModelProperty(value = "结转利润销售占比", example = "结转利润销售占比")
+    private String xsjzlrzb;
+    @ApiModelProperty(value = "结转利润自持有收入", example = "结转利润自持有收入")
+    private String zcyjzlr;
+    @ApiModelProperty(value = "结转利润自持有占比", example = "结转利润自持有占比")
+    private String zcyjzlrzb;
+
     public String getYearMonth() {
         return yearMonth;
     }
@@ -58,5 +67,37 @@ public class CarryOverProfitOfMonth {
 
     public void setMjzlrlyj(String mjzlrlyj) {
         this.mjzlrlyj = mjzlrlyj;
+    }
+
+    public String getXsjzlr() {
+        return xsjzlr;
+    }
+
+    public void setXsjzlr(String xsjzlr) {
+        this.xsjzlr = xsjzlr;
+    }
+
+    public String getXsjzlrzb() {
+        return xsjzlrzb;
+    }
+
+    public void setXsjzlrzb(String xsjzlrzb) {
+        this.xsjzlrzb = xsjzlrzb;
+    }
+
+    public String getZcyjzlr() {
+        return zcyjzlr;
+    }
+
+    public void setZcyjzlr(String zcyjzlr) {
+        this.zcyjzlr = zcyjzlr;
+    }
+
+    public String getZcyjzlrzb() {
+        return zcyjzlrzb;
+    }
+
+    public void setZcyjzlrzb(String zcyjzlrzb) {
+        this.zcyjzlrzb = zcyjzlrzb;
     }
 }
