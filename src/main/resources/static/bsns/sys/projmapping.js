@@ -229,7 +229,8 @@ var vm = new Vue({
             // 显示修改页面
             ,
             update: function () {
-
+                //编辑修改时显示输入框
+                vm.showSelect = false;
                 // 显示状态
                 if (vm.showStatus == false) {
                     vm.showStatus = true;
@@ -259,9 +260,6 @@ var vm = new Vue({
             // 执行修改操作
             ,
             doUpdate: function () {
-                //修改时获取下拉框选中值
-                var cityName = $('.selectpicker').val();
-                vm.model.cityName = cityName;
                 // 执行修改
                 $.ajax({
                     type: "POST",
@@ -327,6 +325,10 @@ var vm = new Vue({
 
                 // 展示查询列表
                 vm.show = true;
+                //显示和刷新城市公司下拉框
+                vm.showSelect = true;
+                $(".selectpicker").selectpicker('val', '');
+                $('.selectpicker').selectpicker('refresh');
 
                 // 查询条件
                 var queryOpt = {

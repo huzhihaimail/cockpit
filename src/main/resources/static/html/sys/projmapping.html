@@ -97,7 +97,7 @@
                     <div class="col-sm-3 control-label">城市名称</div>
                     <div class="col-sm-6" v-show="showSelect">
                         <select class="selectpicker form-control" data-live-search="true"
-                                data-live-search-placeholder="输入城市名称" title="请选择" v-model=model.cityName>
+                                data-live-search-placeholder="输入城市名称" title="请选择" v-model="model.cityName">
                             <option v-for="(item,index) in city" :id="item.id">{{item.orgName}}</option>
                         </select>
                     </div>
