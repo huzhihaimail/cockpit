@@ -156,11 +156,12 @@ var vm = new Vue({
             $.get(APP_NAME + "/sys/org/cityName", function (r) {
                 vm.city = r.page;
             });
-            $.get(APP_NAME + "/sys/domain/type", function (r) {
+            //项目类型
+            $.get(APP_NAME + "/sys/domain/doMainValue?doMainId=5&stId=1", function (r) {
                 vm.projType = r.page;
             });
-
-            $.get(APP_NAME + "/sys/domain/stage", function (r) {
+            //项目阶段
+            $.get(APP_NAME + "/sys/domain/doMainValue?doMainId=6&stId=1", function (r) {
                 vm.projPhase = r.page;
             });
         }
@@ -200,14 +201,14 @@ var vm = new Vue({
                     $("#cityId").selectpicker('refresh');
                 });
 
-                $.get(APP_NAME + "/sys/domain/type", function (r) {
+                $.get(APP_NAME + "/sys/domain/doMainValue?doMainId=5&stId=1", function (r) {
                     vm.projType = r.page;
                     // 刷新表格
                     $("#typeId").selectpicker('val', '');
                     $("#typeId").selectpicker('refresh');
                 });
 
-                $.get(APP_NAME + "/sys/domain/stage", function (r) {
+                $.get(APP_NAME + "/sys/domain/doMainValue?doMainId=6&stId=1", function (r) {
                     vm.projPhase = r.page;
                     // 刷新表格
                     $("#phaseId").selectpicker('val', '');
