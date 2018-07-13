@@ -85,6 +85,13 @@ public class SysProjMappingCtl {
     @RequestMapping("/insert")
     public Result insert(@RequestBody SysProjMapping sysProjMapping) {
             //sysOrgService.checkOrgNameForProjMapping(sysProjMapping.getCityName());
+            ConcurrentHashMap<String,Object> concurrentHashMap = new ConcurrentHashMap<String,Object>();
+            concurrentHashMap.put("orgName",sysProjMapping.getCityName());
+            List<SysOrg> list = sysOrgService.queryListForProjMapping(concurrentHashMap);
+            if(null != list && list.size() > 0) {//如果存在城市公司，则设置城市公司代码
+                SysOrg sysOrg = list.get(0);
+                sysProjMapping.setCityCode(sysOrg.getOrgCode());
+            }
             sysProjMapping.setCreateUser(ShiroUtil.getUserId());
             sysProjMapping.setStId(1);//新增默认有效
             sysProjMappingService.insert(sysProjMapping);
@@ -101,6 +108,15 @@ public class SysProjMappingCtl {
     @RequestMapping("/update")
     public Result update(@RequestBody SysProjMapping sysProjMapping) {
         //sysOrgService.checkOrgNameForProjMapping(sysProjMapping.getCityName());
+        ConcurrentHashMap<String,Object> concurrentHashMap = new ConcurrentHashMap<String,Object>();
+        concurrentHashMap.put("orgName",sysProjMapping.getCityName());
+        List<SysOrg> list = sysOrgService.queryListForProjMapping(concurrentHashMap);
+        if(null != list && list.size() > 0) { //如果存在城市公司，则设置城市公司代码
+            SysOrg sysOrg = list.get(0);
+            sysProjMapping.setCityCode(sysOrg.getOrgCode());
+        } else {
+            sysProjMapping.setCityCode(null);
+        }
         sysProjMapping.setCreateUser(ShiroUtil.getUserId());
         sysProjMappingService.update(sysProjMapping);
         return Result.success();
