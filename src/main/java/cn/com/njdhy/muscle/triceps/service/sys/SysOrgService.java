@@ -20,7 +20,7 @@ public interface SysOrgService extends BaseService<SysOrg> {
      * 查询组织机构树控件
      * @return
      */
-    List<SysOrg> queryOrgTreeForUser();
+    List<SysOrg> queryOrgTreeForUser(SysUser sysUser);
 
     /**
      * 组织结构管理页面城市公司下拉框

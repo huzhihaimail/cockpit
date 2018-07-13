@@ -26,7 +26,7 @@ public class CommandCenterController extends BaseController {
     private ICommandCenterService iCommandCenterService;
 
 
-    @RequestMapping(path = "/getAllData", method = RequestMethod.GET)
+    @RequestMapping(path = "/getAllData1", method = RequestMethod.GET)
     @ApiOperation(
             value = "获取所有城市信息",
             notes = "获取所有城市信息",
@@ -40,7 +40,7 @@ public class CommandCenterController extends BaseController {
         List<AllDataDetails> allDataDetails = iCommandCenterService.getAllData(yearCode,monthCode);
         return new HttpResult(allDataDetails);
     }
-    @RequestMapping(path = "/getAllData1", method = RequestMethod.GET)
+    @RequestMapping(path = "/getAllData", method = RequestMethod.GET)
     @ApiOperation(
             value = "获取所有城市信息",
             notes = "获取所有城市信息",
@@ -56,7 +56,7 @@ public class CommandCenterController extends BaseController {
         return new HttpResult(allDataDetails);
     }
 
-    @RequestMapping(path = "/getProjectByAreaCode1", method = RequestMethod.GET)
+    @RequestMapping(path = "/getProjectByAreaCode", method = RequestMethod.GET)
     @ApiOperation(
             value = "根据城市公司code和年月查询项目",
             notes = "根据城市公司code和年月查询项目",
@@ -73,7 +73,7 @@ public class CommandCenterController extends BaseController {
         return new HttpResult(allProjectDetails);
     }
 
-    @RequestMapping(path = "/getProjectByAreaCode", method = RequestMethod.GET)
+    @RequestMapping(path = "/getProjectByAreaCode1", method = RequestMethod.GET)
     @ApiOperation(
             value = "根据城市公司code和年月查询项目",
             notes = "根据城市公司code和年月查询项目",

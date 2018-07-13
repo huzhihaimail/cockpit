@@ -1,8 +1,10 @@
 package cn.com.njdhy.muscle.triceps.service.cockpit.impl;
 
 import cn.com.njdhy.muscle.triceps.dao.CommandCenterDao;
+import cn.com.njdhy.muscle.triceps.dao.SysUserDao;
 import cn.com.njdhy.muscle.triceps.model.database.*;
 import cn.com.njdhy.muscle.triceps.service.cockpit.ICommandCenterService;
+import cn.com.njdhy.muscle.triceps.util.EmptyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,9 @@ public class CommandCenterServiceImpl extends BaseServiceImpl implements IComman
 
     @Autowired
     private CommandCenterDao commandCenterDao;
+
+    @Autowired
+    private SysUserDao sysUserDao;
 
     /**
      * 获取城市集团所有信息
@@ -38,8 +43,16 @@ public class CommandCenterServiceImpl extends BaseServiceImpl implements IComman
     @Override
     public List<AllDataDetails> getAllData1(String yearCode,String monthCode,String userName) {
         ConcurrentHashMap map = new ConcurrentHashMap();
+
+        //根据用户名查询用户等级
+        SysUser sysUser = sysUserDao.queryByName(userName);
+        if (!EmptyUtils.isEmpty(sysUser)){
+            if (sysUser.getUserLevel().equals("2")||sysUser.getUserLevel().equals("3")){
+                map.put("userName", userName);
+            }
+        }
+
         map.put("yearMonth", yearCode+monthCode);
-        map.put("userName", userName);
         return commandCenterDao.getAllData1(map);
     }
 
@@ -233,7 +246,10 @@ public class CommandCenterServiceImpl extends BaseServiceImpl implements IComman
     public List<AllDataDetails> getProjectByAreaCode1(String yearCode,String monthCode,String areaCode,String userName) {
         ConcurrentHashMap map = new ConcurrentHashMap();
         map.put("yearMonth", yearCode+monthCode);
-        map.put("userName", userName);
+        SysUser sysUser= sysUserDao.queryByName(userName);
+        if (sysUser.getUserLevel().equals("3")){
+            map.put("userName", userName);
+        }
         if (areaCode != null && !areaCode.equals("")) {
             map.put("areaCode", areaCode);
         }

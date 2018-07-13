@@ -40,7 +40,7 @@
               ,area_name areaName       --城市公司名称
               ,short_area_name shortAreaName  --城市公司短名称
           FROM dim_v_org vo
-          left join sys_user_org uo on vo.org_code = uo.org_code
+          left join sys_user_org uo on vo.area_code = uo.org_code
           left join sys_user u on u.id=uo.employee_id
           <where>
               <if test="yearMonth!=null">
@@ -65,7 +65,7 @@
         ,project_name projectName    --项目名称
         ,short_project_name shortProjectName  --项目短名称（暂无，先用项目名称）
         FROM dim_v_org vo
-        left join sys_user_org uo on vo.org_code = uo.org_code
+        left join sys_user_org uo on vo.project_code = uo.org_code
         left join sys_user u on u.id=uo.employee_id
         <where>
             <if test="areaCode!=null">

@@ -76,9 +76,9 @@
     <!-- 新建  -->
     <insert id="insert" useGeneratedKeys="true" parameterType="SysUser" keyProperty="id">
         INSERT INTO sys_user
-        (user_name, nick_name, mobile, password, salt, status, email, create_date, update_date, delete_flag)
+        (user_name, nick_name, mobile, password, salt, status, email, create_date, update_date, delete_flag,user_level)
         VALUES
-        (#{userName}, #{nickName}, #{mobile}, #{password}, #{salt}, 1, #{email}, GETDATE(), GETDATE(), 0)
+        (#{userName}, #{nickName}, #{mobile}, #{password}, #{salt}, 1, #{email}, GETDATE(), GETDATE(), 0,#{userLevel})
     </insert>
 
     <!-- 修改 -->

@@ -22,19 +22,19 @@ public class UserManageController extends BaseController {
     @Autowired
     private UserService userService;
 
-//    @RequestMapping(path = "/queryFirstLevelMenu", method = RequestMethod.GET)
-//    @ApiOperation(
-//            value = "根据用户查询菜单",
-//            notes = "根据用户查询菜单",
-//            response = HttpResult.class
-//    )
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(paramType = "query", dataType = "String", name = "userName", value = "用户名")
-//    })
-//    public HttpResult queryFirstLevelMenu(@RequestParam String userName){
-//        UserInfo userInfo = userService.queryFirstLevelMenu(userName);
-//        return new HttpResult(userInfo);
-//    }
+    @RequestMapping(path = "/queryFirstLevelMenu", method = RequestMethod.GET)
+    @ApiOperation(
+            value = "根据用户查询菜单",
+            notes = "根据用户查询菜单",
+            response = HttpResult.class
+    )
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "userName", value = "用户名")
+    })
+    public HttpResult queryFirstLevelMenu(@RequestParam String userName){
+        UserInfo userInfo = userService.queryFirstLevelMenu(userName);
+        return new HttpResult(userInfo);
+    }
 
     @RequestMapping(path = "/querySecondLevelMenuByFirstLevel", method = RequestMethod.GET)
     @ApiOperation(

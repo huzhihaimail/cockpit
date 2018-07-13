@@ -4,7 +4,9 @@ package cn.com.njdhy.muscle.triceps.service.sys;
 import cn.com.njdhy.muscle.triceps.dao.SysOrgDao;
 import cn.com.njdhy.muscle.triceps.dao.SysUserOrgDao;
 import cn.com.njdhy.muscle.triceps.model.database.SysOrg;
+import cn.com.njdhy.muscle.triceps.model.database.SysUser;
 import cn.com.njdhy.muscle.triceps.model.database.SysUserOrg;
+import cn.com.njdhy.muscle.triceps.model.exception.ApplicationException;
 import cn.com.njdhy.muscle.triceps.service.BaseServiceImpl;
 import cn.com.njdhy.muscle.triceps.util.EmptyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +36,27 @@ public class SysOrgServiceImpl extends BaseServiceImpl<SysOrgDao, SysOrg> implem
      * @return
      */
     @Override
-    public List<SysOrg> queryOrgTreeForUser() {
-        return sysOrgDao.queryOrgTreeForUser();
+    public List<SysOrg> queryOrgTreeForUser(SysUser sysUser) {
+
+        List<SysOrg> orgList = null;
+        try {
+            String userLevel = sysUser.getUserLevel();
+            int orgLevel = 0;
+            if (userLevel.equals("2")){
+                orgLevel=2;
+            }else if (userLevel.equals("3")){
+                orgLevel=3;
+            }
+            ConcurrentHashMap map = new ConcurrentHashMap();
+            if (!EmptyUtils.isEmpty(orgLevel)){
+                map.put("orgLevel",orgLevel);
+            }
+            orgList = sysOrgDao.queryOrgTreeForUser(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return orgList;
     }
 
     /**

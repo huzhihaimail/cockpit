@@ -28,8 +28,16 @@
     </sql>
 
     <!-- 查询树控件展示在新增用户页面 -->
-    <select id="queryOrgTreeForUser" resultMap="SysOrgMap">
-        select o.ORG_CODE,o.ORG_NAME,o.SHORT_ORG_NAME,o.P_ORG_CODE from sys_org o where o.ST_ID=1
+    <select id="queryOrgTreeForUser" resultMap="SysOrgMap" parameterType="map">
+        select o.ORG_CODE,o.ORG_NAME,o.SHORT_ORG_NAME,o.P_ORG_CODE from sys_org o
+        where o.ST_ID=1
+        <if test="orgLevel == 2">
+            and o.org_level = 'C'
+        </if>
+        <if test="orgLevel == 3">
+            and o.org_level = 'C'
+            or o.org_level = 'P'
+        </if>
     </select>
 
     <!-- 根据条件查询 -->

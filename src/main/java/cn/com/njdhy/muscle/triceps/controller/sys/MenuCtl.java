@@ -239,7 +239,7 @@ public class MenuCtl {
         permissionList.add("sys:user:add");
         permissionList.add("sys:user:delete");
         permissionList.add("sys:user:update");
-        permissionList.add("sys:user:initPassword");
+//        permissionList.add("sys:user:initPassword");
 
         return Result.success().put("model", permissionList);
     }

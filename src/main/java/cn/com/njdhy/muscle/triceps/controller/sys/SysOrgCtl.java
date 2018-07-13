@@ -3,6 +3,7 @@ package cn.com.njdhy.muscle.triceps.controller.sys;
 
 import cn.com.njdhy.muscle.triceps.model.common.Result;
 import cn.com.njdhy.muscle.triceps.model.database.SysOrg;
+import cn.com.njdhy.muscle.triceps.model.database.SysUser;
 import cn.com.njdhy.muscle.triceps.model.database.SysUserOrg;
 import cn.com.njdhy.muscle.triceps.model.database.ZTree;
 import cn.com.njdhy.muscle.triceps.service.sys.SysOrgService;
@@ -42,12 +43,12 @@ public class SysOrgCtl {
      * @return
      */
     @RequestMapping("/queryOrgTreeForUser")
-    public Result queryOrgTreeForUser() {
+    public Result queryOrgTreeForUser(SysUser sysUser) {
 
         List<ZTree> treeList = new ArrayList<>();
         try {
             //查询列表数据
-            List<SysOrg> orgList = sysOrgService.queryOrgTreeForUser();
+            List<SysOrg> orgList = sysOrgService.queryOrgTreeForUser(sysUser);
             if (!EmptyUtils.isEmpty(orgList)) {
                 for (SysOrg org : orgList) {
                     ZTree tree = new ZTree();
@@ -71,15 +72,15 @@ public class SysOrgCtl {
      * @return
      */
     @RequestMapping("/queryOrgTreeForUpdateUser")
-    public Result queryOrgTreeForUpdateUser(@RequestParam String id) {
+    public Result queryOrgTreeForUpdateUser(SysUser sysUser) {
 
         List<ZTree> treeList = new ArrayList<>();
         try {
             //查询列表数据
-            List<SysOrg> orgList = sysOrgService.queryOrgTreeForUser();
+            List<SysOrg> orgList = sysOrgService.queryOrgTreeForUser(sysUser);
 
             //根据用户id查询该用户所在哪些城市公司
-            List<SysUserOrg> userOrgList = sysOrgService.queryOrgListByUserId(id);
+            List<SysUserOrg> userOrgList = sysOrgService.queryOrgListByUserId(String.valueOf(sysUser.getId()));
             List<String> orgIdList = new ArrayList<>();
             for (SysUserOrg userOrg : userOrgList) {
                 orgIdList.add(userOrg.getOrgCode());

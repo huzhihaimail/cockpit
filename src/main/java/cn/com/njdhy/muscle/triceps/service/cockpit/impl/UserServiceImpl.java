@@ -38,8 +38,13 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
     public UserInfo queryFirstLevelMenu(String userName) {
         ConcurrentHashMap map = new ConcurrentHashMap();
         map.put("userName", userName);
+
+        UserInfo info = new UserInfo();
+        SysUser sysUser = this.sysUserDao.queryByName(userName);
+        if (!EmptyUtils.isEmpty(sysUser)){
+            info.setUserLevel(sysUser.getUserLevel());
+        }
         //查询该用户拥有的菜单
-        UserInfo userInfo = new UserInfo();
         List<MenuInfo> menuInfoList = new ArrayList<>();
         List<SysMenu> menuList = sysMenuDao.queryFirstLevelMenu(map);
 
@@ -54,9 +59,9 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
                 menuInfo.setParentId(menu.getParentId());
                 menuInfoList.add(menuInfo);
             }
-            userInfo.setMenuList(menuInfoList);
+            info.setMenuList(menuInfoList);
         }
-        return userInfo;
+        return info;
     }
 
     /**

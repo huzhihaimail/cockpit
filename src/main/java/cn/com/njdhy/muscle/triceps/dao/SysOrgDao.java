@@ -4,6 +4,7 @@ import cn.com.njdhy.muscle.triceps.model.database.SysOrg;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <类功能简述>
@@ -16,7 +17,7 @@ public interface SysOrgDao extends BaseDao<SysOrg> {
      * 查询机构树控件
      * @return
      */
-    List<SysOrg> queryOrgTreeForUser();
+    List<SysOrg> queryOrgTreeForUser(ConcurrentHashMap map);
 
     /**
      *
