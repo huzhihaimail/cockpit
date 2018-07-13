@@ -21,6 +21,9 @@ public class BudgetRevenue {
     @ApiModelProperty(value = "预算收入目标完成率预警（1是正常 0是预警）", example = "预算收入目标完成率预警（1是正常 0是预警）")
     private String myssrlyj;
 
+    @ApiModelProperty(value = "预算收入总额（总收入）", example = "预算收入总额（总收入）")
+    private String myysr;
+
     @ApiModelProperty(value = "销售收入", example = "销售收入")
     private String xssr;
     @ApiModelProperty(value = "销售收入占比", example = "销售收入占比")
@@ -111,5 +114,13 @@ public class BudgetRevenue {
 
     public void setYysrt(String yysrt) {
         this.yysrt = yysrt;
+    }
+
+    public String getMyysr() {
+        return myysr;
+    }
+
+    public void setMyysr(String myysr) {
+        this.myysr = myysr;
     }
 }

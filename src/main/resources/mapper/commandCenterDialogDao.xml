@@ -8,29 +8,43 @@
         AREA_NAME areaName, --城市公司名称
         <if test="type=='zcfz'">
             SUM(ZCFZ) zcfz, --资产负债率（按照指标大小顺序排序）
-            SUM(ZCFZ_YJ) zcfzyj --资产负债率预警（1是正常 0是预警）
+            SUM(ZCFZ_YJ) zcfzyj, --资产负债率预警（1是正常 0是预警）
+            SUM(FZZE) fzze,        --负债总额
+            SUM(ZCZE) zcze        --资产总额
         </if>
         <if test="type=='zczz'">
+            SUM(YYSR) yysr,      --营业收入
+            SUM(PJZZC) pjzzc,    --平均总资产
             SUM(ZCZZ) zczz, --资产周转率（按照指标大小顺序排序）
             SUM(ZCZZ_YJ) zczzyj --资产周转率预警（1是正常 0是预警）
         </if>
         <if test="type=='zblr'">
+            SUM(JLR)  jlr,  --净利润
+            SUM(PJZB) pjzb,  --平均资本
             SUM(ZBLR) zblr, --资本利润率（按照指标大小顺序排序）
             SUM(ZBLR_YJ) zblryj --资本利润率预警（1是正常 0是预警）
         </if>
         <if test="type=='jzcsy'">
+            SUM(JLR) jzcjlr,            --净利润
+            SUM(PJSYZQY) pjsyzqy,    --平均所有者权益
             SUM(JZCSY) jzcsy, --净资产收益率（按照指标大小顺序排序）
             SUM(JZCSY_YJ) jzcsyyj --净资产收益率预警（1是正常 0是预警）
         </if>
         <if test="type=='rjsr'">
+            SUM(YYSR) rjyysr,  --营业收入
+            SUM(RS) rs,    --人数
             SUM(RJSR) rjsr, --人均收入（劳动生产率）（按照指标大小顺序排序）
             SUM(RJSR_YJ) rjsryj --人均收入（劳动生产率）预警（1是正常 0是预警）
         </if>
         <if test="type=='rjlr'">
+            SUM(LRJE)  lrje,  --利润金额
+            SUM(RS)  rjrs,      --人数
             SUM(RJLR) rjlr, --人均利润（按照指标大小顺序排序）
             SUM(RJLR_YJ) rjlryj --人均利润预警（1是正常 0是预警）
         </if>
         <if test="type=='sczy'">
+            SUM(HANXSE) hanxse,      --海航地产销售额
+            SUM(QGXSE)  qgxse,        --全国地产销售额
             SUM(SCZY) sczy, --市场占有率（按照指标大小顺序排序）
             SUM(SCZY_YJ) sczyyj --市场占有率预警（1是正常 0是预警）
         </if>
@@ -66,30 +80,44 @@
         SELECT
         YEAR_MONTH yearMonth, --月份
         <if test="type=='mzcfz'">
+            SUM(M_FZZE) mfzze,        --负债总额
+            SUM(M_ZCZE) mzcze,        --资产总额
             SUM(M_ZCFZ) mzcfz, --资产负债率（按照指标大小顺序排序）
             SUM(M_ZCFZ_YJ) mzcfzyj --资产负债率预警（1是正常 0是预警）
         </if>
         <if test="type=='mzczz'">
+            SUM(M_YYSR) zcmyysr,      --营业收入
+            SUM(M_PJZZC) mpjzzc,    --平均总资产
             SUM(M_ZCZZ) mzczz, --资产周转率（按照指标大小顺序排序）
             SUM(M_ZCZZ_YJ) mzczzyj --资产周转率预警（1是正常 0是预警）
         </if>
         <if test="type=='mzblr'">
+            SUM(M_JLR)  mjlr,  --净利润
+            SUM(M_PJZB) mpjzb,  --平均资本
             SUM(M_ZBLR) mzblr, --资本利润率（按照指标大小顺序排序）
             SUM(M_ZBLR_YJ) mzblryj --资本利润率预警（1是正常 0是预警）
         </if>
         <if test="type=='mjzcsy'">
+            SUM(M_JLR)  jlr,            --净利润
+            SUM(M_PJSYZQY)  pjsyzqy,    --平均所有者权益
             SUM(M_JZCSY) mjzcsy, --净资产收益率（按照指标大小顺序排序）
             SUM(M_JZCSY_YJ) mjzcsyyj --净资产收益率预警（1是正常 0是预警）
         </if>
         <if test="type=='mrjsr'">
+            SUM(M_YYSR) myysr,  --营业收入
+            SUM(M_RS) mrs,    --人数
             SUM(M_RJSR) mrjsr, --人均收入（劳动生产率）（按照指标大小顺序排序）
             SUM(M_RJSR_YJ) mrjsryj --人均收入（劳动生产率）预警（1是正常 0是预警）
         </if>
         <if test="type=='mrjlr'">
+            SUM(M_LRJE)  mlrje,  --利润金额
+            SUM(M_RS)  rjmrs,      --人数
             SUM(M_RJLR) mrjlr, --人均利润（按照指标大小顺序排序）
             SUM(M_RJLR_YJ) mrjlryj --人均利润预警（1是正常 0是预警）
         </if>
         <if test="type=='msczy'">
+            SUM(M_HANXSE) mhanxse,      --海航地产销售额
+            SUM(M_QGXSE)  mqgxse,        --全国地产销售额
             SUM(M_SCZY) msczy, --市场占有率（按照指标大小顺序排序）
             SUM(M_SCZY_YJ) msczyyj --市场占有率预警（1是正常 0是预警）
         </if>
@@ -105,6 +133,7 @@
           AREA_NAME areaName,     --城市公司名称
           SUM(M_YSSRL) yssrl,         --预算收入目标完成率
           SUM(M_YSSRL_YJ) myssrlyj,  --预算收入目标完成率预警
+          SUM(M_YSSR) myysr,     --预算收入总额（总收入）
           SUM(XSSR) xssr,             --销售收入
 	      SUM(XSSRZB) xssrzb,             --销售收入占比
 	      SUM(ZCYSR) zcysr,             --自持有收入
@@ -121,6 +150,7 @@
           YEAR_MONTH yearMonth,
           SUM(M_YSSRL)  myssrl,         --预算收入目标完成率 （按照指标大小顺序排序）
           SUM(M_YSSRL_YJ) myssrlyj,  --预算收入目标完成率预警
+          SUM(M_YYSR)  myysr,                --预算收入(总收入)
           SUM(XSSR)   xssr,             --销售收入
           SUM(XSSRZB)  xssrzb,             --销售收入占比
           SUM(ZCYSR)  zcysr,             --自持有收入
@@ -138,8 +168,11 @@
           SUM(M_JZLRL) jzlrl,         --结转利润目标完成率
           SUM(M_JZLRL_YJ) mjzlrlyj,         --结转利润目标完成率预警（1是正常 0是预警）
           SUM(M_JZLR) jzlr,           --结转利润
-          SUM(M_JZLR_T) jzlrt       --结转利润目标
-        FROM DM_V_HAN_SY_SRLR_A
+          SUM(XSJZLR)    xsjzlr,         --结转利润销售收入
+          SUM(XSJZLRZB)  xsjzlrzb,     --结转利润销售占比
+          SUM(ZCYJZLR)  zcyjzlr,       --结转利润自持有收入
+          SUM(ZCYJZLRZB)  zcyjzlrzb    --结转利润自持有占比
+        FROM DM_V_HAN_SY_SRLR_A1
         WHERE YEAR_CODE = #{yearCode}
           AND MONTH_CODE = #{monthCode}
          GROUP BY AREA_CODE,AREA_NAME  ORDER BY jzlrl DESC
@@ -151,7 +184,11 @@
           SUM(M_JZLRL)  mjzlrl,         --结转利润目标完成率（按照指标大小顺序排序）
           SUM(M_JZLRL_YJ) mjzlrlyj,         --结转利润目标完成率预警（1是正常 0是预警）
           SUM(M_JZLR) mjzlr,           --结转利润
-          SUM(M_JZLR_T)  mjzlrt       --结转利润目标
+          SUM(M_JZLR_T)  mjzlrt,       --结转利润目标
+          SUM(XSJZLR)   xsjzlr,          --结转利润销售收入
+          SUM(XSJZLRZB) xsjzlrzb,       --结转利润销售占比
+          SUM(ZCYJZLR)  zcyjzlr,         --结转利润自持有收入
+          SUM(ZCYJZLRZB)  zcyjzlrzb       --结转利润自持有占比
         FROM DM_V_HAN_SY_SRLR_M
         WHERE YEAR_CODE = #{yearCode}
         GROUP BY YEAR_MONTH  ORDER BY yearMonth

@@ -21,7 +21,8 @@ import java.util.List;
 @Api(value = "指令中心弹出框", description = "指令中心弹出框")
 @RestController
 @RequestMapping("/api/commandCenterDialog")
-public class CommandCenterDialogController extends BaseController {
+public class
+CommandCenterDialogController extends BaseController {
 
     @Autowired
     private ICommandCenterDialogService iCommandCenterDialogService;
