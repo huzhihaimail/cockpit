@@ -195,6 +195,11 @@ var vm = new Vue({
                     return;
                 }
 
+                if(vm.model.cityName == null || vm.model.cityName ==  "") {
+                    vm.errorMessage = "请输入城市名称";
+                    return;
+                }
+
                 vm.model.id == null ? vm.doSave() : vm.doUpdate();
             }
 
