@@ -33,8 +33,13 @@ var showColumns = [
         width: "15%"
     }
     , {
-        field: "yyProjName",
-        title: "运营管理平台",
+        field: "jscProjType",
+        title: "项目类型",
+        width: "15%"
+    }
+    , {
+        field: "jscProjPhase",
+        title: "项目阶段",
         width: "15%"
     }
     , {
@@ -140,13 +145,23 @@ var vm = new Vue({
             , moduleName: "projmapping"
             // 定义城市区域
             , city: {}
-
+            //定义项目类型
+            ,projType: {}
+            //定义项目阶段
+            ,projPhase: {}
             , showSelect: true
         }
         , created: function () {
             //加载下拉框城市名称
             $.get(APP_NAME + "/sys/org/cityName", function (r) {
                 vm.city = r.page;
+            });
+            $.get(APP_NAME + "/sys/domain/type", function (r) {
+                vm.projType = r.page;
+            });
+
+            $.get(APP_NAME + "/sys/domain/stage", function (r) {
+                vm.projPhase = r.page;
             });
         }
 // 定义方法
@@ -181,9 +196,24 @@ var vm = new Vue({
                 $.get(APP_NAME + "/sys/org/cityName", function (r) {
                     vm.city = r.page;
                     // 刷新表格
-                    $(".selectpicker").selectpicker('val', '');
-                    $('.selectpicker').selectpicker('refresh');
+                    $("#cityId").selectpicker('val', '');
+                    $("#cityId").selectpicker('refresh');
                 });
+
+                $.get(APP_NAME + "/sys/domain/type", function (r) {
+                    vm.projType = r.page;
+                    // 刷新表格
+                    $("#typeId").selectpicker('val', '');
+                    $("#typeId").selectpicker('refresh');
+                });
+
+                $.get(APP_NAME + "/sys/domain/stage", function (r) {
+                    vm.projPhase = r.page;
+                    // 刷新表格
+                    $("#phaseId").selectpicker('val', '');
+                    $("#phaseId").selectpicker('refresh');
+                });
+
             }
 
             // 点击“确定”按钮
@@ -197,6 +227,16 @@ var vm = new Vue({
 
                 if(vm.model.cityName == null || vm.model.cityName.trim() ==  "") {
                     vm.errorMessage = "请输入城市名称";
+                    return;
+                }
+
+                if(vm.model.jscProjType == null || vm.model.jscProjType.trim() ==  "") {
+                    vm.errorMessage = "请选择项目类型";
+                    return;
+                }
+
+                if(vm.model.jscProjPhase == null || vm.model.jscProjPhase.trim() ==  "") {
+                    vm.errorMessage = "请选择项目阶段";
                     return;
                 }
 
@@ -256,9 +296,16 @@ var vm = new Vue({
                     vm.title = PAGE_UPDATE_TITLE;
                     vm.model = r.model;
                     var cityName = vm.model.cityName;
+                    var jscProjType = vm.model.jscProjType;
+                    var jscProjPhase = vm.model.jscProjPhase;
+
                     //编辑修改时设置默认选中
-                    $(".selectpicker").selectpicker('val', cityName);//默认选中
-                    $(".selectpicker").selectpicker('refresh');
+                    $("#cityId").selectpicker('val', cityName);//默认选中
+                    $("#typeId").selectpicker('val', jscProjType);
+                    $("#phaseId").selectpicker('val', jscProjPhase);
+                    $("#cityId").selectpicker('refresh');
+                    $("#typeId").selectpicker('refresh');
+                    $("#phaseId").selectpicker('refresh');
                 });
             }
 

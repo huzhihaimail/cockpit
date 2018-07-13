@@ -96,7 +96,7 @@
                 <div class="form-group">
                     <div class="col-sm-3 control-label">城市名称</div>
                     <div class="col-sm-6" v-show="showSelect">
-                        <select class="selectpicker form-control" data-live-search="true"
+                        <select id="cityId" class="selectpicker form-control" data-live-search="true"
                                 data-live-search-placeholder="输入城市名称" title="请选择城市名称" v-model="model.cityName" >
                             <option v-for="(item,index) in city" :id="item.id">{{item.orgName}}</option>
                         </select>
@@ -117,6 +117,27 @@
                         <input type="text" class="form-control" v-model="model.jscProjName" placeholder="请输入驾驶舱项目名称"/>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <div class="col-sm-3 control-label">项目类型</div>
+                    <div class="col-sm-6">
+                        <select id="typeId" class="selectpicker form-control" data-live-search="true"
+                                data-live-search-placeholder="输入项目类型" title="请选择项目类型" v-model="model.jscProjType">
+                            <option v-for="item in projType">{{item}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-3 control-label">项目阶段</div>
+                    <div class="col-sm-6">
+                        <select id="phaseId" class="selectpicker form-control" data-live-search="true"
+                                data-live-search-placeholder="输入项目阶段" title="请选择项目阶段" v-model="model.jscProjPhase">
+                            <option v-for="item in projPhase">{{item}}</option>
+                        </select>
+                    </div>
+                </div>
+
 
                 <div class="form-group">
                     <div class="col-sm-3 control-label">运营管理平台</div>

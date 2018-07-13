@@ -33,6 +33,10 @@ public class SysProjMapping extends BaseModel {
 
     private Integer stId;
 
+    private String jscProjType;
+
+    private String jscProjPhase;
+
     private Integer createUser;
 
     private String createUserName;
@@ -173,5 +177,21 @@ public class SysProjMapping extends BaseModel {
 
     public void setCreateUserName(String createUserName) {
         this.createUserName = createUserName;
+    }
+
+    public String getJscProjType() {
+        return jscProjType;
+    }
+
+    public void setJscProjType(String jscProjType) {
+        this.jscProjType = jscProjType;
+    }
+
+    public String getJscProjPhase() {
+        return jscProjPhase;
+    }
+
+    public void setJscProjPhase(String jscProjPhase) {
+        this.jscProjPhase = jscProjPhase;
     }
 }

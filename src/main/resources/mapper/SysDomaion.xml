@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 配置dao接口路径-->
+<mapper namespace="cn.com.njdhy.muscle.triceps.dao.SysDomainDao">
+
+    <!-- type配置model层实体类名-->
+    <resultMap id="SysDomainMap" type="SysDomain">
+
+        <!-- 配置实体和数据库列的对应关系，property：实体属性名；column：数据库表列名；-->
+        <result property="doMainId" column="DOMAIN_ID"></result>
+        <result property="doMainDesc" column="DOMAIN_DESC"></result>
+        <result property="doMainValue" column="DOMAIN_VALUE"></result>
+        <result property="seq" column="SEQ"></result>
+        <result property="stId" column="ST_ID"></result>
+    </resultMap>
+
+
+    <!-- 配置表名 -->
+    <sql id="tableName">
+        sys_domain
+    </sql>
+
+    <!-- for insert columns -->
+    <sql id="columns">
+      DOMAIN_ID, DOMAIN_DESC, DOMAIN_VALUE, SEQ, ST_ID
+    </sql>
+
+    <!-- for insert value -->
+    <sql id="values">
+      #{doMainId}, #{doMainDesc}, #{doMainValue}, #{seq}, #{stId}
+    </sql>
+
+    <!-- for update set -->
+    <sql id="updates">
+        DOMAIN_ID=#{doMainId}, DOMAIN_DESC=#{doMainDesc}, DOMAIN_VALUE=#{doMainValue}, SEQ=#{seq}, ST_ID=#{stId}
+    </sql>
+
+
+    <!-- 根据条件查询 -->
+    <select id="getDomainValue" resultType="java.lang.String" parameterType="map">
+        SELECT DOMAIN_VALUE FROM sys_domain WHERE 1=1 and DOMAIN_ID = #{doMainId} AND ST_ID = #{stId} ORDER BY seq
+    </select>
+
+
+</mapper>
+
