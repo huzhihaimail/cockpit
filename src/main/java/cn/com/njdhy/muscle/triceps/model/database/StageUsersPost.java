@@ -37,6 +37,12 @@ public class StageUsersPost {
     @ApiModelProperty(value = "管理级别名称", example = "管理级别名称")
     private String vcAdminLevelName;
 
+    @ApiModelProperty(value = "是否有效", example = "是否有效")
+    private String iflag;
+
+    @ApiModelProperty(value = "是否主职", example = "是否主职")
+    private String cIfMost;
+
     public String getiPostRecordID() {
         return iPostRecordID;
     }
@@ -107,5 +113,21 @@ public class StageUsersPost {
 
     public void setVcAdminLevelName(String vcAdminLevelName) {
         this.vcAdminLevelName = vcAdminLevelName;
+    }
+
+    public String getIflag() {
+        return iflag;
+    }
+
+    public void setIflag(String iflag) {
+        this.iflag = iflag;
+    }
+
+    public String getcIfMost() {
+        return cIfMost;
+    }
+
+    public void setcIfMost(String cIfMost) {
+        this.cIfMost = cIfMost;
     }
 }

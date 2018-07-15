@@ -1,5 +1,6 @@
 package cn.com.njdhy.muscle.triceps.service.cockpit.esb;
 
+
 import cn.com.njdhy.muscle.triceps.dao.StageMyXSHKMonthDao;
 import cn.com.njdhy.muscle.triceps.model.database.StageMyXSHKMonth;
 import com.alibaba.fastjson.JSONArray;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -66,24 +66,31 @@ public class StageMyXSHKMonthService {
                 JSONArray jsonArray = (JSONArray) msgResponse.get("Data");
                 List<StageMyXSHKMonth> list = new ArrayList<StageMyXSHKMonth>();
                 for (int i = 0;i<jsonArray.size();i++) {
-                    JSONObject StageMyXSHKMonthJson = (JSONObject) jsonArray.get(i);
-                    String projectName = (String) StageMyXSHKMonthJson.get("projname");
-                    String pdName = (String) StageMyXSHKMonthJson.get("BProductTypeShortName");
-                    //subpdName
-                    String dataDate = (String) StageMyXSHKMonthJson.get("yearmonth");
-                    String rgCnt = (String) StageMyXSHKMonthJson.get("sjsp_orderts");
-                    String rgArea = (String) StageMyXSHKMonthJson.get("sjsp_orderarea");
-                    String rgAmt = (String) StageMyXSHKMonthJson.get("sjsp_orderamount");
-                    String qyAmt = (String) StageMyXSHKMonthJson.get("sjsp_contractamount");
-                    String qyCntBudget = (String) StageMyXSHKMonthJson.get("yssp_orderts");
-                    String qyAreaBudget = (String) StageMyXSHKMonthJson.get("yssp_orderarea");
-                    String qyAmtBudget = (String) StageMyXSHKMonthJson.get("yssp_orderamount");
-                    //hkAmtBudget
-                    String hkAmt = (String) StageMyXSHKMonthJson.get("sjsp_getinamount");
+                    JSONObject stageMyXSHKMonthJson = (JSONObject) jsonArray.get(i);
+                    String projectCode = (String) stageMyXSHKMonthJson.get("projguid");
+                    String projectName = (String) stageMyXSHKMonthJson.get("projname");
+                    String pdCode = (String) stageMyXSHKMonthJson.get("FirstCode");//一级级业态编码
+                    String pdName = (String) stageMyXSHKMonthJson.get("FirstName");//一级级业态编码
+                    String subpdCode = (String) stageMyXSHKMonthJson.get("BProductTypeShortCode");//二级业态编码
+                    String subpdName = (String) stageMyXSHKMonthJson.get("BProductTypeShortName");//二级业态名称
+                    String dataDate = (String) stageMyXSHKMonthJson.get("yearmonth");
+                    String rgCnt = (String) stageMyXSHKMonthJson.get("sjsp_orderts");
+                    String rgArea = (String) stageMyXSHKMonthJson.get("sjsp_orderarea");
+                    String rgAmt = (String) stageMyXSHKMonthJson.get("sjsp_orderamount");
+                    String qyAmt = (String) stageMyXSHKMonthJson.get("sjsp_contractamount");
+                    String qyCntBudget = (String) stageMyXSHKMonthJson.get("yssp_orderts");
+                    String qyAreaBudget = (String) stageMyXSHKMonthJson.get("yssp_orderarea");
+                    String qyAmtBudget = (String) stageMyXSHKMonthJson.get("yssp_orderamount");
+                    String hkAmtBudget = (String) stageMyXSHKMonthJson.get("yssp_ordergetamount");//回款预算金额
+                    String hkAmt = (String) stageMyXSHKMonthJson.get("sjsp_getinamount");
 
                     StageMyXSHKMonth stageMyXSHKMonth = new StageMyXSHKMonth();
+                    stageMyXSHKMonth.setProjectCode(projectCode);
                     stageMyXSHKMonth.setProjectName(projectName);
+                    stageMyXSHKMonth.setPdCode(pdCode);
                     stageMyXSHKMonth.setPdName(pdName);
+                    stageMyXSHKMonth.setSubpdCode(subpdCode);
+                    stageMyXSHKMonth.setSubpdName(subpdName);
                     stageMyXSHKMonth.setDataDate(dataDate);
                     stageMyXSHKMonth.setRgCnt(rgCnt);
                     stageMyXSHKMonth.setRgArea(rgArea);
@@ -92,6 +99,7 @@ public class StageMyXSHKMonthService {
                     stageMyXSHKMonth.setQyCntBudget(qyCntBudget);
                     stageMyXSHKMonth.setQyAreaBudget(qyAreaBudget);
                     stageMyXSHKMonth.setQyAmtBudget(qyAmtBudget);
+                    stageMyXSHKMonth.setHkAmtBudget(hkAmtBudget);
                     stageMyXSHKMonth.setHkAmt(hkAmt);
                     stageMyXSHKMonth.setEtlTime(new Date());
                     list.add(stageMyXSHKMonth);

@@ -13,6 +13,8 @@
 										  vcOrganID,
 										  vcPostID,
 										  vcPostName,
+										  iflag,
+										  cifmost,
 										  etl_time)
 										values(
 										#{cIfMorB},
@@ -24,6 +26,8 @@
                                         #{vcOrganID},
                                         #{vcPostID},
                                         #{vcPostName},
+                                        #{iflag},
+                                        #{cIfMost},
                                          getdate()
 										)
     </insert>

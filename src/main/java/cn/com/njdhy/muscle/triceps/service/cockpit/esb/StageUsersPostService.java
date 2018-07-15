@@ -32,7 +32,7 @@ public class StageUsersPostService {
     private String URL;//API服务接口请求调用地址
 
     @Value("${haihang.esb.hr.method.empPostRecord}")
-    private String method;//API接口名称
+    private String method ;//API接口名称
 
     @Value("${haihang.esb.hr.appsecret}")
     private String Appsecret;//app密钥
@@ -50,7 +50,7 @@ public class StageUsersPostService {
                 .addTextSysPara("Format", "json")
                 .addTextAppPara("StartDate", "2000-01-01")
                 .addTextAppPara("EndDate", dateTimeformat.format(new Date()))
-                .addTextAppPara("OrganID", "0-1-855579-856150-850766-")
+                .addTextAppPara("OrganID","0-1-855579-856150-850766-")
                 .get();
 
         JSONObject resJson = JSONObject.parseObject(res3);
@@ -61,7 +61,7 @@ public class StageUsersPostService {
             case "-1":
                 String errorCode = (String) responseInfo.get("ErrorCode");
                 String errorInfo = (String) responseInfo.get("ErrorInfo");
-                logger.error("调用ESB接口发送异常,错误信息 : {} , 错误代码 : {}", errorInfo, errorCode);
+                logger.error("调用ESB接口发送异常,错误信息 : {} , 错误代码 : {}",errorInfo,errorCode);
                 break;
 
             case "0":
@@ -72,8 +72,10 @@ public class StageUsersPostService {
                 JSONObject data = (JSONObject) msgResponse.get("Data");
                 JSONArray jsonArray = (JSONArray) data.get("NewDataSet");
                 List<StageUsersPost> list = new ArrayList<StageUsersPost>();
-                for (int i = 0; i < jsonArray.size(); i++) {
+                for (int i = 0;i<jsonArray.size();i++) {
                     JSONObject dimUsersPostJson = (JSONObject) jsonArray.get(i);
+                    String cIfMost = (String) dimUsersPostJson.get("cIfMost");
+                    String iflag = (String) dimUsersPostJson.get("iflag");
                     String iPostRecordID = (String) dimUsersPostJson.get("iPostRecordID");
                     String nNodeID = (String) dimUsersPostJson.get("nNodeID");
                     String vcEmployeeID = (String) dimUsersPostJson.get("vcEmployeeID");
@@ -85,6 +87,8 @@ public class StageUsersPostService {
                     String vcAdminLevelName = (String) dimUsersPostJson.get("vcAdminLevelName");
 
                     StageUsersPost stageUsersPost = new StageUsersPost();
+                    stageUsersPost.setcIfMost(cIfMost);
+                    stageUsersPost.setIflag(iflag);
                     stageUsersPost.setiPostRecordID(iPostRecordID);
                     stageUsersPost.setnNodeID(nNodeID);
                     stageUsersPost.setVcEmployeeID(vcEmployeeID);
@@ -96,7 +100,7 @@ public class StageUsersPostService {
                     stageUsersPost.setVcAdminLevelName(vcAdminLevelName);
                     list.add(stageUsersPost);
                 }
-                list.forEach(stageUsersPost -> this.insert(stageUsersPost));
+                list.forEach(stageUsersPost -> this.insert(stageUsersPost) );
                 break;
 
             default:

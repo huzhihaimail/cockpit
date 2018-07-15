@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +24,7 @@ public class StageMyXSHKYearService {
     private String URL;//API服务接口请求调用地址
 
     @Value("${haihang.esb.mingyuan.method.stageMyXSHKYear}")
-    private String method;//API接口名称
+    private String method ;//API接口名称
 
     @Value("${haihang.esb.mingyuan.appsecret}")
     private String Appsecret;//app密钥
@@ -54,7 +53,7 @@ public class StageMyXSHKYearService {
             case "-1":
                 String errorCode = (String) responseInfo.get("ErrorCode");
                 String errorInfo = (String) responseInfo.get("ErrorInfo");
-                logger.error("调用ESB接口发送异常,错误信息 : {} , 错误代码 : {}", errorInfo, errorCode);
+                logger.error("调用ESB接口发送异常,错误信息 : {} , 错误代码 : {}",errorInfo,errorCode);
                 break;
 
             case "0":
@@ -64,25 +63,32 @@ public class StageMyXSHKYearService {
             case "1":
                 JSONArray jsonArray = (JSONArray) msgResponse.get("Data");
                 List<StageMyXSHKYear> list = new ArrayList<StageMyXSHKYear>();
-                for (int i = 0; i < jsonArray.size(); i++) {
-                    JSONObject StageMyXSHKYearJson = (JSONObject) jsonArray.get(i);
-                    String projectName = (String) StageMyXSHKYearJson.get("projname");
-                    String pdName = (String) StageMyXSHKYearJson.get("BProductTypeShortName");
-                    //subpdName
-                    String dataDate = (String) StageMyXSHKYearJson.get("yearmonth");
-                    String rgCnt = (String) StageMyXSHKYearJson.get("sjsp_orderts");
-                    String rgArea = (String) StageMyXSHKYearJson.get("sjsp_orderarea");
-                    String rgAmt = (String) StageMyXSHKYearJson.get("sjsp_orderamount");
-                    String qyAmt = (String) StageMyXSHKYearJson.get("sjsp_contractamount");
-                    String qyCntBudget = (String) StageMyXSHKYearJson.get("yssp_orderts");
-                    String qyAreaBudget = (String) StageMyXSHKYearJson.get("yssp_orderarea");
-                    String qyAmtBudget = (String) StageMyXSHKYearJson.get("yssp_orderamount");
-                    //hkAmtBudget
-                    String hkAmt = (String) StageMyXSHKYearJson.get("sjsp_getinamount");
+                for (int i = 0;i<jsonArray.size();i++) {
+                    JSONObject stageMyXSHKYearJson = (JSONObject) jsonArray.get(i);
+                    String projectCode = (String) stageMyXSHKYearJson.get("projguid");
+                    String projectName = (String) stageMyXSHKYearJson.get("projname");
+                    String pdCode = (String) stageMyXSHKYearJson.get("FirstCode");//一级级业态编码
+                    String pdName = (String) stageMyXSHKYearJson.get("FirstName");//一级级业态编码
+                    String subpdCode = (String) stageMyXSHKYearJson.get("BProductTypeShortCode");//二级业态编码
+                    String subpdName = (String) stageMyXSHKYearJson.get("BProductTypeShortName");//二级业态名称
+                    String dataDate = (String) stageMyXSHKYearJson.get("yearmonth");
+                    String rgCnt = (String) stageMyXSHKYearJson.get("sjsp_orderts");
+                    String rgArea = (String) stageMyXSHKYearJson.get("sjsp_orderarea");
+                    String rgAmt = (String) stageMyXSHKYearJson.get("sjsp_orderamount");
+                    String qyAmt = (String) stageMyXSHKYearJson.get("sjsp_contractamount");
+                    String qyCntBudget = (String) stageMyXSHKYearJson.get("yssp_orderts");
+                    String qyAreaBudget = (String) stageMyXSHKYearJson.get("yssp_orderarea");
+                    String qyAmtBudget = (String) stageMyXSHKYearJson.get("yssp_orderamount");
+                    String hkAmtBudget = (String) stageMyXSHKYearJson.get("yssp_ordergetamount");//回款预算金额
+                    String hkAmt = (String) stageMyXSHKYearJson.get("sjsp_getinamount");
 
                     StageMyXSHKYear stageMyXSHKYear = new StageMyXSHKYear();
+                    stageMyXSHKYear.setProjectCode(projectCode);
                     stageMyXSHKYear.setProjectName(projectName);
+                    stageMyXSHKYear.setPdCode(pdCode);
                     stageMyXSHKYear.setPdName(pdName);
+                    stageMyXSHKYear.setSubpdCode(subpdCode);
+                    stageMyXSHKYear.setSubpdName(subpdName);
                     stageMyXSHKYear.setDataDate(dataDate);
                     stageMyXSHKYear.setRgCnt(rgCnt);
                     stageMyXSHKYear.setRgArea(rgArea);
@@ -92,10 +98,11 @@ public class StageMyXSHKYearService {
                     stageMyXSHKYear.setQyAreaBudget(qyAreaBudget);
                     stageMyXSHKYear.setQyAmtBudget(qyAmtBudget);
                     stageMyXSHKYear.setHkAmt(hkAmt);
+                    stageMyXSHKYear.setHkAmtBudget(hkAmtBudget);
                     stageMyXSHKYear.setEtlTime(new Date());
                     list.add(stageMyXSHKYear);
                 }
-                list.forEach(stageMyXSHKYear -> this.insert(stageMyXSHKYear));
+                list.forEach( stageMyXSHKYear -> this.insert(stageMyXSHKYear) );
                 break;
 
             default:

@@ -3,9 +3,13 @@
 <mapper namespace="cn.com.njdhy.muscle.triceps.dao.StageMyXSHKMonthDao">
 
     <insert id="insert" parameterType="StageMyXSHKMonth" >
-        insert into STAGE_MY_XSHK_MONTH (PROJECT_NAME,
-                                          PD_NAME,
-										  SUB_PD_NAME,
+        insert into STAGE_MY_XSHK_MONTH (
+                                        PROJECT_CODE,
+                                        PROJECT_NAME,
+                                        PD_CODE,
+                                        PD_NAME,
+                                        SUB_PD_CODE,
+										SUB_PD_NAME,
 										DATA_DATE,
 										RG_CNT,
 										RG_AREA,
@@ -18,9 +22,12 @@
 										HK_AMT,
 										etl_time)
 										values(
-									   #{projectName},
-                                      #{pdName},
-                                      #{subpdName},
+										#{projectCode},
+									    #{projectName},
+									    #{pdCode},
+                                        #{pdName},
+                                        #{subpdCode},
+                                        #{subpdName},
                                         #{dataDate},
                                         #{rgCnt},
                                         #{rgArea},

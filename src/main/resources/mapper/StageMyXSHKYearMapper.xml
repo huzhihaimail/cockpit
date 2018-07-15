@@ -3,24 +3,31 @@
 <mapper namespace="cn.com.njdhy.muscle.triceps.dao.StageMyXSHKYearDao">
 
     <insert id="insert" parameterType="StageMyXSHKYear" >
-        insert into STAGE_MY_XSHK_YEAR (PROJECT_NAME,
+        insert into STAGE_MY_XSHK_YEAR (
+                                          project_code
+                                          PROJECT_NAME,
+                                          pd_code,
                                           PD_NAME,
+                                          SUB_PD_code,
 										  SUB_PD_NAME,
-										DATA_DATE,
-										RG_CNT,
-										RG_AREA,
-										RG_AMT,
-										QY_AMT,
-										QY_CNT_BUDGET,
-										QY_AREA_BUDGET,
-										QY_AMT_BUDGET,
-										HK_AMT_BUDGET,
-										HK_AMT,
-										etl_time)
+										  DATA_DATE,
+										  RG_CNT,
+                                          RG_AREA,
+                                          RG_AMT,
+                                          QY_AMT,
+                                          QY_CNT_BUDGET,
+                                          QY_AREA_BUDGET,
+                                          QY_AMT_BUDGET,
+                                          HK_AMT_BUDGET,
+                                          HK_AMT,
+                                          etl_time)
 										values(
-									   #{projectName},
-                                      #{pdName},
-                                      #{subpdName},
+										#{projectCode},
+									    #{projectName},
+									    #{pdCode},
+                                        #{pdName},
+                                        #{subpdCode},
+                                        #{subpdName},
                                         #{dataDate},
                                         #{rgCnt},
                                         #{rgArea},

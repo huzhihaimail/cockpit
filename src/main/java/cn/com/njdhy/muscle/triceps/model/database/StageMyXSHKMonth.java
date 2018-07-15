@@ -10,11 +10,21 @@ import java.util.Date;
  */
 @ApiModel
 public class StageMyXSHKMonth {
+
+    @ApiModelProperty(value = "项目编码", example = "项目编码")
+    private String projectCode;
+
     @ApiModelProperty(value = "项目名称", example = "项目名称")
     private String projectName;
 
-    @ApiModelProperty(value = "业态", example = "业态")
+    @ApiModelProperty(value = "一级业态编码", example = "一级业态编码")
+    private String pdCode;
+
+    @ApiModelProperty(value = "一级业态", example = "一级业态")
     private String pdName;
+
+    @ApiModelProperty(value = "二级业态编码", example = "二级业态编码")
+    private String subpdCode;
 
     @ApiModelProperty(value = "二级业态", example = "二级业态")
     private String subpdName;
@@ -162,5 +172,29 @@ public class StageMyXSHKMonth {
 
     public void setEtlTime(Date etlTime) {
         this.etlTime = etlTime;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
+
+    public String getPdCode() {
+        return pdCode;
+    }
+
+    public void setPdCode(String pdCode) {
+        this.pdCode = pdCode;
+    }
+
+    public String getSubpdCode() {
+        return subpdCode;
+    }
+
+    public void setSubpdCode(String subpdCode) {
+        this.subpdCode = subpdCode;
     }
 }
