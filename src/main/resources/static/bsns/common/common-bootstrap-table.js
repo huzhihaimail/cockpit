@@ -69,9 +69,9 @@ BootStrapTable.prototype.initBootstrapTable = function (columns, url, queryOpt) 
         , paginationLoop: false // 分页不循环
         , clickToSelect: true // 点击选中一行
         , checkboxHeader: true // 显示和隐藏多选checkbox
-        , sortable: true //隐藏和显示所有排序按钮
+        , sortable: false //隐藏和显示所有排序按钮
         , sortOrder: "asc" // 排序类型
-        , showColumns: true
+        , showColumns: false
         //设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder
         //设置为limit可以获取limit, offset, search, sort, order
         , queryParamsType: "undefined"
