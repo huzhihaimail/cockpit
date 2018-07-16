@@ -1,6 +1,7 @@
 package com.hnagroup;
 
 import cn.com.njdhy.muscle.triceps.Application;
+import cn.com.njdhy.muscle.triceps.model.database.StageMyQyyqwhk;
 import cn.com.njdhy.muscle.triceps.service.cockpit.esb.*;
 import com.opendata.api.ODPRequest;
 import org.apache.commons.io.FileUtils;
@@ -32,13 +33,13 @@ public class EsbTest {
     private static DateFormat dateTimeformat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Autowired
-    RestTemplate restTemplate;
-    @Autowired
     StageMyXSHKYearService stageMyXSHKYearService;
     @Autowired
     StageMyXSHKMonthService stageMyXSHKMonthService;
     @Autowired
     StageMyXSHKDailyService stageMyXSHKDailyService;
+    @Autowired
+    StageMyQyyqwhkService stageMyQyyqwhkService;
     @Autowired
     StageOrgService stageOrgService;
     @Autowired
@@ -62,6 +63,11 @@ public class EsbTest {
 //    public void insertDailyTest() throws IOException {
 //        stageMyXSHKDailyService.getStageMyXSHKDaily();
 //    }
+
+    @Test
+    public void insertQyyqwhkTest() throws IOException {
+        stageMyQyyqwhkService.getStageMyQyyqwhk();
+    }
 
 
     @Test
