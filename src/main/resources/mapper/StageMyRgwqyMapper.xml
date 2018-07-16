@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.njdhy.muscle.triceps.dao.StageMyRgwqyDao">
+
+    <insert id="insert" parameterType="StageMyRgwqy" >
+        insert into STAGE_MY_RGWQY (
+                                        PROJECT_NAME,
+                                        PD_NAME,
+                                        SUB_PD_NAME,
+                                        DATA_DATE,
+                                        C_RG_CNT,
+                                        C_RG_AREA,
+                                        C_RG_AMT,
+                                        C_RG_HK,
+                                        C_RG_WHK,
+                                        D_RG_CNT,
+                                        D_RG_AREA,
+                                        D_RG_AMT,
+                                        D_RG_HK,
+                                        D_RG_WHK,
+                                        E_RG_CNT,
+                                        E_RG_AREA,
+                                        E_RG_AMT,
+                                        E_RG_HK,
+                                        E_RG_WHK,
+										etl_time)
+										values(
+										#{projectName},
+									    #{pdName},
+									    #{subPdName},
+									    #{dataDate},
+									    #{cRgCnt},
+									    #{cRgArea},
+									    #{cRgAmt},
+									    #{cRgHk},
+									    #{cRgWhk},
+									    #{dRgCnt},
+									    #{dRgArea},
+									    #{dRgAmt},
+									    #{dRgHk},
+									    #{dRgWhk},
+									    #{eRgCnt},
+									    #{eRgArea},
+									    #{eRgAmt},
+									    #{eRgHk},
+									    #{eRgWhk},
+										getdate()
+										)
+    </insert>
+
+
+</mapper>
