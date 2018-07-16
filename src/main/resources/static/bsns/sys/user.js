@@ -107,6 +107,7 @@ var vm = new Vue({
         , roles: [] // 加载角色列表对象
         , userRoles: [] // 用户选择的角色
         , permission: []
+        , cityInfo:false
 
         // 定义模块名称
         , moduleName: "user"
@@ -135,9 +136,6 @@ var vm = new Vue({
             // 4. 加载角色列表
             vm.loadRoles();
 
-
-            //5.加载树控件
-            // vm.loadTreeCompany('add');
         }
 
         // 点击“确定”按钮
@@ -346,16 +344,16 @@ var vm = new Vue({
             }
             // 加载角色列表
             vm.loadRoles();
-
+            $.ajaxSettings.async = false;
             $.get(APP_NAME + "/sys/" + vm.moduleName + "/" + ids[0], function (r) {
                 vm.show = false;
                 vm.title = PAGE_UPDATE_TITLE;
                 vm.model = r.model;
+                vm.model.userLevel=r.model.userLevel;
                 vm.userRoles = r.model.rolesList;
             });
 
-            //加载城市公司信息
-            // vm.loadTreeCompany('update');
+            this.$options.methods.changeUserLevel();
 
         }
         // 执行修改操作
@@ -451,36 +449,6 @@ var vm = new Vue({
             });
         }
         ,
-        loadTreeCompany: function (type) {
-            function getMenuJson(url, data) {
-                var zNodes;
-                var user = {id: data};
-                $.ajax({
-                    url: url,
-                    dataType: 'JSON',
-                    type: 'POST',
-                    data: user,
-                    async: false,
-                    success: function (data, status) {
-                        var nodes = JSON.stringify(data.model);
-                        zNodes = eval(nodes);
-                    }
-                });
-                return zNodes;
-            }
-
-            if (type == 'add') {
-                var data = null;
-                ztree = $.fn.zTree.init($("#menuTree"), setting, getMenuJson(APP_NAME + "/sys/org/queryOrgTreeForUser", data));
-            }
-            else if (type == 'update') {
-                var ids = bsTable.getMultiRowIds();
-                var data = ids[0];
-                ztree = $.fn.zTree.init($("#menuTree"), setting, getMenuJson(APP_NAME + "/sys/org/queryOrgTreeForUpdateUser", data));
-            }
-
-        }
-        ,
         initPassword: function () {
             // 获取所选择选择数据行的ID（可能选择多行）
             var ids = bsTable.getMultiRowIds();
@@ -527,12 +495,20 @@ var vm = new Vue({
             var id = ids[0];
 
             if (id == null || id == "") {
+                if (vm.model.userLevel==2||vm.model.userLevel==3){
+                    vm.cityInfo=true;
+                }else{
+                    vm.cityInfo=false;
+                }
                 var user = {userLevel: vm.model.userLevel};
                 ztree = $.fn.zTree.init($("#menuTree"), setting, getMenuJson(APP_NAME + "/sys/org/queryOrgTreeForUser", user));
             }
             else {
-                var ids = bsTable.getMultiRowIds();
-                var id = ids[0];
+                if (vm.model.userLevel==2||vm.model.userLevel==3){
+                    vm.cityInfo=true;
+                }else{
+                    vm.cityInfo=false;
+                }
                 var user = {userLevel: vm.model.userLevel,id:id};
                 ztree = $.fn.zTree.init($("#menuTree"), setting, getMenuJson(APP_NAME + "/sys/org/queryOrgTreeForUpdateUser", user));
             }
