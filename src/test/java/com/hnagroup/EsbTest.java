@@ -64,10 +64,10 @@ public class EsbTest {
 //        stageMyXSHKDailyService.getStageMyXSHKDaily();
 //    }
 
-    @Test
-    public void insertQyyqwhkTest() throws IOException {
-        stageMyQyyqwhkService.getStageMyQyyqwhk();
-    }
+//    @Test
+//    public void insertQyyqwhkTest() throws IOException {
+//        stageMyQyyqwhkService.getStageMyQyyqwhk();
+//    }
 
 
     @Test
