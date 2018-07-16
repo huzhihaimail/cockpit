@@ -20,7 +20,6 @@
 										QY_AMT_BUDGET,
 										HK_AMT_BUDGET,
 										HK_AMT,
-										DATA_DATE,
 										etl_time)
 										values(
 										#{projectCode},
@@ -39,7 +38,6 @@
                                         #{qyAmtBudget},
                                         #{hkAmtBudget},
                                         #{hkAmt},
-                                        #{dataDate},
 										getdate()
 										)
     </insert>

@@ -4,7 +4,7 @@
 
     <insert id="insert" parameterType="StageMyXSHKYear" >
         insert into STAGE_MY_XSHK_YEAR (
-                                          project_code
+                                          project_code,
                                           PROJECT_NAME,
                                           pd_code,
                                           PD_NAME,

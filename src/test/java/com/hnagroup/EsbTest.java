@@ -38,6 +38,8 @@ public class EsbTest {
     @Autowired
     StageMyXSHKMonthService stageMyXSHKMonthService;
     @Autowired
+    StageMyXSHKDailyService stageMyXSHKDailyService;
+    @Autowired
     StageOrgService stageOrgService;
     @Autowired
     StageUsersService stageUsersService;
@@ -47,13 +49,18 @@ public class EsbTest {
     StageUsersPostService stageUsersPostService;
 
 //    @Test
-//    public void inserYearTest(){
+//    public void inserYearTest() throws IOException {
 //        stageMyXSHKYearService.getStageMyXSHKYear();
 //    }
 
 //    @Test
-//    public void insertMonthTest() {
+//    public void insertMonthTest() throws IOException {
 //        stageMyXSHKMonthService.getStageMyXSHKMonth();
+//    }
+
+//    @Test
+//    public void insertDailyTest() throws IOException {
+//        stageMyXSHKDailyService.getStageMyXSHKDaily();
 //    }
 
 
@@ -94,15 +101,15 @@ public class EsbTest {
 
         //海航员工任职记录信息
         //stageUsersPostService.getEmpPostRecord();
-        String res3 = new ODPRequest(URL, Appsecret)
-                .addTextSysPara("Method", "EHR_HRMService_GetEmpPostRecord")
-                .addTextSysPara("AccessToken", AccessToken)//应用票据
-                .addTextSysPara("Format", "json")
-                .addTextAppPara("StartDate", "2000-01-01")
-                .addTextAppPara("EndDate", dateTimeformat.format(new Date()))
-                .addTextAppPara("OrganID","0-1-855579-856150-850766-")
-                .get();
-        FileUtils.writeStringToFile(new File("C:/Users/Administrator/Desktop/rzjl.txt"),res3);
+//        String res3 = new ODPRequest(URL, Appsecret)
+//                .addTextSysPara("Method", "EHR_HRMService_GetEmpPostRecord")
+//                .addTextSysPara("AccessToken", AccessToken)//应用票据
+//                .addTextSysPara("Format", "json")
+//                .addTextAppPara("StartDate", "2000-01-01")
+//                .addTextAppPara("EndDate", dateTimeformat.format(new Date()))
+//                .addTextAppPara("OrganID","0-1-855579-856150-850766-")
+//                .get();
+//        FileUtils.writeStringToFile(new File("C:/Users/Administrator/Desktop/rzjl.txt"),res3);
 //        JSONObject resJson = JSONObject.parseObject(res3);
 //        JSONObject msgResponse = (JSONObject) resJson.get("MsgResponse");
 //        JSONObject data = (JSONObject) msgResponse.get("Data");
