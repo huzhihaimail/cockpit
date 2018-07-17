@@ -79,14 +79,14 @@
 
     <!-- 一层-明细页面-年度-->
     <select id="getYearDetailPlan" resultType="DetailPlan" parameterType="java.util.Map">
-        SELECT
+        SELECT top 10
         ct.project_code projectCode, --项目编码
         ct.project_name projectName, --项目名称
         ct.Node_CODE nodeCode, --里程碑节点编码
         ct.NODE_NAME nodeName, --里程碑名称
         ct.P_END_DATE pEndDate, --计划完成时间
         ct.A_END_DATE aEndDate, --实际完成时间
-        ct.YJ yj--预警
+        ct.YJ yj --预警
         FROM dbo.DM_V_HAN_JH_MX_M ct
         WHERE 1=1
         <if test="yearCode!=null and yearCode!=''">
