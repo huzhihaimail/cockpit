@@ -79,7 +79,7 @@
 
     <!-- 一层-明细页面-年度-->
     <select id="getYearDetailPlan" resultType="DetailPlan" parameterType="java.util.Map">
-        SELECT top 10
+        SELECT
         ct.project_code projectCode, --项目编码
         ct.project_name projectName, --项目名称
         ct.Node_CODE nodeCode, --里程碑节点编码
