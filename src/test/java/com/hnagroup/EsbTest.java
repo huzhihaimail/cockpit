@@ -41,6 +41,8 @@ public class EsbTest {
     @Autowired
     StageMyQyyqwhkService stageMyQyyqwhkService;
     @Autowired
+    StageMyRgwqyService stageMyRgwqyService;
+    @Autowired
     StageOrgService stageOrgService;
     @Autowired
     StageUsersService stageUsersService;
@@ -69,6 +71,10 @@ public class EsbTest {
 //        stageMyQyyqwhkService.getStageMyQyyqwhk();
 //    }
 
+//    @Test
+//    public void insertRgwqyTest() throws IOException {
+//        stageMyRgwqyService.getStageMyRgwqy();
+//    }
 
     @Test
     public void test() throws IOException {
