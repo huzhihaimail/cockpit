@@ -413,7 +413,7 @@
     </select>
 
     <select id="getDetailByDoMain" resultType="FactHnaImportantList" parameterType="java.util.Map">
-        SELECT top 10
+        SELECT
               YEAR_MONTH yearMonth,      --年月
               city_code   cityCode,      --城市公司编码
               city_name   cityName,      --城市公司名称
