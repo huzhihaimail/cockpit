@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.njdhy.muscle.triceps.dao.StageMyHtDao">
+
+    <insert id="insert" parameterType="StageMyHt" >
+        insert into STAGE_MY_HT (
+                                        PROJECT_NAME,
+                                        DATA_DATE,
+                                        ALL_AMT,
+                                        YZF_AMT,
+                                        YFWF_AMT,
+										etl_time)
+										values(
+										#{projectName},
+									    #{dataDate},
+									    #{allAmt},
+									    #{yzfAmt},
+									    #{yfwfAmt},
+										getdate()
+										)
+    </insert>
+
+
+</mapper>
