@@ -55,7 +55,7 @@ public class RoleCtl {
 
             return Result.success(result.getTotal(), result.getList());
 
-        } catch (RuntimeException e) {
+        } catch (ApplicationException e) {
             return Result.error(RoleErrorCode.SYS_ROLE_QUERY_APP_ERROR_CODE, RoleErrorCode.SYS_ROLE_QUERY_APP_ERROR_MESSAGE);
         } catch (Exception e) {
             return Result.error(RoleErrorCode.SYS_ROLE_QUERY_ERROR_CODE, RoleErrorCode.SYS_ROLE_QUERY_ERROR_MESSAGE);
@@ -71,15 +71,24 @@ public class RoleCtl {
     @RequestMapping("/{id}")
     public Result queryById(@PathVariable String id) {
 
-        SysRole model = sysRoleService.queryById(id);
+        try {
 
-        if (ObjectUtils.isEmpty(model)) {
-            model = new SysRole();
+            if (EmptyUtils.isEmpty(id)){
+                return Result.error("500","请选择角色后再查询信息");
+            }
+            SysRole model = sysRoleService.queryById(id);
+
+            if (ObjectUtils.isEmpty(model)) {
+                model = new SysRole();
+            }
+
+            return Result.success().put("model", model);
+        } catch (ApplicationException e) {
+            return Result.error(RoleErrorCode.SYS_ROLE_QUERY_APP_ERROR_CODE, RoleErrorCode.SYS_ROLE_QUERY_APP_ERROR_MESSAGE);
+        } catch (Exception e) {
+            return Result.error(RoleErrorCode.SYS_ROLE_QUERY_ERROR_CODE, RoleErrorCode.SYS_ROLE_QUERY_ERROR_MESSAGE);
         }
-
-        return Result.success().put("model", model);
     }
-
 
     /**
      * 保存
@@ -92,7 +101,9 @@ public class RoleCtl {
 
         try {
             // 校验参数 todo
-
+            if (EmptyUtils.isEmpty(sysRole.getName())){
+                return Result.error("500","请输入角色名称");
+            }
             // 执行入库操作
             sysRoleService.insertRoleInfo(sysRole);
         } catch (ApplicationException e) {
@@ -115,11 +126,13 @@ public class RoleCtl {
 
         try {
             // 校验参数
-            // TODO: 2018/3/14
+            if (EmptyUtils.isEmpty(sysRole.getId())){
+                return Result.error("500","请选择一条数据再进行修改");
+            }
 
             // 执行修改
             sysRoleService.updateRoleInfo(sysRole);
-        } catch (RuntimeException e) {
+        } catch (ApplicationException e) {
             return Result.error(RoleErrorCode.SYS_ROLE_QUERY_APP_ERROR_CODE, RoleErrorCode.SYS_ROLE_QUERY_APP_ERROR_MESSAGE);
         } catch (Exception e) {
             return Result.error(RoleErrorCode.SYS_ROLE_QUERY_ERROR_CODE, RoleErrorCode.SYS_ROLE_QUERY_ERROR_MESSAGE);
@@ -138,7 +151,10 @@ public class RoleCtl {
     public Result deleteByIds(@RequestBody List<String> ids) {
 
         try {
-            // 校验参数 todo
+            // 校验参数
+            if (EmptyUtils.isEmpty(ids)){
+                return Result.error("500","请选择角色再进行删除");
+            }
             List<SysUserRole> list = sysRoleService.queryByRoleId(ids.get(0));
             if (!EmptyUtils.isEmpty(list)){
                 return Result.error("500","角色已被占用，不能删除");
@@ -162,6 +178,9 @@ public class RoleCtl {
     public Result queryRoleInfoByRoleName(String roleName) {
 
         try {
+            if (EmptyUtils.isEmpty(roleName)){
+                return Result.error("500","角色名不能为空");
+            }
             SysRole role = sysRoleService.queryByName(roleName);
             if (EmptyUtils.isEmpty(role)){
                 return Result.success();

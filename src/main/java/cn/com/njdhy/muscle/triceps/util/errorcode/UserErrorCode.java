@@ -16,6 +16,7 @@ public interface UserErrorCode {
 
     /**
      * 新建用户系统异常
+     *
      */
     String SYS_USER_SAVE_APP_ERROR_CODE = SYS_USER + "1";
     String SYS_USER_SAVE_APP_ERROR_MESSAGE = "新建用户出现系统异常";
@@ -49,4 +50,16 @@ public interface UserErrorCode {
      */
     String SYS_USER_LOAD_ROLES_ERROR_CODE = SYS_USER + "6";
     String SYS_USER_LOAD_ROLES_ERROR_MESSAGE = "查询角色出现根异常";
+
+    /**
+     * 根据id查询用户信息系统异常
+     */
+    String SYS_USER_QUERY_INFO_APP_ERROR_CODE = SYS_USER + "7";
+    String SYS_USER_QUERY_INFO_APP_ERROR_MESSAGE = "根据用户id查询用户信息系统异常";
+
+    /**
+     * 根据id查询用户信息根异常
+     */
+    String SYS_USER_QUERY_INFO_ERROR_CODE = SYS_USER + "8";
+    String SYS_USER_QUERY_INFO_ERROR_MESSAGE = "根据用户id查询用户信息根异常";
 }
