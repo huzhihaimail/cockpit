@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.njdhy.muscle.triceps.dao.StageMyXmqzqDao">
+
+    <insert id="insert" parameterType="StageMyXmqzq" >
+        insert into stage_my_xmqzq (
+                                        proj_code,
+                                        proj_name,
+                                        prod_code,
+                                        prod_name,
+                                        sub_prod_code,
+                                        sub_prod_name,
+                                        area_all,
+                                        ys_area,
+                                        sy_area,
+                                        yshzjrg_amt,
+                                        yshzjqy_amt,
+                                        syhzjrg_amt,
+                                        syhzjqy_amt,
+                                        yhk_amt,
+										etl_time)
+										values(
+										#{projCode},
+									    #{projName},
+									    #{prodCode},
+									    #{prodName},
+									    #{subProdCode},
+									    #{subProdName},
+									    #{areaAll},
+									    #{ysArea},
+									    #{syArea},
+									    #{yshzjrgAmt},
+									    #{yshzjqyAmt},
+									    #{syhzjrgAmt},
+									    #{syhzjqyAmt},
+									    #{yhkAmt},
+										getdate()
+										)
+    </insert>
+
+
+</mapper>

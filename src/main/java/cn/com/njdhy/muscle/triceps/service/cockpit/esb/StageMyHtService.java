@@ -45,7 +45,7 @@ public class StageMyHtService {
     private StageMyHtDao stageMyHtDao;
 
 
-    public void getStageMyQyyqwhk() throws IOException {
+    public void getStageMyHt() throws IOException {
 
         String res = new ODPRequest(URL, Appsecret)
                 //系统参数
