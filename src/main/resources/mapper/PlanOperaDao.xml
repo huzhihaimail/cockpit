@@ -86,7 +86,7 @@
         ct.NODE_NAME nodeName, --里程碑名称
         ct.P_END_DATE pEndDate, --计划完成时间
         ct.A_END_DATE aEndDate, --实际完成时间
-        ct.YJ yj--预警
+        ct.YJ yj --预警
         FROM dbo.DM_V_HAN_JH_MX_M ct
         WHERE 1=1
         <if test="yearCode!=null and yearCode!=''">
