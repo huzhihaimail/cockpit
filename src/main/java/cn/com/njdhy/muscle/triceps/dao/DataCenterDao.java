@@ -1,5 +1,7 @@
 package cn.com.njdhy.muscle.triceps.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +18,19 @@ public interface DataCenterDao extends BaseDao<Map<String,Object>>{
      */
     List<String> selectAllTableName();
 
-    List<Map<String,Object>> selectDataByTableName(String tableName);
+    /**
+     * 根据表名查询数据
+     * @param tableName
+     * @return
+     */
+    List<Map<String,Object>> selectDataByTableName(@Param("tableName") String tableName);
+
+    /**
+     * 根据表名查询表字段
+     * @param tableName
+     * @return
+     */
+    List<String> selectColumns(@Param("tableName") String tableName);
 
 
 }

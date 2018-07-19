@@ -2,10 +2,8 @@ package cn.com.njdhy.muscle.triceps.controller.sys;
 
 import cn.com.njdhy.muscle.triceps.model.common.Result;
 import cn.com.njdhy.muscle.triceps.service.sys.DataCenterService;
-import cn.com.njdhy.muscle.triceps.service.sys.DataCenterServiceImpl;
 import cn.com.njdhy.muscle.triceps.util.errorcode.OrgErrorCode;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -57,18 +54,24 @@ public class DataCenterCtl {
             notes = "获取Bootstrap-table的表头信息",
             response = Result.class
     )
-    public Result getColumns() {
+    public Result getColumns(@RequestParam String tableName) {
+        List<String> columsList = dataCenterService.selectColumns(tableName);
         JSONArray columnsArray = new JSONArray();
-        JSONObject columsJson = new JSONObject();
-        columsJson.put("field","cityName");
-        columsJson.put("title","城市名称");
-        columsJson.put("width","20%");
-        columnsArray.add(columsJson);
-        return Result.success().put("columns", columnsArray);
+//        JSONObject columsJson = new JSONObject();
+//        columsJson.put("field","cityName");
+//        columsJson.put("title","城市名称");
+//        columsJson.put("width","20%");
+//        columnsArray.add(columsJson);
+        return Result.success().put("columns", columsList);
     }
 
 
     @RequestMapping("/list")
+    @ApiOperation(
+            value = "根据表名分页查询表的数据",
+            notes = "根据表名分页查询表的数据",
+            response = Result.class
+    )
     public Result index(@RequestParam String tableName, Integer pageNumber, Integer pageSize) {
         PageInfo<Map<String,Object>> result = dataCenterService.selectDataByTableName(tableName,pageNumber,pageSize);
         return Result.success(result.getTotal(), result.getList());

@@ -6,5 +6,12 @@
         select name from sysobjects where xtype='u'
     </select>
 
+    <select id="selectDataByTableName" resultType="java.util.Map" parameterType="java.lang.String">
+        SELECT * FROM ${tableName}
+    </select>
+
+    <select id="selectColumns" resultType="java.lang.String" parameterType="java.lang.String">
+        Select name FROM SysColumns Where id=Object_Id( #{tableName} )
+    </select>
 
 </mapper>

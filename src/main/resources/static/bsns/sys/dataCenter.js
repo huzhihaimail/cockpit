@@ -74,18 +74,15 @@ var vm = new Vue({
  */
 $(function () {
     // 创建BootStrapTable
-    $.get(APP_NAME + "/sys/dataCenter/colums", function (r) {
-        vm.columns = r.columns;
-    });
 
-    $.ajax({
-        type: "GET",
-        url: APP_NAME + "/sys/dataCenter/colums",
-        async: false,
-        success: function (r) {
-            vm.columns = r.columns;
-        }
-    });
+    // $.ajax({
+    //     type: "GET",
+    //     url: APP_NAME + "/sys/dataCenter/colums",
+    //     async: false,
+    //     success: function (r) {
+    //         vm.columns = r.columns;
+    //     }
+    // });
 
     bsTable.createBootStrapTable(vm.columns, APP_NAME + "/sys/" + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption)
 });

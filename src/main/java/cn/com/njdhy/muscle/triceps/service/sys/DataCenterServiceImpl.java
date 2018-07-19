@@ -26,6 +26,11 @@ public class DataCenterServiceImpl extends BaseServiceImpl<DataCenterDao, Map<St
         return dataCenterDao.selectAllTableName();
     }
 
+    @Override
+    public List<String> selectColumns(String tableName) {
+        return dataCenterDao.selectColumns(tableName);
+    }
+
 
     @Override
     public PageInfo<Map<String, Object>> selectDataByTableName(String tableName, Integer pageNum, Integer pageSize) {
