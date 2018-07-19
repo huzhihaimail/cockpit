@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.njdhy.muscle.triceps.dao.EsbExceuteLogDao">
+
+    <insert id="insert" parameterType="EsbExceuteLog" >
+        insert into esb_exceute_log (
+                                        esb_name,
+                                        etl_cnt,
+                                        etl_status,
+                                        etl_feadbak,
+										etl_time)
+										values(
+										#{esbName},
+									    #{esbCnt},
+									    #{etlStatus},
+									    #{etlFeadbak},
+										getdate()
+										)
+    </insert>
+
+
+</mapper>

@@ -2,6 +2,7 @@ package cn.com.njdhy.muscle.triceps.service.cockpit.esb;
 
 import cn.com.njdhy.muscle.triceps.dao.StageMyHtDao;
 import cn.com.njdhy.muscle.triceps.dao.StageMyQyyqwhkDao;
+import cn.com.njdhy.muscle.triceps.model.database.EsbExceuteLog;
 import cn.com.njdhy.muscle.triceps.model.database.StageMyHt;
 import cn.com.njdhy.muscle.triceps.model.database.StageMyQyyqwhk;
 import com.alibaba.fastjson.JSONArray;
@@ -43,9 +44,11 @@ public class StageMyHtService {
 
     @Autowired
     private StageMyHtDao stageMyHtDao;
+    @Autowired
+    private EsbExceuteLogService esbExceuteLogService;
 
 
-    public void getStageMyHt() throws IOException {
+    public void getStageMyHt(){
 
         String res = new ODPRequest(URL, Appsecret)
                 //系统参数
@@ -63,10 +66,22 @@ public class StageMyHtService {
                 String errorCode = (String) responseInfo.get("ErrorCode");
                 String errorInfo = (String) responseInfo.get("ErrorInfo");
                 logger.error("调用ESB接口发送异常,错误信息 : {} , 错误代码 : {}",errorInfo,errorCode);
+                EsbExceuteLog esbExceuteLog = new EsbExceuteLog();
+                esbExceuteLog.setEsbName("合同管理");
+                esbExceuteLog.setEsbCnt(0);
+                esbExceuteLog.setEtlStatus("失败");
+                esbExceuteLog.setEtlFeadbak(errorCode + errorInfo);
+                esbExceuteLogService.insert(esbExceuteLog);
                 break;
 
             case "0":
                 logger.info("调用ESB接口没有数据返回");
+                EsbExceuteLog esbExceuteLog1 = new EsbExceuteLog();
+                esbExceuteLog1.setEsbName("合同管理");
+                esbExceuteLog1.setEsbCnt(0);
+                esbExceuteLog1.setEtlStatus("成功");
+                esbExceuteLog1.setEtlFeadbak("调用ESB接口没有数据返回");
+                esbExceuteLogService.insert(esbExceuteLog1);
                 break;
 
             case "1":
@@ -89,6 +104,11 @@ public class StageMyHtService {
                     list.add(stageMyHt);
                 }
                 list.forEach( stageMyHt -> this.insert(stageMyHt) );
+                EsbExceuteLog esbExceuteLog2 = new EsbExceuteLog();
+                esbExceuteLog2.setEsbName("合同管理");
+                esbExceuteLog2.setEsbCnt(jsonArray.size());
+                esbExceuteLog2.setEtlStatus("完成");
+                esbExceuteLogService.insert(esbExceuteLog2);
                 break;
 
             default:

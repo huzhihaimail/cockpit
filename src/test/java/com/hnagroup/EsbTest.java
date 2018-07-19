@@ -2,6 +2,7 @@ package com.hnagroup;
 
 import cn.com.njdhy.muscle.triceps.Application;
 import cn.com.njdhy.muscle.triceps.model.database.StageMyQyyqwhk;
+import cn.com.njdhy.muscle.triceps.model.database.StageMyXmqzq;
 import cn.com.njdhy.muscle.triceps.service.cockpit.esb.*;
 import com.opendata.api.ODPRequest;
 import org.apache.commons.io.FileUtils;
@@ -50,6 +51,10 @@ public class EsbTest {
     StageUsersConnectService stageUsersConnectService;
     @Autowired
     StageUsersPostService stageUsersPostService;
+    @Autowired
+    StageMyXmqzqService stageMyXmqzqService;
+    @Autowired
+    StageMyHtService stageMyHtService;
 
 //    @Test
 //    public void inserYearTest() throws IOException {
@@ -75,6 +80,16 @@ public class EsbTest {
 //    public void insertRgwqyTest() throws IOException {
 //        stageMyRgwqyService.getStageMyRgwqy();
 //    }
+
+    @Test
+    public void getStageMyXmqzq() throws IOException {
+        stageMyXmqzqService.getStageMyXmqzq();
+    }
+
+    @Test
+    public void getStageMyHt() throws IOException {
+        stageMyHtService.getStageMyHt();
+    }
 
     @Test
     public void test() throws IOException {

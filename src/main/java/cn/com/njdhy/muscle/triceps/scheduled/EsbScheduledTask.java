@@ -51,36 +51,25 @@ public class EsbScheduledTask {
     @Autowired
     private StageUsersService stageUsersService;
 
+    @Autowired
+    StageMyXmqzqService stageMyXmqzqService;
+
+    @Autowired
+    StageMyHtService stageMyHtService;
+
 
     @Scheduled(cron="0 0 3 ? * *")
-    public void getStageMyXSHKYear() {
-        logger.info("---- 定时抽取年度签约回款开始 -----");
+    public void getMingyuanData() {
         stageMyXSHKYearService.getStageMyXSHKYear();
-    }
-
-    @Scheduled(cron="0 0 3 ? * *")
-    public void getStageMyXSHKMonth() {
-        logger.info("---- 定时抽取月度签约回款开始 ----");
         stageMyXSHKMonthService.getStageMyXSHKMonth();
-    }
-
-    @Scheduled(cron="0 0 3 ? * *")
-    public void getStageMyXSHKDaily() {
-        logger.info("---- 定时抽取当日签约回款开始 ----");
         stageMyXSHKDailyService.getStageMyXSHKDaily();
-    }
-
-    @Scheduled(cron="0 0 3 ? * *")
-    public void getStageMyQyyqwhk() {
-        logger.info("---- 定时抽取签约逾期未回款开始 ----");
         stageMyQyyqwhkService.getStageMyQyyqwhk();
+        stageMyRgwqyService.getStageMyRgwqy();
+        stageMyXmqzqService.getStageMyXmqzq();
+        stageMyHtService.getStageMyHt();
+
     }
 
-    @Scheduled(cron="0 0 3 ? * *")
-    public void getStageMyRgwqy() {
-        logger.info("---- 定时抽取认购未签约开始 ----");
-        stageMyRgwqyService.getStageMyRgwqy();
-    }
 
     @Scheduled(cron="0 0 4 ? * *")
     public void getHrInfo() {

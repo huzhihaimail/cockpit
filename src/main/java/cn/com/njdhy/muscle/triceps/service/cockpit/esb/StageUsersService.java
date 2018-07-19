@@ -1,6 +1,7 @@
 package cn.com.njdhy.muscle.triceps.service.cockpit.esb;
 
 import cn.com.njdhy.muscle.triceps.dao.StageUsersDao;
+import cn.com.njdhy.muscle.triceps.model.database.EsbExceuteLog;
 import cn.com.njdhy.muscle.triceps.model.database.StageUsers;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -43,6 +44,9 @@ public class StageUsersService {
 
     @Autowired
     private StageUsersDao stageUsersDao;
+    @Autowired
+    private EsbExceuteLogService esbExceuteLogService;
+
 
     public void getTempDirectory() {
         String res1 = new ODPRequest(URL, Appsecret)
@@ -63,10 +67,22 @@ public class StageUsersService {
                 String errorCode = (String) responseInfo.get("ErrorCode");
                 String errorInfo = (String) responseInfo.get("ErrorInfo");
                 logger.error("调用ESB接口发送异常,错误信息 : {} , 错误代码 : {}", errorInfo, errorCode);
+                EsbExceuteLog esbExceuteLog = new EsbExceuteLog();
+                esbExceuteLog.setEsbName("人事员工基本信息");
+                esbExceuteLog.setEsbCnt(0);
+                esbExceuteLog.setEtlStatus("失败");
+                esbExceuteLog.setEtlFeadbak(errorCode + errorInfo);
+                esbExceuteLogService.insert(esbExceuteLog);
                 break;
 
             case "0":
                 logger.info("调用ESB接口没有数据返回");
+                EsbExceuteLog esbExceuteLog1 = new EsbExceuteLog();
+                esbExceuteLog1.setEsbName("人事员工基本信息");
+                esbExceuteLog1.setEsbCnt(0);
+                esbExceuteLog1.setEtlStatus("成功");
+                esbExceuteLog1.setEtlFeadbak("调用ESB接口没有数据返回");
+                esbExceuteLogService.insert(esbExceuteLog1);
                 break;
 
             case "1":
@@ -96,6 +112,11 @@ public class StageUsersService {
                     list.add(stageUsers);
                 }
                 list.forEach(sysOrg -> this.insert(sysOrg));
+                EsbExceuteLog esbExceuteLog2 = new EsbExceuteLog();
+                esbExceuteLog2.setEsbName("人事员工基本信息");
+                esbExceuteLog2.setEsbCnt(jsonArray.size());
+                esbExceuteLog2.setEtlStatus("完成");
+                esbExceuteLogService.insert(esbExceuteLog2);
                 break;
 
             default:
