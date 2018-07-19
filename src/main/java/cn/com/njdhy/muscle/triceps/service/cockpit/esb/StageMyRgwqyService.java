@@ -39,7 +39,7 @@ public class StageMyRgwqyService {
     @Value("${haihang.esb.mingyuan.accessToken}")
     private String AccessToken;///应用票据
 
-    public void getStageMyRgwqy() throws IOException {
+    public void getStageMyRgwqy() {
 
         String res = new ODPRequest(URL, Appsecret)
                 //系统参数

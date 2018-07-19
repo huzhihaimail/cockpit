@@ -1,122 +1,7 @@
 /**
  * 表格显示列
  */
-var showColumns = [
-    {
-        checkbox: true, width: "2%"
-    }
-    , {
-        title: "序号",
-        field: "index",
-        width: "3%",
-        align: "center",
-        formatter: function (value, row, index) { // 设置列序号值，index从0开始
-            return index + 1;
-        }
-    }
-    // , {
-    //     field: "id",
-    //     title: "关系号",
-    //     width: "10%",
-    //     sortable: false,
-    //     sortName: "id" // sortName的值，需配置和数据库保持一致
-    // }
-
-    , {
-        field: "cityName",
-        title: "城市名称",
-        width: "20%"
-    }
-    , {
-        field: "jscProjName",
-        title: "驾驶舱项目名称",
-        width: "15%"
-    }
-    , {
-        field: "jscProjType",
-        title: "项目类型",
-        width: "15%"
-    }
-    , {
-        field: "jscProjPhase",
-        title: "项目阶段",
-        width: "15%"
-    }
-    , {
-        field: "yxProjName",
-        title: "营销管理系统",
-        width: "15%"
-    }
-    , {
-        field: "jyProjName",
-        title: "经营管理平台-项目",
-        width: "15%"
-    }
-    , {
-        field: "cbProjName",
-        title: "成本管理系统",
-        width: "15%"
-    }
-    , {
-        field: "cwProjName",
-        title: "财务收入预算",
-        width: "15%"
-    }
-    , {
-        field: "stId",
-        title: "状态",
-        width: "15%",
-        formatter: function (value, row, index) {
-            switch (value) {
-                case 1:
-                    return "<span class='label label-success'>有效</span>";
-                    break;
-                case 0:
-                    return "<span class='label label-warning'>无效</span>";
-                    break;
-            }
-        }
-    }
-    // , {
-    //     field: "createUser",
-    //     title: "创建人ID",
-    //     width: "15%",
-    //     sortable: false,
-    //     sortName: "create_user"
-    // }
-    , {
-        field: "createUserName",
-        title: "创建人",
-        width: "15%",
-        sortable: false,
-        sortName: "create_user_name"
-    }
-    , {
-        field: "createDate",
-        title: "创建时间",
-        width: "20%",
-        formatter: function (value, row, index) {
-            return new moment(value).format('YYYY-MM-DD HH:mm:ss');
-        }
-    }
-    // , {
-    //     field: "modifyUser",
-    //     title: "修改人",
-    //     width: "15%",
-    //     sortable: false,
-    //     sortName: "modify_user"
-    // }
-    , {
-        field: "modifyDate",
-        title: "修改时间",
-        width: "20%",
-        formatter: function (value, row, index) {
-            return new moment(value).format('YYYY-MM-DD HH:mm:ss');
-        }
-    }
-
-];
-
+var showColumns = [];
 
 // 通用表格对象
 var bsTable = new BootStrapTable();
@@ -189,5 +74,18 @@ var vm = new Vue({
  */
 $(function () {
     // 创建BootStrapTable
-    //bsTable.createBootStrapTable(vm.columns, APP_NAME + "/sys/" + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption)
+    $.get(APP_NAME + "/sys/dataCenter/colums", function (r) {
+        vm.columns = r.columns;
+    });
+
+    $.ajax({
+        type: "GET",
+        url: APP_NAME + "/sys/dataCenter/colums",
+        async: false,
+        success: function (r) {
+            vm.columns = r.columns;
+        }
+    });
+
+    bsTable.createBootStrapTable(vm.columns, APP_NAME + "/sys/" + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption)
 });

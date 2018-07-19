@@ -1,19 +1,22 @@
 package cn.com.njdhy.muscle.triceps.controller.sys;
 
 import cn.com.njdhy.muscle.triceps.model.common.Result;
-import cn.com.njdhy.muscle.triceps.model.database.SysOrg;
 import cn.com.njdhy.muscle.triceps.service.sys.DataCenterService;
-import cn.com.njdhy.muscle.triceps.util.common.HttpResult;
+import cn.com.njdhy.muscle.triceps.service.sys.DataCenterServiceImpl;
 import cn.com.njdhy.muscle.triceps.util.errorcode.OrgErrorCode;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
 
 /**
  * @Author Richard.li
@@ -47,5 +50,28 @@ public class DataCenterCtl {
         return Result.success().put("name", tableNameList);
     }
 
+
+    @RequestMapping(path = "/colums", method = RequestMethod.GET)
+    @ApiOperation(
+            value = "获取Bootstrap-table的表头信息",
+            notes = "获取Bootstrap-table的表头信息",
+            response = Result.class
+    )
+    public Result getColumns() {
+        JSONArray columnsArray = new JSONArray();
+        JSONObject columsJson = new JSONObject();
+        columsJson.put("field","cityName");
+        columsJson.put("title","城市名称");
+        columsJson.put("width","20%");
+        columnsArray.add(columsJson);
+        return Result.success().put("columns", columnsArray);
+    }
+
+
+    @RequestMapping("/list")
+    public Result index(@RequestParam String tableName, Integer pageNumber, Integer pageSize) {
+        PageInfo<Map<String,Object>> result = dataCenterService.selectDataByTableName(tableName,pageNumber,pageSize);
+        return Result.success(result.getTotal(), result.getList());
+    }
 
 }

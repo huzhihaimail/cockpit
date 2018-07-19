@@ -41,7 +41,7 @@ public class StageMyQyyqwhkService {
     private StageMyQyyqwhkDao stageMyQyyqwhkDao;
 
 
-    public void getStageMyQyyqwhk() throws IOException {
+    public void getStageMyQyyqwhk() {
 
         String res = new ODPRequest(URL, Appsecret)
                 //系统参数
