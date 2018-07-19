@@ -32,5 +32,19 @@ public interface DataCenterDao extends BaseDao<Map<String,Object>>{
      */
     List<String> selectColumns(@Param("tableName") String tableName);
 
+    /**
+     * 根据表名查询字段注释
+     * @param tableName
+     * @return
+     */
+    List<String> selectNotes(@Param("tableName") String tableName);
+
+    /**
+     * 根据表名查询字段和对应的注释
+     * @param tableName
+     * @return
+     */
+    List<Map<String,Object>> selectColumnsAndNotes(@Param("tableName") String tableName);
+
 
 }

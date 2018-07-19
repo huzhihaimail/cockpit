@@ -23,4 +23,10 @@ public interface DataCenterService extends BaseService<Map<String,Object>> {
     //根据表名查询表字段
     List<String> selectColumns(String tableName);
 
+    //根据表名查询表字段注释
+    List<String> selectNotes(String tableName);
+
+    //根据表名查询字段和对应的注释
+    List<Map<String,Object>> selectColumnsAndNotes(@Param("tableName") String tableName);
+
 }

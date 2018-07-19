@@ -4,6 +4,7 @@ import cn.com.njdhy.muscle.triceps.model.common.Result;
 import cn.com.njdhy.muscle.triceps.service.sys.DataCenterService;
 import cn.com.njdhy.muscle.triceps.util.errorcode.OrgErrorCode;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,23 +51,30 @@ public class DataCenterCtl {
 
     @RequestMapping(path = "/colums", method = RequestMethod.GET)
     @ApiOperation(
-            value = "获取Bootstrap-table的表头信息",
-            notes = "获取Bootstrap-table的表头信息",
+            value = "获取Bootstrap-table的表头信息，用于组装VUE的columns",
+            notes = "获取Bootstrap-table的表头信息，用于组装VUE的columns",
             response = Result.class
     )
     public Result getColumns(@RequestParam String tableName) {
-        List<String> columsList = dataCenterService.selectColumns(tableName);
+
+        //TODO 先选择sys_role 带有ID字段的来测试
+        List<Map<String,Object>> lists =  dataCenterService.selectColumnsAndNotes(tableName);
         JSONArray columnsArray = new JSONArray();
-//        JSONObject columsJson = new JSONObject();
-//        columsJson.put("field","cityName");
-//        columsJson.put("title","城市名称");
-//        columsJson.put("width","20%");
-//        columnsArray.add(columsJson);
-        return Result.success().put("columns", columsList);
+        lists.forEach( map -> {
+            String columnName = (String) map.get("column_name");
+            String columnDescription = (String) map.get("column_description");
+            JSONObject columsJson = new JSONObject();
+            columsJson.put("field",columnName);
+            columsJson.put("title",columnDescription);
+            columsJson.put("width","20%");
+            columnsArray.add(columsJson);
+        });
+
+        return Result.success().put("columns", columnsArray);
     }
 
 
-    @RequestMapping("/list")
+    @RequestMapping(path = "/list", method = RequestMethod.GET)
     @ApiOperation(
             value = "根据表名分页查询表的数据",
             notes = "根据表名分页查询表的数据",

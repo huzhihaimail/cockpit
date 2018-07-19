@@ -60,8 +60,18 @@ var vm = new Vue({
 
                 vm.queryOption = queryOpt;
 
-                // 刷新表格数据
-                bsTable.createBootStrapTable(showColumns, APP_NAME + "/sys/" + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption);
+                $.ajax({
+                    type: "GET",
+                    url: APP_NAME + "/sys/dataCenter/colums?tableName=" + table,
+                    async: false,
+                    success: function (r) {
+                        vm.columns = r.columns;
+                    }
+                });
+
+
+            // 刷新表格数据
+                bsTable.createBootStrapTable(vm.columns, APP_NAME + "/sys/" + vm.moduleName + "/list?tableName=" + table + "&rnd=" + Math.random(), vm.queryOption);
             }
 
         }
@@ -83,6 +93,6 @@ $(function () {
     //         vm.columns = r.columns;
     //     }
     // });
-
-    bsTable.createBootStrapTable(vm.columns, APP_NAME + "/sys/" + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption)
+    //
+    // bsTable.createBootStrapTable(vm.columns, APP_NAME + "/sys/" + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption)
 });
