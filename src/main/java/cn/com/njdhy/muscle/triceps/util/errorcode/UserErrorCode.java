@@ -62,4 +62,28 @@ public interface UserErrorCode {
      */
     String SYS_USER_QUERY_INFO_ERROR_CODE = SYS_USER + "8";
     String SYS_USER_QUERY_INFO_ERROR_MESSAGE = "根据用户id查询用户信息根异常";
+
+    /**
+     * 根据id查询用户信息系统异常
+     */
+    String SYS_USER_DELETE_APP_ERROR_CODE = SYS_USER + "9";
+    String SYS_USER_DELETE_APP_ERROR_MESSAGE = "删除用户信息系统异常";
+
+    /**
+     * 根据id查询用户信息根异常
+     */
+    String SYS_USER_DELETE_ERROR_CODE = SYS_USER + "10";
+    String SYS_USER_DELETE_ERROR_MESSAGE = "删除用户信息根异常";
+
+    /**
+     * 根据id查询用户信息系统异常
+     */
+    String SYS_USER_QUERY_APP_ERROR_CODE = SYS_USER + "11";
+    String SYS_USER_QUERY_APP_ERROR_MESSAGE = "查询用户信息系统异常";
+
+    /**
+     * 根据id查询用户信息根异常
+     */
+    String SYS_USER_QUERY_ERROR_CODE = SYS_USER + "12";
+    String SYS_USER_QUERY_ERROR_MESSAGE = "查询用户信息根异常";
 }

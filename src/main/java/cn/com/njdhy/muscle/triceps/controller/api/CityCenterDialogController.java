@@ -46,7 +46,6 @@ public class CityCenterDialogController extends BaseController {
         return new HttpResult(list);
     }
 
-
     @RequestMapping(path = "/getCityBudgetRevenueDialog", method = RequestMethod.GET)
     @ApiOperation(
             value = "二级首页收入利润模块预算收入项目分布",
@@ -187,7 +186,6 @@ public class CityCenterDialogController extends BaseController {
         List<CityCurrentYearSaleXS> list = iCityCenterDialogService.getCityCurrentYearSaleForSaleFinishDialog(yearCode, monthCode, areaCode);
         return new HttpResult(list);
     }
-
 
     @RequestMapping(path = "/getCityCurrentSaleForHKDialog", method = RequestMethod.GET)
     @ApiOperation(

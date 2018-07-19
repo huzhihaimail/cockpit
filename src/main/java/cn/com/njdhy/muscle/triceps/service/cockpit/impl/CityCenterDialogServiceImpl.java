@@ -275,7 +275,12 @@ public class CityCenterDialogServiceImpl extends BaseServiceImpl implements ICit
         map.put("yearCode", Integer.parseInt(yearCode));
         map.put("monthCode", Integer.parseInt(monthCode));
         map.put("areaCode", areaCode);
-        map.put("type", type);
+        if (type.equals("xm")){
+            map.put("type", "项目");
+        }
+        if (type.equals("zn")){
+            map.put("type", "职能");
+        }
         return cityCenterDialogDao.getCityKeyWorkDialog(map);
     }
 
@@ -290,7 +295,12 @@ public class CityCenterDialogServiceImpl extends BaseServiceImpl implements ICit
         ConcurrentHashMap map = new ConcurrentHashMap();
         map.put("yearCode", Integer.parseInt(yearCode));
         map.put("areaCode", areaCode);
-        map.put("type", type);
+        if (type.equals("xm")){
+            map.put("type", "项目");
+        }
+        if (type.equals("zn")){
+            map.put("type", "职能");
+        }
         return cityCenterDialogDao.getCityKeyWorkDialogOfMonth(map);
     }
 

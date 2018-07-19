@@ -166,9 +166,9 @@ public class UserCtl {
             //执行删除
             sysUserService.deleteByIds(ids);
         } catch (ApplicationException e) {
-            return Result.error(e.getCode(), e.getMsg());
+            return Result.error(UserErrorCode.SYS_USER_DELETE_APP_ERROR_CODE, UserErrorCode.SYS_USER_DELETE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
-            return Result.error(e.getMessage());
+            return Result.error(UserErrorCode.SYS_USER_DELETE_ERROR_CODE,UserErrorCode.SYS_USER_DELETE_ERROR_MESSAGE);
         }
 
         return Result.success();
@@ -193,9 +193,9 @@ public class UserCtl {
                 return Result.error("用户名已重复");
             }
         } catch (ApplicationException e) {
-            return Result.error(e.getCode(), e.getMsg());
+            return Result.error(UserErrorCode.SYS_USER_QUERY_APP_ERROR_CODE, UserErrorCode.SYS_USER_QUERY_APP_ERROR_MESSAGE);
         } catch (Exception e) {
-            return Result.error(e.getMessage());
+            return Result.error(UserErrorCode.SYS_USER_QUERY_ERROR_CODE,UserErrorCode.SYS_USER_QUERY_ERROR_MESSAGE);
         }
     }
 
