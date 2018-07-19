@@ -8,10 +8,12 @@ import cn.com.njdhy.muscle.triceps.model.exception.ApplicationException;
 import cn.com.njdhy.muscle.triceps.service.sys.SysUserService;
 import cn.com.njdhy.muscle.triceps.util.EmptyUtils;
 import cn.com.njdhy.muscle.triceps.util.ShiroUtil;
+import cn.com.njdhy.muscle.triceps.util.errorcode.RoleErrorCode;
 import com.github.pagehelper.PageInfo;
 import cn.com.njdhy.muscle.triceps.model.database.SysRole;
 import cn.com.njdhy.muscle.triceps.service.sys.SysRoleService;
 import cn.com.njdhy.muscle.triceps.util.errorcode.UserErrorCode;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,12 +69,22 @@ public class UserCtl {
      */
     @RequestMapping("/{id}")
     public Result queryById(@PathVariable String id) {
-        SysUser user = new SysUser();
-        user.setId(Integer.valueOf(id));
-        SysUser model = sysUserService.queryUserInfo(user);
+        SysUser model = new SysUser();
+        try {
+            if (EmptyUtils.isEmpty(id)){
+                return Result.error("500","请选择id后再查询用户信息");
+            }
+            SysUser user = new SysUser();
+            user.setId(Integer.valueOf(id));
+            model = sysUserService.queryUserInfo(user);
 
-        if (ObjectUtils.isEmpty(model)) {
-            model = new SysUser();
+            if (ObjectUtils.isEmpty(model)) {
+                model = new SysUser();
+            }
+        } catch (ApplicationException e) {
+            return Result.error(UserErrorCode.SYS_USER_QUERY_INFO_APP_ERROR_CODE, UserErrorCode.SYS_USER_QUERY_INFO_APP_ERROR_MESSAGE);
+        } catch (Exception e) {
+            return Result.error(UserErrorCode.SYS_USER_QUERY_INFO_ERROR_CODE,UserErrorCode.SYS_USER_QUERY_INFO_ERROR_MESSAGE);
         }
 
         return Result.success().put("model", model);
@@ -86,11 +98,17 @@ public class UserCtl {
      * @return 结果对象
      */
     @RequestMapping("/insert")
+    @RequiresPermissions("sys:user:add")
     public Result insert(@RequestBody SysUser sysUser) {
 
         try {
             // 校验参数
-            // TODO: 2018/3/14
+            if (EmptyUtils.isEmpty(sysUser.getUserName())){
+                return Result.error("500","请输入用户名");
+            }
+            if (EmptyUtils.isEmpty(sysUser.getPassword())){
+                return Result.error("500","请输入密码");
+            }
             // 执行入库操作
             sysUserService.saveUser(sysUser);
         } catch (ApplicationException e) {
@@ -110,11 +128,14 @@ public class UserCtl {
      * @return 结果对象
      */
     @RequestMapping("/update")
+    @RequiresPermissions("sys:user:update")
     public Result update(@RequestBody SysUser sysUser) {
 
         try {
             // 校验参数
-            // TODO: 2018/3/14
+            if (EmptyUtils.isEmpty(sysUser.getId())){
+                return Result.error("500","请选择好用户后再进行修改");
+            }
 
             // 执行修改
             sysUserService.updateUser(sysUser);
@@ -134,10 +155,15 @@ public class UserCtl {
      * @return 结果对象
      */
     @RequestMapping("/delete")
+    @RequiresPermissions("sys:user:delete")
     public Result deleteByIds(@RequestBody List<String> ids) {
 
         try {
-            // 校验参数 todo
+            //校验参数
+            if (EmptyUtils.isEmpty(ids)){
+                return Result.error("500","请选择用户再进行删除");
+            }
+            //执行删除
             sysUserService.deleteByIds(ids);
         } catch (ApplicationException e) {
             return Result.error(e.getCode(), e.getMsg());
@@ -157,6 +183,9 @@ public class UserCtl {
     public Result queryUserInfoByUserName(String userName) {
 
         try {
+            if (EmptyUtils.isEmpty(userName)){
+                return Result.error("500","用户名不能为空");
+            }
             SysUser user = sysUserService.queryByName(userName);
             if (EmptyUtils.isEmpty(user)){
                 return Result.success();
@@ -179,9 +208,6 @@ public class UserCtl {
     public Result loadRoles() {
 
         try {
-            // 校验参数
-            // TODO: 2018/3/14
-
             // 获取登用户名
             String loginUserName = ShiroUtil.getLoginUserName();
 
@@ -193,7 +219,7 @@ public class UserCtl {
 
             List<SysRole> rolesLst = sysRoleService.loadRoles(query);
             return Result.success().put("page", rolesLst);
-        } catch (RuntimeException e) {
+        } catch (ApplicationException e) {
             return Result.error(UserErrorCode.SYS_USER_LOAD_ROLES_APP_ERROR_CODE, UserErrorCode.SYS_USER_LOAD_ROLES_APP_ERROR_MESSAGE);
         } catch (Exception e) {
             return Result.error(UserErrorCode.SYS_USER_LOAD_ROLES_ERROR_CODE, UserErrorCode.SYS_USER_LOAD_ROLES_ERROR_MESSAGE);
@@ -207,14 +233,18 @@ public class UserCtl {
      * @return 结果对象
      */
     @RequestMapping("/initPassword")
+    @RequiresPermissions("sys:user:initPassword")
     public Result initPassword(@RequestBody List<String> ids) {
 
         try {
+            if (EmptyUtils.isEmpty(ids)){
+                return Result.error("500","请选择用户在进行密码重置");
+            }
             SysUser user = new SysUser();
             user.setId(Integer.valueOf(ids.get(0)));
             // 执行修改
             sysUserService.initPassword(user);
-        } catch (RuntimeException e) {
+        } catch (ApplicationException e) {
             return Result.error(UserErrorCode.SYS_USER_UPDATE_APP_ERROR_CODE, UserErrorCode.SYS_USER_UPDATE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
             return Result.error(UserErrorCode.SYS_USER_UPDATE_ERROR_CODE, UserErrorCode.SYS_USER_UPDATE_ERROR_MESSAGE);

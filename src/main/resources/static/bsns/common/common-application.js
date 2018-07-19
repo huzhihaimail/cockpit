@@ -1,5 +1,6 @@
 // 应用名称
 const APP_NAME = "http://localhost:8089";
+// const APP_NAME = "http://172.19.50.164:8089";
 // vue的el属性统一名称
 const VUE_EL = "app";
 // 显示表格的ID

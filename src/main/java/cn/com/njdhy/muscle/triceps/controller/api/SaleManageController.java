@@ -50,9 +50,12 @@ public class SaleManageController extends BaseController {
             notes = "销售模块",
             response = HttpResult.class
     )
-    public HttpResult getCityComDis(@ApiParam(value = "年（yyyy）", required = true) @RequestParam(value = "yearCode") String yearCode,
-                                    @ApiParam(value = "月（M）", required = true) @RequestParam(value = "monthCode") String monthCode,
-                                    @ApiParam(value = "城市公司编码") String areaCode) {
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "yearCode", value = "年（yyyy）", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "monthCode", value = "月（M）", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "areaCode", value = "城市公司编码")
+    })
+    public HttpResult getCityComDis(@RequestParam String yearCode, @RequestParam String monthCode, String areaCode) {
         if (StringUtils.isEmpty(areaCode))
             areaCode = null;
         List<CityComDis> cityComDis = saleManageService.getCityComDis(yearCode, monthCode, areaCode);
@@ -65,9 +68,12 @@ public class SaleManageController extends BaseController {
             notes = "回款模块",
             response = HttpResult.class
     )
-    public HttpResult getCityComDisRe(@ApiParam(value = "年（yyyy）", required = true) @RequestParam(value = "yearCode") String yearCode,
-                                      @ApiParam(value = "月（M）", required = true) @RequestParam(value = "monthCode") String monthCode,
-                                      @ApiParam(value = "城市公司编码") String areaCode) {
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "yearCode", value = "年（yyyy）", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "monthCode", value = "月（M）", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "areaCode", value = "城市公司编码"),
+    })
+    public HttpResult getCityComDisRe(@RequestParam String yearCode,@RequestParam String monthCode,String areaCode) {
         if (StringUtils.isEmpty(areaCode))
             areaCode = null;
         List<CityComDisRe> cityComDisRe = saleManageService.getCityComDisRe(yearCode, monthCode, areaCode);
@@ -80,10 +86,13 @@ public class SaleManageController extends BaseController {
             notes = "去化率模块",
             response = HttpResult.class
     )
-    public HttpResult getCityComDisDe(@ApiParam(value = "年（yyyy）", required = true) @RequestParam(value = "yearCode") String yearCode,
-                                      @ApiParam(value = "月（M）", required = true) @RequestParam(value = "monthCode") String monthCode,
-                                      @ApiParam(value = "城市公司编码") String areaCode,
-                                      @ApiParam(value = "项目编码") String projectCode) {
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "yearCode", value = "年（yyyy）", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "monthCode", value = "月（M）", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "areaCode", value = "城市公司编码"),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "projectCode", value = "项目编码"),
+    })
+    public HttpResult getCityComDisDe(@RequestParam String yearCode,@RequestParam String monthCode,String areaCode,String projectCode) {
         if (StringUtils.isEmpty(areaCode))
             areaCode = null;
         if (StringUtils.isEmpty(projectCode))
