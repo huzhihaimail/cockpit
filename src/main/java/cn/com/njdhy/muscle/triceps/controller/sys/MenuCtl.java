@@ -11,6 +11,7 @@ import cn.com.njdhy.muscle.triceps.service.sys.SysMenuService;
 import cn.com.njdhy.muscle.triceps.util.EmptyUtils;
 import cn.com.njdhy.muscle.triceps.util.errorcode.UserErrorCode;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,7 @@ public class MenuCtl {
      * @return 结果对象
      */
     @RequestMapping("/insert")
+    @RequiresPermissions("sys:menu:add")
     public Result insert(@RequestBody SysMenu model) {
 
         try {
@@ -100,6 +102,7 @@ public class MenuCtl {
      * @return 结果对象
      */
     @RequestMapping("/update")
+    @RequiresPermissions("sys:menu:update")
     public Result update(@RequestBody SysMenu model) {
 
         try {
@@ -124,6 +127,7 @@ public class MenuCtl {
      * @return 结果对象
      */
     @RequestMapping("/delete")
+    @RequiresPermissions("sys:menu:delete")
     public Result deleteByIds(@RequestBody List<String> ids) {
 
         try {

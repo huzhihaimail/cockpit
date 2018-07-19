@@ -11,6 +11,7 @@ import cn.com.njdhy.muscle.triceps.model.database.SysRole;
 import cn.com.njdhy.muscle.triceps.model.exception.ApplicationException;
 import cn.com.njdhy.muscle.triceps.service.sys.SysRoleService;
 import cn.com.njdhy.muscle.triceps.util.errorcode.RoleErrorCode;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,6 +98,7 @@ public class RoleCtl {
      * @return 结果对象
      */
     @RequestMapping("/insert")
+    @RequiresPermissions("sys:role:add")
     public Result insert(@RequestBody SysRole sysRole) {
 
         try {
@@ -122,6 +124,7 @@ public class RoleCtl {
      * @return 结果对象
      */
     @RequestMapping("/update")
+    @RequiresPermissions("sys:role:update")
     public Result update(@RequestBody SysRole sysRole) {
 
         try {
@@ -148,6 +151,7 @@ public class RoleCtl {
      * @return 结果对象
      */
     @RequestMapping("/delete")
+    @RequiresPermissions("sys:role:delete")
     public Result deleteByIds(@RequestBody List<String> ids) {
 
         try {
