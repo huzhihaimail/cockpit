@@ -73,7 +73,7 @@ public class RoleCtl {
     public Result queryById(@PathVariable String id) {
 
         try {
-
+            //校验参数
             if (EmptyUtils.isEmpty(id)){
                 return Result.error("500","请选择角色后再查询信息");
             }
@@ -102,7 +102,7 @@ public class RoleCtl {
     public Result insert(@RequestBody SysRole sysRole) {
 
         try {
-            // 校验参数 todo
+            // 校验参数
             if (EmptyUtils.isEmpty(sysRole.getName())){
                 return Result.error("500","请输入角色名称");
             }
