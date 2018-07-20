@@ -17,19 +17,29 @@
         <div class="row-fluid">
             <div class="col-md-10 form-inline">
                 <div class="input-group">
-
                     <!--<input type="text" class="form-control" placeholder="请输入关键字查询" @keyup.enter="query"-->
                            <!--v-model="vueQueryParam.keyword">-->
-                    <select id="tableNameId" class="selectpicker form-control" data-live-search="true"
+                    <select id="tableNameId" class="selectpicker" data-live-search="true"
                             data-live-search-placeholder="输入表名" title="请选择表名" v-model="model.tableName">
                         <option v-for="item in tableName">{{item}}</option>
                     </select>
 
                     <span class="input-group-btn">
-                            <button type="button" class="btn btn-primary" @click="query">
+                            <button type="button" class="btn btn-primary" @click="query" style="margin-left:10px;">
                                 <i class="fa fa-search"></i>查询
                             </button>
                     </span>
+
+                    <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary" style="margin-left:10px;">
+                                <i class="glyphicon glyphicon-download-alt"></i>导出
+                            </button>
+                    </span>
+
+                    <!--<button type="button" class="btn btn-default btn-sm">-->
+                        <!--<span class="glyphicon glyphicon-download-alt"></span> 导出-->
+                    <!--</button>-->
+
                 </div>
 
                 <!-- 此处定义表格左上方的按钮-->
