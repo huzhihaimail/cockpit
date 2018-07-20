@@ -33,6 +33,11 @@ var showColumns = [
         width: "15%"
     }
     , {
+        field: "jscShortProjName",
+        title: "驾驶舱项目短名称",
+        width: "15%"
+    }
+    , {
         field: "jscProjType",
         title: "项目类型",
         width: "15%"
@@ -398,6 +403,13 @@ var vm = new Vue({
 
     })
 ;
+
+//输入驾驶舱项目名称联动驾驶舱项目短名称
+$('#jscProjName').on('keyup blur', function() {
+    $('#jscShortProjName').val($(this).val());
+    vm.model.jscShortProjName = $(this).val();
+});
+
 
 /**
  * 页面初始化执行

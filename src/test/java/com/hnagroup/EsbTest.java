@@ -81,15 +81,20 @@ public class EsbTest {
 //        stageMyRgwqyService.getStageMyRgwqy();
 //    }
 
-    @Test
-    public void getStageMyXmqzq() throws IOException {
-        stageMyXmqzqService.getStageMyXmqzq();
-    }
-
-    @Test
-    public void getStageMyHt() throws IOException {
-        stageMyHtService.getStageMyHt();
-    }
+//    @Test
+//    public void insertXmqzqTest() {
+//        stageMyXmqzqService.getStageMyXmqzq();
+//    }
+//
+//    @Test
+//    public void getStageMyXmqzq() throws IOException {
+//        stageMyXmqzqService.getStageMyXmqzq();
+//    }
+//
+//    @Test
+//    public void getStageMyHt() throws IOException {
+//        stageMyHtService.getStageMyHt();
+//    }
 
     @Test
     public void test() throws IOException {

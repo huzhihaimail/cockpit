@@ -21,6 +21,8 @@ public class SysProjMapping extends BaseModel {
 
     private String jscProjName;
 
+    private String jscShortProjName;
+
     private String yyProjName;
 
     private String yxProjName;
@@ -193,5 +195,13 @@ public class SysProjMapping extends BaseModel {
 
     public void setJscProjPhase(String jscProjPhase) {
         this.jscProjPhase = jscProjPhase;
+    }
+
+    public String getJscShortProjName() {
+        return jscShortProjName;
+    }
+
+    public void setJscShortProjName(String jscShortProjName) {
+        this.jscShortProjName = jscShortProjName;
     }
 }
