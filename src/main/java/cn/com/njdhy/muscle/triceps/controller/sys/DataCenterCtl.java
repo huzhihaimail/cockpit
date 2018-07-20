@@ -2,6 +2,7 @@ package cn.com.njdhy.muscle.triceps.controller.sys;
 
 import cn.com.njdhy.muscle.triceps.model.common.Result;
 import cn.com.njdhy.muscle.triceps.service.sys.DataCenterService;
+import cn.com.njdhy.muscle.triceps.util.ExportExcelUtil;
 import cn.com.njdhy.muscle.triceps.util.errorcode.OrgErrorCode;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -12,6 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -83,6 +89,25 @@ public class DataCenterCtl {
     public Result index(@RequestParam String tableName, Integer pageNumber, Integer pageSize) {
         PageInfo<Map<String,Object>> result = dataCenterService.selectDataByTableName(tableName,pageNumber,pageSize);
         return Result.success(result.getTotal(), result.getList());
+    }
+
+
+    @RequestMapping(path = "/export", method = RequestMethod.GET)
+    @ApiOperation(
+            value = "根据表名导出表的数据",
+            notes = "根据表名导出表的数据"
+    )
+    public void export(@RequestParam String tableName, HttpServletResponse response) throws IOException {
+        List<String> listColums = dataCenterService.selectColumns(tableName);
+        List<Map<String,Object>> dataLists = dataCenterService.selectDataByTableName(tableName);
+        String name =  tableName + ".xls";
+        response.addHeader("Content-Disposition",
+                "attachment;filename=" + new String(name.getBytes("UTF-8"), "ISO8859-1"));
+        response.setContentType("application/octet-stream");
+        OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
+        ExportExcelUtil.exportExcel(dataLists, listColums, response.getOutputStream());
+        toClient.flush();
+        response.getOutputStream().close();
     }
 
 }

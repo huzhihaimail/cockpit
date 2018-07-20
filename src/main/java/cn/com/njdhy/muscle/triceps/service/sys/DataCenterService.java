@@ -14,8 +14,11 @@ import java.util.Map;
  **/
 public interface DataCenterService extends BaseService<Map<String,Object>> {
 
-    //根据表名查询数据
+    //根据表名分页查询数据
     PageInfo<Map<String,Object>> selectDataByTableName(String tableName,Integer pageNum, Integer pageSize);
+
+    //根据表名查询所有数据
+    List<Map<String,Object>> selectDataByTableName(String tableName);
 
     //查询数据库所有表名
     List<String> selectAllTableName();

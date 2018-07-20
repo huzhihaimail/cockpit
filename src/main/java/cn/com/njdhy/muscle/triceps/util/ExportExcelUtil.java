@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -32,6 +33,8 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * @Author Richard.li
@@ -46,55 +49,13 @@ public class ExportExcelUtil {
     public  final static String  EXCEL_FILE_2003 = "2003";
 
     /**
-     * <p>
-     * 导出无头部标题行Excel <br>
-     * 时间格式默认：yyyy-MM-dd hh:mm:ss <br>
-     * </p>
-     *
-     * @param title 表格标题
-     * @param dataset 数据集合
-     * @param out 输出流
-     * @param version 2003 或者 2007，不传时默认生成2003版本
-     */
-//    public void exportExcel(String title, Collection<T> dataset, OutputStream out, String version) {
-//        if(StringUtils.isEmpty(version) || EXCEL_FILE_2003.equals(version.trim())){
-//            exportExcel2003(title, null, dataset, out, "yyyy-MM-dd hh:mm:ss");
-//        }else{
-//            exportExcel2007(title, null, dataset, out, "yyyy-MM-dd hh:mm:ss");
-//        }
-//    }
-
-    /**
-     * <p>
-     * 导出带有头部标题行的Excel <br>
-     * 时间格式默认：yyyy-MM-dd hh:mm:ss <br>
-     * </p>
-     *
-     * @param title 表格标题
-     * @param headers 头部标题集合
-     * @param dataset 数据集合
-     * @param out 输出流
-     * @param version 2003 或者 2007，不传时默认生成2003版本
-     */
-//    public void exportExcel(String title,String[] headers, Collection<T> dataset, OutputStream out,String version) {
-//        if(StringUtils.isBlank(version) || EXCEL_FILE_2003.equals(version.trim())){
-//            exportExcel2003(title, headers, dataset, out, "yyyy-MM-dd hh:mm:ss");
-//        }else{
-//            exportExcel2007(title, headers, dataset, out, "yyyy-MM-dd hh:mm:ss");
-//        }
-//    }
-
-
-
-    /**
      * HSSFWorkbook
      * 导出excel生成2003版本的excel,文件名后缀：xls <br>
      * @param list 数据集合
      * @param column 列名
-     * @param templatePath 模板路径
      * @param os  输出流
      */
-    public static <T> void exportExcel(List<T> list, List<String> column, String templatePath, OutputStream os) {
+    public static <T> void exportExcel(List<T> list, List<String> column, OutputStream os) {
 
         // 声明一个工作薄
         HSSFWorkbook wb = new HSSFWorkbook();
@@ -125,7 +86,7 @@ public class ExportExcelUtil {
             row = sheet.createRow(i + 1);
             JSONObject jsonObject = jsonarray.getJSONObject(i);
             for (int index = 0; index < column.size(); index++) {
-                row.createCell(index).setCellValue(jsonObject.get(index) + "");
+                row.createCell(index).setCellValue(jsonObject.get(column.get(index)) + "");
             }
         }
 
@@ -133,7 +94,7 @@ public class ExportExcelUtil {
             wb.write(os);
             wb.close();
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
     }
 

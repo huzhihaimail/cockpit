@@ -11,11 +11,21 @@
     </select>
 
     <select id="selectColumns" resultType="java.lang.String" parameterType="java.lang.String">
-        Select name FROM SysColumns Where id=Object_Id( #{tableName} )
+        SELECT
+        B.name AS column_name
+        FROM sys.tables A
+        INNER JOIN sys.columns B ON B.object_id = A.object_id
+        LEFT JOIN sys.extended_properties C ON C.major_id = B.object_id AND C.minor_id = B.column_id
+        WHERE A.name =  #{tableName}
     </select>
 
     <select id="selectNotes" resultType="java.lang.String" parameterType="java.lang.String">
-        select value from sys.extended_properties where major_id = object_id ( #{tableName} );
+        SELECT
+        C.value AS column_description
+        FROM sys.tables A
+        INNER JOIN sys.columns B ON B.object_id = A.object_id
+        LEFT JOIN sys.extended_properties C ON C.major_id = B.object_id AND C.minor_id = B.column_id
+        WHERE A.name =  #{tableName}
     </select>
 
     <select id="selectColumnsAndNotes" resultType="java.util.Map" parameterType="java.lang.String">

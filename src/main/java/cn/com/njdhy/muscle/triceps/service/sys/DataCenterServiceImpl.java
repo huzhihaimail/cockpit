@@ -50,4 +50,9 @@ public class DataCenterServiceImpl extends BaseServiceImpl<DataCenterDao, Map<St
         return new PageInfo<Map<String, Object>>(this.dataCenterDao.selectDataByTableName(tableName));
     }
 
+    @Override
+    public List<Map<String, Object>> selectDataByTableName(String tableName) {
+        return this.dataCenterDao.selectDataByTableName(tableName);
+    }
+
 }
