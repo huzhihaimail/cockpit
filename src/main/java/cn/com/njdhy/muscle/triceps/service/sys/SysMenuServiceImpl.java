@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <类功能简述> 菜单业务层实现类
@@ -66,5 +67,25 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenu> imp
         } catch (ApplicationException e) {
             throw new ApplicationException("根据角色查询菜单失败");
         }
+    }
+
+    /**
+     * 根据用户名查询所有权限
+     * @param userName
+     * @return
+     */
+    @Override
+    public List<String> queryPermissionByUserName(String userName) {
+        List<String> permissionList = new ArrayList<>();
+        try {
+            ConcurrentHashMap map = new ConcurrentHashMap();
+            if (!EmptyUtils.isEmpty(userName)){
+                map.put("userName",userName);
+            }
+            permissionList = this.dao.queryPermissionByUserName(map);
+        } catch (ApplicationException e) {
+            throw new ApplicationException("根据用户名查询权限失败");
+        }
+        return permissionList;
     }
 }

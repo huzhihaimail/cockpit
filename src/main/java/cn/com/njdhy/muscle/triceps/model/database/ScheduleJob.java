@@ -31,6 +31,8 @@ public class ScheduleJob implements Serializable {
     private String description;
     //任务是否可以并行运行（0：不可以，1：可以）
     private String isConcurrent;
+    //任务执行时调用哪个类的方法 包名+类名
+    private String beanClass;
     //spring bean
     private String springId;
     //任务调用的方法名
@@ -183,6 +185,14 @@ public class ScheduleJob implements Serializable {
      */
     public Date getUpdateTime() {
         return updateTime;
+    }
+
+    public String getBeanClass() {
+        return beanClass;
+    }
+
+    public void setBeanClass(String beanClass) {
+        this.beanClass = beanClass;
     }
 
     @Override

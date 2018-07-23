@@ -54,4 +54,11 @@ public interface SysMenuDao extends BaseDao<SysMenu> {
      * @return
      */
     List<SysMenu> queryChildMenuByParentName(ConcurrentHashMap map);
+
+    /**
+     * 根据用户名查询用户权限
+     * @param map
+     * @return
+     */
+    List<String> queryPermissionByUserName(ConcurrentHashMap map);
 }

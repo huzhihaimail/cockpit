@@ -1,6 +1,7 @@
 
 package cn.com.njdhy.muscle.triceps.controller.sys;
 
+import cn.com.njdhy.muscle.triceps.Application;
 import cn.com.njdhy.muscle.triceps.model.common.Query;
 import cn.com.njdhy.muscle.triceps.model.common.Result;
 import cn.com.njdhy.muscle.triceps.model.database.SysMenu;
@@ -8,7 +9,9 @@ import cn.com.njdhy.muscle.triceps.model.database.SysRole;
 import cn.com.njdhy.muscle.triceps.model.database.ZTree;
 import cn.com.njdhy.muscle.triceps.model.exception.ApplicationException;
 import cn.com.njdhy.muscle.triceps.service.sys.SysMenuService;
+import cn.com.njdhy.muscle.triceps.service.sys.SysRoleService;
 import cn.com.njdhy.muscle.triceps.util.EmptyUtils;
+import cn.com.njdhy.muscle.triceps.util.ShiroUtil;
 import cn.com.njdhy.muscle.triceps.util.errorcode.UserErrorCode;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -16,11 +19,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <类功能简述> 菜单控制器
@@ -35,6 +37,8 @@ public class MenuCtl {
 
     @Autowired
     private SysMenuService sysMenuService;
+    @Autowired
+    private SysRoleService sysRoleService;
 
     /**
      * 分页查询菜单列表
@@ -236,16 +240,23 @@ public class MenuCtl {
         return Result.success().put("model", zTreeList);
     }
 
+    /**
+     * 查询当前用户所拥有的所有权限
+     * @return
+     */
     @RequestMapping("queryPermissionByUserName")
     public Result queryPermissionByUserName(){
-        List<String> permissionList = new ArrayList<>();
 
-        permissionList.add("sys:user:add");
-        permissionList.add("sys:user:delete");
-        permissionList.add("sys:user:update");
-//        permissionList.add("sys:user:initPassword");
+        try {
+            //获取当前登陆用户id
+            String loginName = ShiroUtil.getLoginUserName();
 
-        return Result.success().put("model", permissionList);
+            List<String> menuList = sysMenuService.queryPermissionByUserName(loginName);
+
+            return Result.success().put("model", menuList);
+        } catch (ApplicationException e) {
+            return Result.error("500","查询用户权限失败");
+        }
     }
 
 }

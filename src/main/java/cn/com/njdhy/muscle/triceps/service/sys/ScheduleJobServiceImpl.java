@@ -2,8 +2,18 @@ package cn.com.njdhy.muscle.triceps.service.sys;
 
 import cn.com.njdhy.muscle.triceps.dao.ScheduleJobDao;
 import cn.com.njdhy.muscle.triceps.model.database.ScheduleJob;
+import cn.com.njdhy.muscle.triceps.model.exception.ApplicationException;
 import cn.com.njdhy.muscle.triceps.service.BaseServiceImpl;
+import cn.com.njdhy.muscle.triceps.util.quartz.QuartzJobFactory;
+import cn.com.njdhy.muscle.triceps.util.quartz.QuartzJobFactoryDisallowConcurrentExecution;
+import org.quartz.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by huaijie on 2017/9/25.
@@ -11,41 +21,112 @@ import org.springframework.stereotype.Service;
 @Service("scheduleJobService")
 public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, ScheduleJob> implements ScheduleJobService {
 
-//    public final Logger logger = LoggerFactory.getLogger(ScheduleJobServiceImpl.class);
-//
+    @Autowired
+    private SchedulerFactoryBean schedulerFactoryBean;
+
+    @PostConstruct
+    public void init() throws Exception {
+        // 这里获取任务信息数据
+        List<ScheduleJob> jobList = new ArrayList<>();//getAllTask();
+        for (ScheduleJob job : jobList) {
+            addJob(job);
+        }
+    }
+
+    /**
+     * 新增定时器任务
+     *
+     * @param scheduleJob
+     */
+    @Override
+    public void insertSchedule(ScheduleJob scheduleJob) {
+        try {
+            scheduleJob.setJobId("1");
+            scheduleJob.setJobStatus("0");
+            this.dao.insert(scheduleJob);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void changeJobStart(String id) {
+            try {
+                ScheduleJob scheduleJob = dao.queryById(id);
+                if (scheduleJob == null) {
+                    throw new ApplicationException("500", "任务信息不存在");
+                }
+                if (scheduleJob.getJobStatus().equals(ScheduleJob.STATUS_RUNNING)) {
+                    throw new ApplicationException("500", "该任务已启用");
+                }
+                ScheduleJob detail = new ScheduleJob();
+                detail.setId(Integer.valueOf(id));
+                detail.setJobStatus(ScheduleJob.STATUS_RUNNING);
+                scheduleJob.setJobStatus(ScheduleJob.STATUS_RUNNING);
+                addJob(scheduleJob);
+                this.dao.update(detail);
+            } catch (ApplicationException e) {
+                throw new ApplicationException(e.getCode(), e.getMsg());
+            }catch (Exception e) {
+                throw new ApplicationException("500", "定时器异常");
+            }
+    }
+
+    @Override
+    public void changeJobStop(String id) {
+        try {
+            ScheduleJob scheduleJob = dao.queryById(id);
+            if (scheduleJob == null) {
+                return;
+            }
+            if (scheduleJob.getJobStatus().equals(ScheduleJob.STATUS_NOT_RUNNING)) {
+                throw new ApplicationException("500", "该任务已停止");
+            }
+//        deleteJob(scheduleJob);
+            ScheduleJob detail = new ScheduleJob();
+            detail.setId(Integer.valueOf(id));
+            detail.setJobStatus(ScheduleJob.STATUS_NOT_RUNNING);
+            this.dao.update(detail);
+        } catch (ApplicationException e) {
+            throw new ApplicationException(e.getCode(), e.getMsg());
+        }
+    }
+
+    public void addJob(ScheduleJob job) throws Exception {
+        if (job == null || !ScheduleJob.STATUS_RUNNING.equals(job.getJobStatus())) {
+            return;
+        }
+
+        Scheduler scheduler = schedulerFactoryBean.getScheduler();
+        TriggerKey triggerKey = TriggerKey.triggerKey(job.getJobName(), job.getJobGroup());
+        CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
+
+        // 不存在，创建一个
+        if (null == trigger) {
+            Class clazz = ScheduleJob.CONCURRENT_IS.equals(job.getIsConcurrent()) ? QuartzJobFactory.class : QuartzJobFactoryDisallowConcurrentExecution.class;
+            //JobDetail对象是在将job加入scheduler时，由客户端程序创建的,它包含job的各种属性设置
+            JobDetail jobDetail = JobBuilder.newJob(clazz).withIdentity(job.getJobName(), job.getJobGroup()).build();
+            jobDetail.getJobDataMap().put("scheduleJob", job);
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression());
+            // Trigger用于触发Job的执行
+            trigger = TriggerBuilder.newTrigger().withIdentity(job.getJobName(), job.getJobGroup()).withSchedule(scheduleBuilder).build();
+            // 使用定义的触发器trigger安排执行任务job
+            scheduler.scheduleJob(jobDetail, trigger);
+        } else {
+            // Trigger已存在，那么更新相应的定时设置
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression());
+            // 按新的cronExpression表达式重新构建trigger
+            trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
+            // 按新的trigger重新设置job执行
+            scheduler.rescheduleJob(triggerKey, trigger);
+        }
+    }
+
+
 //    @Autowired
 //    private ScheduleJobDao scheduleJobDao;
 //
-//    @Autowired
-//    private SchedulerFactoryBean schedulerFactoryBean;
-//
-//    @PostConstruct
-//    public void init() throws Exception {
-//        logger.info("-----------------------start all task job---------------------------");
-//        // 这里获取任务信息数据
-//        List<ScheduleJob> jobList = getAllTask();
-//        for (ScheduleJob job : jobList) {
-//            addJob(job);
-//        }
-//    }
-//
-//    @Override
-//    public ScheduleJob queryObject(Integer id){
-//        if(checkStatus(id)){
-//            throw new KunlunException("the status is running",ErrorCode.SCHEDULE_JOB_RUNNING_CODE);
-//        }
-//        return scheduleJobDao.queryObject(id);
-//    }
-//
-//    @Override
-//    public List<ScheduleJob> queryList(Map<String, Object> map){
-//        return scheduleJobDao.queryList(map);
-//    }
-//
-//    @Override
-//    public int queryTotal(Map<String, Object> map){
-//        return scheduleJobDao.queryTotal(map);
-//    }
+
 //
 //    @Override
 //    public void save(ScheduleJob bgSysScheduleJob){
@@ -102,15 +183,6 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
 //
 //    }
 //
-//    @Override
-//    public void delete(Integer id){
-//        if(checkStatus(id)){
-//            throw new KunlunException("the status is running",ErrorCode.SCHEDULE_JOB_RUNNING_CODE);
-//        }else{
-//            scheduleJobDao.delete(id);
-//        }
-//    }
-//
 //    //0表示停用，1表示启用
 //    public boolean checkStatus(Integer id){
 //        ScheduleJob scheduleJob = scheduleJobDao.queryObject(id);
@@ -126,67 +198,9 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
 //        return scheduleJobDao.getAllTask();
 //    }
 //
-//    @Override
-//    public void addJob(ScheduleJob job)  throws Exception{
-//        if (job == null || !ScheduleJob.STATUS_RUNNING.equals(job.getJobStatus())) {
-//            return;
-//        }
 //
-//        Scheduler scheduler = schedulerFactoryBean.getScheduler();
-//        logger.info("addJob.................add..................................");
-//        TriggerKey triggerKey = TriggerKey.triggerKey(job.getJobName(), job.getJobGroup());
-//        CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
-//
-//        // 不存在，创建一个
-//        if (null == trigger) {
-//            Class clazz = ScheduleJob.CONCURRENT_IS.equals(job.getIsConcurrent()) ? QuartzJobFactory.class : QuartzJobFactoryDisallowConcurrentExecution.class;
-//            //JobDetail对象是在将job加入scheduler时，由客户端程序创建的,它包含job的各种属性设置
-//            JobDetail jobDetail = JobBuilder.newJob(clazz).withIdentity(job.getJobName(), job.getJobGroup()).build();
-//            jobDetail.getJobDataMap().put("scheduleJob", job);
-//            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression());
-//            // Trigger用于触发Job的执行
-//            trigger = TriggerBuilder.newTrigger().withIdentity(job.getJobName(), job.getJobGroup()).withSchedule(scheduleBuilder).build();
-//            // 使用定义的触发器trigger安排执行任务job
-//            scheduler.scheduleJob(jobDetail, trigger);
-//        } else {
-//            // Trigger已存在，那么更新相应的定时设置
-//            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression());
-//            // 按新的cronExpression表达式重新构建trigger
-//            trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
-//            // 按新的trigger重新设置job执行
-//            scheduler.rescheduleJob(triggerKey, trigger);
-//        }
-//    }
-//
-//    @Override
-//    public void changeJobStart(Integer id) throws Exception{
-//        ScheduleJob scheduleJob = scheduleJobDao.queryObject(id);
-//
-//        if (scheduleJob == null){
-//            return;
-//        }
-//        if (scheduleJob.getJobStatus().equals(ScheduleJob.STATUS_RUNNING)){
-//            throw new KunlunException("the status is running",ErrorCode.SCHEDULE_JOB_RUNNING_CODE);
-//        }
-//        scheduleJob.setJobStatus(ScheduleJob.STATUS_RUNNING);
-//        addJob(scheduleJob);
-//        scheduleJobDao.update(scheduleJob);
-//    }
-//
-//    @Override
-//    public void changeJobStop(Integer id) throws Exception{
-//        ScheduleJob scheduleJob = scheduleJobDao.queryObject(id);
-//
-//        if (scheduleJob == null){
-//            return;
-//        }
-//        if (scheduleJob.getJobStatus().equals(ScheduleJob.STATUS_NOT_RUNNING)){
-//            throw new KunlunException("the status is running",ErrorCode.SCHEDULE_JOB_NOT_RUNNING_CODE);
-//        }
-//        deleteJob(scheduleJob);
-//        scheduleJob.setJobStatus(ScheduleJob.STATUS_NOT_RUNNING);
-//        scheduleJobDao.update(scheduleJob);
-//    }
+
+
 //
 //    @Override
 //    public void deleteJob(ScheduleJob scheduleJob) throws Exception{

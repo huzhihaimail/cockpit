@@ -4,8 +4,14 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
 
+
+    <!--定时任务调度-->
+    <bean id="schedulerFactoryBean"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean"/>
+
     <!-- 数据源配置 -->
     <import resource="classpath:spring/datasource.xml"/>
+
     <!-- shiro权限配置-->
     <import resource="classpath:spring/shiro.xml"/>
 

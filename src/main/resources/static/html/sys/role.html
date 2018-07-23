@@ -30,9 +30,9 @@
 
                 <!-- 此处定义表格左上方的按钮-->
                 <div id="toolbar" class="btn-group">
-                    <a class="btn btn-success" @click="save"><i class="fa fa-floppy-o"></i>新建</a>
-                    <a class="btn btn-warning" @click="update"><i class="fa fa-pencil-square-o"></i>修改</a>
-                    <a class="btn btn-danger" @click="del"><i class="fa fa-trash"></i>删除</a>
+                    <a class="btn btn-success" v-if="hasPermission('sys:role:add')" @click="save"><i class="fa fa-floppy-o"></i>新建</a>
+                    <a class="btn btn-warning" v-if="hasPermission('sys:role:update')" @click="update"><i class="fa fa-pencil-square-o"></i>修改</a>
+                    <a class="btn btn-danger" v-if="hasPermission('sys:role:delete')" @click="del"><i class="fa fa-trash"></i>删除</a>
                 </div>
             </div>
         </div>
@@ -119,5 +119,6 @@
 <script src="../../plugin/ztree/js/jquery.ztree.all.min.js"></script>
 <script src="../../bsns/common/common-bootstrap-table.js"></script>
 <script src="../../plugin/moment/moment.min.js"></script>
+<script src="../../bsns/common/common-shiro.js"></script>
 <script src="../../bsns/sys/role.js"></script>
 </html>

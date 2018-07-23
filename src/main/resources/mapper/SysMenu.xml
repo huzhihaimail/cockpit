@@ -275,6 +275,15 @@
         order by m.order_num
     </select>
 
+    <!-- 根据父级菜单名称查询子级菜单-->
+    <select id="queryPermissionByUserName" resultType="String"  parameterType="java.util.Map">
+        select m.permission from sys_menu m
+            left join sys_role_menu rm on rm.menu_id=m.id
+            left join sys_user_role ur on ur.role_id=rm.role_id
+            left join sys_user u on u.id=ur.user_id
+            where 1=1 and u.user_name=#{userName}
+    </select>
+
 
 </mapper>
 
