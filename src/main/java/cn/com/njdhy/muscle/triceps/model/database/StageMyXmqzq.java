@@ -55,6 +55,9 @@ public class StageMyXmqzq {
     @ApiModelProperty(value = "已回款总额（元）", example = "已回款总额（元）")
     private String yhkAmt;
 
+    @ApiModelProperty(value = "当前年月日", example = "当前年月日")
+    private String dataDate;
+
     private Date etlTime;
 
     public String getProjCode() {
@@ -175,5 +178,13 @@ public class StageMyXmqzq {
 
     public void setEtlTime(Date etlTime) {
         this.etlTime = etlTime;
+    }
+
+    public String getDataDate() {
+        return dataDate;
+    }
+
+    public void setDataDate(String dataDate) {
+        this.dataDate = dataDate;
     }
 }

@@ -97,6 +97,7 @@ public class StageMyXmqzqService {
                     String syhzjrgAmt = (String) stageMyXmqzqJson.get("SubscriptionOfUnsoldValue");//剩余货值净认购
                     String syhzjqyAmt = (String) stageMyXmqzqJson.get("SignOfUnsoldValue");//剩余货值净签约
                     String yhkAmt = (String) stageMyXmqzqJson.get("GetInAmount");//已回款总额
+                    String dataDate = (String) stageMyXmqzqJson.get("DateNow");//当前年月日
 
                     StageMyXmqzq stageMyXmqzq = new StageMyXmqzq();
                     stageMyXmqzq.setProjCode(projCode);
@@ -113,6 +114,7 @@ public class StageMyXmqzqService {
                     stageMyXmqzq.setSyhzjrgAmt(syhzjrgAmt);
                     stageMyXmqzq.setSyhzjqyAmt(syhzjqyAmt);
                     stageMyXmqzq.setYhkAmt(yhkAmt);
+                    stageMyXmqzq.setDataDate(dataDate);
                     list.add(stageMyXmqzq);
                 }
                 list.forEach( stageMyHt -> this.insert(stageMyHt) );
