@@ -34,6 +34,7 @@ war {
 
 // version vars
 ext {
+    springVersion = '4.3.7.RELEASE'
     mybatisPagehelperVersion = '4.0.0'
     HikariCP_version = '2.4.1'
     mybatis_version = '3.3.0'
@@ -53,6 +54,8 @@ ext {
 
 // 指定项目使用的依赖
 dependencies {
+
+    compile "org.springframework:spring-context-support:${springVersion}"
 
     // web
     compile("org.springframework.boot:spring-boot-starter-web")
