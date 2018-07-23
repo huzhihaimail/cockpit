@@ -11,6 +11,12 @@ import java.util.Map;
  */
 public interface ScheduleJobService extends BaseService<ScheduleJob> {
 
+    /**
+     * 新增定时任务
+     * @param scheduleJob
+     */
+    void insertSchedule(ScheduleJob scheduleJob);
+
 //    ScheduleJob queryObject(Integer id);
 //
 //    List<ScheduleJob> queryList(Map<String, Object> map);
@@ -27,11 +33,11 @@ public interface ScheduleJobService extends BaseService<ScheduleJob> {
 //
 //    List<ScheduleJob> getAllTask();
 //
-//    void addJob(ScheduleJob job) throws Exception;
-//
-//    void changeJobStart(Integer id) throws Exception;
-//
-//    void changeJobStop(Integer id) throws Exception;
+    void addJob(ScheduleJob job) throws Exception;
+
+    void changeJobStart(String id);
+
+    void changeJobStop(String id);
 //
 //    void deleteJob(ScheduleJob scheduleJob) throws Exception;
 }

@@ -21,7 +21,7 @@ var showColumns = [
     , {
         field: "jobName",
         title: "名称",
-        width: "10%"
+        width: "20%"
     }
     , {
         field: "jobGroup",
@@ -31,17 +31,34 @@ var showColumns = [
     , {
         field: "jobStatus",
         title: "状态",
-        width: "20%"
+        width: "7%",
+        formatter: function (value, row, index) {
+            if (value == '0') {
+                return "<span class='label label-danger'>停用</span>";
+            } else {
+                return "<span class='label label-success'>启用</span>";
+            }
+        }
     }
     , {
         field: "cronExpression",
         title: "cron表达式",
-        width: "15%"
+        width: "10%"
     }
     , {
         field: "description",
         title: "描述",
         width: "20%",
+    }
+    , {
+        field: "springId",
+        title: "类名",
+        width: "15%",
+    }
+    , {
+        field: "methodName",
+        title: "方法名",
+        width: "15%",
     }
 ];
 
@@ -177,32 +194,16 @@ var vm = new Vue({
                 alert(PAGE_SELECT_ONE);
                 return;
             }
-            // 加载角色列表
-            vm.loadRoles();
-            $.ajaxSettings.async = false;
             $.get(APP_NAME + "/sys/" + vm.moduleName + "/" + ids[0], function (r) {
                 vm.show = false;
                 vm.title = PAGE_UPDATE_TITLE;
                 vm.model = r.model;
-                vm.model.userLevel=r.model.userLevel;
-                vm.userRoles = r.model.rolesList;
             });
-
-            this.$options.methods.changeUserLevel();
-
         }
         // 执行修改操作
         ,
         doUpdate: function () {
-            vm.model.userRoles = vm.userRoles;
 
-            var nodes = ztree.getCheckedNodes(true);
-
-            var orgIdList = new Array();
-            for (var i = 0; i < nodes.length; i++) {
-                orgIdList.push(nodes[i].menuId);
-            }
-            vm.model.orgIdList = orgIdList;
             // 执行修改
             $.ajax({
                 type: "POST",
@@ -241,6 +242,74 @@ var vm = new Vue({
                 $.ajax({
                     type: "POST",
                     url: APP_NAME + "/sys/" + vm.moduleName + "/delete",
+                    contentType: "application/json",
+                    data: JSON.stringify(ids),
+                    success: function (r) {
+                        if (r.code == 0) {
+                            alert(PAGE_OPERATOR_SUCCESS, function (index) {
+                                vm.reload();
+                            });
+                        } else if (r.code) {
+                            alert(r.msg);
+                        } else {
+                            alert(r.msg);
+                        }
+                    }
+                });
+            });
+        }
+
+        // 定时器启用按钮
+        ,
+        changeStart: function (event) {
+
+            // 获取选择记录ID
+            var ids = bsTable.getMultiRowIds();
+
+            // 校验只能选择一行
+            if (ids.length != 1) {
+                alert(PAGE_SELECT_ONE);
+                return;
+            }
+
+            confirm(PAGE_ARE_YOU_SURE_DEL, function () {
+                $.ajax({
+                    type: "POST",
+                    url: APP_NAME + "/sys/" + vm.moduleName + "/changeJobStart",
+                    contentType: "application/json",
+                    data: JSON.stringify(ids),
+                    success: function (r) {
+                        if (r.code == 0) {
+                            alert(PAGE_OPERATOR_SUCCESS, function (index) {
+                                vm.reload();
+                            });
+                        } else if (r.code) {
+                            alert(r.msg);
+                        } else {
+                            alert(r.msg);
+                        }
+                    }
+                });
+            });
+        }
+
+        // 定时器启用按钮
+        ,
+        changeStop: function (event) {
+
+            // 获取选择记录ID
+            var ids = bsTable.getMultiRowIds();
+
+            // 校验未选择任何一行
+            if (ids == null || ids.length <= 0) {
+                alert(PAGE_SELECT_ONE);
+                return;
+            }
+
+            confirm(PAGE_ARE_YOU_SURE_DEL, function () {
+                $.ajax({
+                    type: "POST",
+                    url: APP_NAME + "/sys/" + vm.moduleName + "/changeJobStop",
                     contentType: "application/json",
                     data: JSON.stringify(ids),
                     success: function (r) {

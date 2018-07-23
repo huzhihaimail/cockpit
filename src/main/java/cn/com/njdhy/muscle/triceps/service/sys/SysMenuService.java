@@ -39,4 +39,11 @@ public interface SysMenuService extends BaseService<SysMenu> {
      * @return
      */
     List<String> queryMenuByRole(String roleId);
+
+    /**
+     * 根据用户名查询权限
+     * @param userName
+     * @return
+     */
+    List<String> queryPermissionByUserName(String userName);
 }

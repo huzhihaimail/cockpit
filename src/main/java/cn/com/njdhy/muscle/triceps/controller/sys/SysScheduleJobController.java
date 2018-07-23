@@ -14,11 +14,10 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,6 +53,33 @@ public class SysScheduleJobController {
     }
 
     /**
+     * 根据id查询用户信息
+     *
+     * @param id 用户ID
+     * @return 用户实体
+     */
+    @RequestMapping("/{id}")
+    public Result queryById(@PathVariable String id) {
+        ScheduleJob model = new ScheduleJob();
+        try {
+            if (EmptyUtils.isEmpty(id)){
+                return Result.error("500","请选择id后再查询用户信息");
+            }
+            model = scheduleJobService.queryById(id);
+
+            if (ObjectUtils.isEmpty(model)) {
+                model = new ScheduleJob();
+            }
+        } catch (ApplicationException e) {
+            return Result.error(UserErrorCode.SYS_USER_QUERY_INFO_APP_ERROR_CODE, UserErrorCode.SYS_USER_QUERY_INFO_APP_ERROR_MESSAGE);
+        } catch (Exception e) {
+            return Result.error(UserErrorCode.SYS_USER_QUERY_INFO_ERROR_CODE,UserErrorCode.SYS_USER_QUERY_INFO_ERROR_MESSAGE);
+        }
+
+        return Result.success().put("model", model);
+    }
+
+    /**
      * 保存
      *
      * @param scheduleJob 请求数据对象
@@ -65,7 +91,7 @@ public class SysScheduleJobController {
         try {
             // 校验参数
             // 执行入库操作
-            scheduleJobService.insert(scheduleJob);
+            scheduleJobService.insertSchedule(scheduleJob);
         } catch (ApplicationException e) {
             return Result.error(UserErrorCode.SYS_USER_SAVE_APP_ERROR_CODE, UserErrorCode.SYS_USER_SAVE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
@@ -76,53 +102,90 @@ public class SysScheduleJobController {
         return Result.success();
     }
 
-//    @Autowired
-//    private ScheduleJobService bgSysScheduleJobService;
-//
-//    /**
-//     * 列表
-//     */
-//    @RequestMapping("/list")
-//    public Result list(@RequestParam Map<String, Object> params,Integer pageNumber, Integer pageSize){
-//
-//        //查询列表数据
-//        Query query = new Query(params);
-//
-//
-//        PageInfo<SysUser> result = bgSysScheduleJobService.queryList(params, pageNumber, pageSize);
-//
-//        return Result.success(result.getTotal(),result.getList());
-//    }
-//
-//
-//    /**
-//     * 信息
-//     */
-//    @RequestMapping("/info/{id}")
-//    public Result info(@PathVariable("id") Integer id){
-//        ScheduleJob bgSysScheduleJob = bgSysScheduleJobService.queryObject(id);
-//
-//        return Result.success().put("bgSysScheduleJob", bgSysScheduleJob);
-//    }
-//
-//    /**
-//     * 保存
-//     */
-//    @RequestMapping("/save")
-//    public Result save(@RequestBody ScheduleJob bgSysScheduleJob){
-//        try{
-//            ScheduleJobCheck.validateFormData(bgSysScheduleJob);
-//            bgSysScheduleJobService.save(bgSysScheduleJob);
-//        }catch (KunlunException e){
-//            logger.error("SysScheduleJobController | save | KunlunException:{}|{}",e.getMsg(), bgSysScheduleJob);
-//            return Result.error(e.getCode(),e.getMsg());
-//        }catch (Exception e){
-//            logger.error("SysScheduleJobController | save | Exception:{}",e);
-//            return Result.error(e.getMessage());
-//        }
-//        return Result.success();
-//    }
-//
+    /**
+     * 启动任务
+     * @param ids
+     * @return
+     */
+    @RequestMapping("/changeJobStart")
+    public Result changeStart(@RequestBody List<String> ids){
+
+        try{
+            scheduleJobService.changeJobStart(ids.get(0));
+        }catch (ApplicationException e){
+            return Result.error(e.getCode(),e.getMsg());
+        }catch (Exception e){
+            return Result.error(e.getMessage());
+        }
+        return Result.success();
+    }
+
+    /**
+     * 停止任务
+     * @param ids
+     * @return
+     */
+    @RequestMapping("/changeJobStop")
+    public Result changeStop(@RequestBody List<String> ids){
+
+        try{
+            scheduleJobService.changeJobStop(ids.get(0));
+        }catch (ApplicationException e){
+            return Result.error(e.getCode(),e.getMsg());
+        }catch (Exception e){
+            return Result.error(e.getMessage());
+        }
+        return Result.success();
+    }
+
+    /**
+     * 修改操作
+     *
+     * @param scheduleJob 请求数据对象
+     * @return 结果对象
+     */
+    @RequestMapping("/update")
+    public Result update(@RequestBody ScheduleJob scheduleJob) {
+
+        try {
+
+            // 执行修改
+            scheduleJobService.update(scheduleJob);
+        } catch (RuntimeException e) {
+            return Result.error(UserErrorCode.SYS_USER_UPDATE_APP_ERROR_CODE, UserErrorCode.SYS_USER_UPDATE_APP_ERROR_MESSAGE);
+        } catch (Exception e) {
+            return Result.error(UserErrorCode.SYS_USER_UPDATE_ERROR_CODE, UserErrorCode.SYS_USER_UPDATE_ERROR_MESSAGE);
+        }
+
+        return Result.success();
+    }
+
+    /**
+     * 删除多个记录
+     *
+     * @param ids 请求数据对象
+     * @return 结果对象
+     */
+    @RequestMapping("/delete")
+    @RequiresPermissions("sys:user:delete")
+    public Result deleteByIds(@RequestBody List<String> ids) {
+
+        try {
+            //校验参数
+            if (EmptyUtils.isEmpty(ids)){
+                return Result.error("500","请选择用户再进行删除");
+            }
+            //执行删除
+            scheduleJobService.deleteByIds(ids);
+        } catch (ApplicationException e) {
+            return Result.error(UserErrorCode.SYS_USER_DELETE_APP_ERROR_CODE, UserErrorCode.SYS_USER_DELETE_APP_ERROR_MESSAGE);
+        } catch (Exception e) {
+            return Result.error(UserErrorCode.SYS_USER_DELETE_ERROR_CODE,UserErrorCode.SYS_USER_DELETE_ERROR_MESSAGE);
+        }
+
+        return Result.success();
+    }
+
 //    /**
 //     * 修改
 //     */
@@ -152,43 +215,5 @@ public class SysScheduleJobController {
 //
 //        return Result.success();
 //    }
-//
-//    /**
-//     * 改变任务状态-执行
-//     */
-//
-//    @RequestMapping("/changeJobStart")
-//    public Result changeStart(@RequestBody Integer id){
-//
-//        try{
-//            bgSysScheduleJobService.changeJobStart(id);
-//        }catch (KunlunException e){
-//            logger.error("SysScheduleJobController | changeStart | KunlunException:{}|{}",e.getMsg(), id);
-//            return Result.error(e.getCode(),e.getMsg());
-//        }catch (Exception e){
-//            logger.error("SysScheduleJobController | changeStart | Exception:{}",e);
-//            return Result.error(e.getMessage());
-//        }
-//        return Result.success();
-//    }
-//
-//    /**
-//     * 改变任务状态-禁止
-//     */
-//    @RequestMapping("/changeJobStop")
-//    public Result changeStop(@RequestBody Integer id){
-//
-//        try{
-//            bgSysScheduleJobService.changeJobStop(id);
-//        }catch (KunlunException e){
-//            logger.error("SysScheduleJobController | changeStop | KunlunException:{}|{}",e.getMsg(), id);
-//            return Result.error(e.getCode(),e.getMsg());
-//        }catch (Exception e){
-//            logger.error("SysScheduleJobController | changeStop | Exception:{}",e);
-//            return Result.error(e.getMessage());
-//        }
-//        return Result.success();
-//    }
-
 
 }

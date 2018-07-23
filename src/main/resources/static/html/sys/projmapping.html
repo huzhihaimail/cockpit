@@ -29,9 +29,9 @@
 
                 <!-- 此处定义表格左上方的按钮-->
                 <div id="toolbar" class="btn-group">
-                    <a class="btn btn-success" @click="save"><i class="fa fa-floppy-o"></i>新建</a>
-                    <a class="btn btn-warning" @click="update"><i class="fa fa-pencil-square-o"></i>修改</a>
-                    <a class="btn btn-danger" @click="del"><i class="fa fa-trash"></i>删除</a>
+                    <a class="btn btn-success" v-if="hasPermission('sys:projmapping:add')" @click="save"><i class="fa fa-floppy-o"></i>新建</a>
+                    <a class="btn btn-warning" v-if="hasPermission('sys:projmapping:update')" @click="update"><i class="fa fa-pencil-square-o"></i>修改</a>
+                    <a class="btn btn-danger" v-if="hasPermission('sys:projmapping:delete')" @click="del"><i class="fa fa-trash"></i>删除</a>
                 </div>
             </div>
         </div>
@@ -219,6 +219,7 @@
 <script src="../../plugin/moment/moment.min.js"></script>
 <script src="../../plugin/bootstrap-select-1.12.4/js/bootstrap-select.min.js"></script>
 <script src="../../plugin/bootstrap-select-1.12.4/js/i18n/defaults-zh_CN.min.js"></script>
+<script src="../../bsns/common/common-shiro.js"></script>
 <!--<script src="../../bsns/common/common-bootstrap-select.js"></script>-->
 <script src="../../bsns/sys/projmapping.js"></script>
 

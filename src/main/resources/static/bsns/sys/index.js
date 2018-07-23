@@ -47,9 +47,9 @@ var vm = new Vue({
         }
     },
     created: function () { // vue实例化后执行
-        // $.get(APP_NAME + "/sys/menu/queryPermissionByUserName", function (r) {
-        //     shiro.menu_permissions = r.model;
-        // });
+        $.get(APP_NAME + "/sys/menu/queryPermissionByUserName", function (r) {
+            window.parent.permissions = r.model;
+        });
         this.loadMenus();
         this.getLoginUser();
     }
