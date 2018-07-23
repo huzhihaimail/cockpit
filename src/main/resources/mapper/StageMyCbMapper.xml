@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.njdhy.muscle.triceps.dao.StageMyCbDao">
+
+    <insert id="insert" parameterType="StageMyCb" >
+        insert into STAGE_MY_CB (
+                                        PROJECT_NAME,
+                                        ITEM_NAME,
+                                        DATA_DATE,
+                                        MBTZJZCB_HJ,
+                                        MBTZJZDF_HJ,
+                                        DTJZCB_HJ,
+                                        DTJZDF_HJ,
+                                        PCL_HJ,
+                                        MBTZJZCB,
+                                        MBTZJZDF,
+                                        DTJZCB,
+                                        DTJZDF,
+                                        PCL,
+										etl_time)
+										values(
+										#{projectName},
+									    #{itemName},
+									    #{dataDate},
+									    #{mbtzjzcbHj},
+									    #{mbtzjzdfHj},
+									    #{dtjzcbHj},
+									    #{dtjzdfHj},
+									    #{pclHj},
+									    #{mbtzjzCb},
+									    #{mbtzjzDf},
+									    #{dtjzCb},
+									    #{dtjzDf},
+									    #{pcl},
+										getdate()
+										)
+    </insert>
+
+
+</mapper>
