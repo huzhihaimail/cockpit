@@ -8,6 +8,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -101,9 +104,8 @@ public class DataCenterCtl {
         List<String> listColums = dataCenterService.selectColumns(tableName);
         List<Map<String,Object>> dataLists = dataCenterService.selectDataByTableName(tableName);
         String name =  tableName + ".xls";
-        response.addHeader("Content-Disposition",
-                "attachment;filename=" + new String(name.getBytes("UTF-8"), "ISO8859-1"));
-        response.setContentType("application/octet-stream");
+        response.setContentType("application/vnd.ms-excel");
+        response.addHeader("Content-Disposition", "attachment;filename="+ URLEncoder.encode(name, "UTF-8"));
         OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
         ExportExcelUtil.exportExcel(dataLists, listColums, response.getOutputStream());
         toClient.flush();

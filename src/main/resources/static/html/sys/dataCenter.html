@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <link href="../../plugin/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -25,13 +25,13 @@
                     </select>
 
                     <span class="input-group-btn">
-                            <button type="button" class="btn btn-primary" @click="query" style="margin-left:10px;">
+                            <button id="searchData" type="button" class="btn btn-primary" @click="query" style="margin-left:10px;">
                                 <i class="fa fa-search"></i>查询
                             </button>
                     </span>
 
                     <span class="input-group-btn">
-                            <button type="button" class="btn btn-primary" style="margin-left:10px;">
+                            <button id="exportData" type="button" class="btn btn-primary" @click="save" style="margin-left:10px;">
                                 <i class="glyphicon glyphicon-download-alt"></i>导出
                             </button>
                     </span>

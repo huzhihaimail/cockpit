@@ -74,6 +74,12 @@ var vm = new Vue({
                 bsTable.createBootStrapTable(vm.columns, APP_NAME + "/sys/" + vm.moduleName + "/list?tableName=" + table + "&rnd=" + Math.random(), vm.queryOption);
             }
 
+            ,save: function () {
+                var table = $('#tableNameId').selectpicker('val');
+                var url = APP_NAME + "/sys/dataCenter/export?tableName=" + table;
+                window.location.href = url;
+            }
+
         }
 
     })
