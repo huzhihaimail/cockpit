@@ -58,22 +58,22 @@ public class ExportExcelUtil {
     public static <T> void exportExcel(List<T> list, List<String> column, OutputStream os) {
 
         // 声明一个工作薄
-        HSSFWorkbook wb = new HSSFWorkbook();
+        XSSFWorkbook wb = new XSSFWorkbook();
         // 声明一个单子并命名
-        HSSFSheet sheet = wb.createSheet("1");
+        XSSFSheet sheet = wb.createSheet("1");
         // 给单子名称一个长度
         sheet.setDefaultColumnWidth((short) 15);
         // 生成一个样式
-        HSSFCellStyle style = wb.createCellStyle();
+        XSSFCellStyle style = wb.createCellStyle();
         // 创建第一行（也可以称为表头）
-        HSSFRow row = sheet.createRow(0);
+        XSSFRow row = sheet.createRow(0);
         // 样式字体居中
         style.setAlignment(HorizontalAlignment.CENTER);
         // 给表头第一行一次创建单元格
         if (column == null || column.size() == 0)
             return ;
         for (int index = 0; index < column.size(); index++) {
-            HSSFCell cell = row.createCell((short) index);
+            XSSFCell cell = row.createCell(index);
             // 名称..
             cell.setCellValue(column.get(index));
             cell.setCellStyle(style);
