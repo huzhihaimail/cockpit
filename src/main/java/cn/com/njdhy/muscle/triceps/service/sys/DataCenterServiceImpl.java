@@ -51,8 +51,8 @@ public class DataCenterServiceImpl extends BaseServiceImpl<DataCenterDao, Map<St
     }
 
     @Override
-    public List<Map<String, Object>> selectDataByTableName(String tableName) {
-        return this.dataCenterDao.selectDataByTableName(tableName);
+    public List<Map<String, Object>> selectAllByTableName(String tableName) {
+        return this.dataCenterDao.selectAllByTableName(tableName);
     }
 
 }

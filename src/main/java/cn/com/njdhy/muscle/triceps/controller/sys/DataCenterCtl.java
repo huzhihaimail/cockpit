@@ -102,7 +102,7 @@ public class DataCenterCtl {
     )
     public void export(@RequestParam String tableName, HttpServletResponse response) throws IOException {
         List<String> listColums = dataCenterService.selectColumns(tableName);
-        List<Map<String,Object>> dataLists = dataCenterService.selectDataByTableName(tableName);
+        List<Map<String,Object>> dataLists = dataCenterService.selectAllByTableName(tableName);
         String name =  tableName + ".xls";
         response.setContentType("application/vnd.ms-excel");
         response.addHeader("Content-Disposition", "attachment;filename="+ URLEncoder.encode(name, "UTF-8"));

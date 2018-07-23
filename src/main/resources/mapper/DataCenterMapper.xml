@@ -10,6 +10,10 @@
         SELECT * FROM ${tableName} order by id
     </select>
 
+    <select id="selectAllByTableName" resultType="java.util.Map" parameterType="java.lang.String">
+        SELECT * FROM ${tableName}
+    </select>
+
     <select id="selectColumns" resultType="java.lang.String" parameterType="java.lang.String">
         SELECT
         B.name AS column_name

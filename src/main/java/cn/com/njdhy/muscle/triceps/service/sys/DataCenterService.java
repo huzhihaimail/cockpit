@@ -18,7 +18,7 @@ public interface DataCenterService extends BaseService<Map<String,Object>> {
     PageInfo<Map<String,Object>> selectDataByTableName(String tableName,Integer pageNum, Integer pageSize);
 
     //根据表名查询所有数据
-    List<Map<String,Object>> selectDataByTableName(String tableName);
+    List<Map<String,Object>> selectAllByTableName(String tableName);
 
     //查询数据库所有表名
     List<String> selectAllTableName();

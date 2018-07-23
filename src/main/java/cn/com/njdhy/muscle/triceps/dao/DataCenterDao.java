@@ -19,11 +19,18 @@ public interface DataCenterDao extends BaseDao<Map<String,Object>>{
     List<String> selectAllTableName();
 
     /**
-     * 根据表名查询数据
+     * 根据表名分页查询数据
      * @param tableName
      * @return
      */
     List<Map<String,Object>> selectDataByTableName(@Param("tableName") String tableName);
+
+    /**
+     * 根据表名分页查询所有数据
+     * @param tableName
+     * @return
+     */
+    List<Map<String,Object>> selectAllByTableName(@Param("tableName") String tableName);
 
     /**
      * 根据表名查询表字段
