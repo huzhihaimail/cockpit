@@ -19,46 +19,25 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
-    <!--<select id="queryObject" resultType="com.weshare.kunlun.model.ScheduleJob">-->
-        <!--select * from bg_sys_schedule_job where id = #{value}-->
-    <!--</select>-->
-
-    <!--<select id="queryList" resultType="com.weshare.kunlun.model.ScheduleJob">-->
-        <!--select * from bg_sys_schedule_job-->
-        <!--<where>-->
-            <!--<if test="queryData!=null and queryData!=''">-->
-                <!--job_name LIKE CONCAT('%',#{queryData},'%')-->
-                <!--OR-->
-                <!--spring_id LIKE CONCAT('%',#{queryData},'%')-->
-                <!--OR-->
-                <!--method_name LIKE CONCAT('%',#{queryData},'%')-->
-            <!--</if>-->
-            <!--<if test="jobTaskName!=null and jobTaskName!=''">-->
-                <!--and job_name = #{jobTaskName}-->
-            <!--</if>-->
-        <!--</where>-->
-        <!--<choose>-->
-            <!--<when test="sidx != null and sidx.trim() != ''">-->
-                <!--order by ${sidx} ${order}-->
-            <!--</when>-->
-            <!--<otherwise>-->
-                <!--order by id desc-->
-            <!--</otherwise>-->
-        <!--</choose>-->
-        <!--<if test="offset != null and limit != null">-->
-            <!--limit #{offset}, #{limit}-->
-        <!--</if>-->
-    <!--</select>-->
 
     <!-- 根据条件查询 -->
     <select id="queryList" resultMap="scheduleJobMap" parameterType="map">
         SELECT
-          *
+        *
         FROM
         sys_quartz_job q
         WHERE 1=1
         <if test="keyword!=null and keyword!=''">
         </if>
+        order by q.id desc
+    </select>
+
+    <!-- 根据条件查询 -->
+    <select id="queryAllSchedule" resultMap="scheduleJobMap">
+        SELECT
+        *
+        FROM
+        sys_quartz_job q
         order by q.id desc
     </select>
 
@@ -114,14 +93,10 @@
             <if test="beanClass!=null and beanClass!=''">
                 bean_class = #{beanClass},
             </if>
-            <!--<if test="updateTime!=null and updateTime!=''">-->
-                <!--update_time = #{updateTime}-->
-            <!--</if>-->
         </set>
         where id = #{id}
 
     </update>
-
 
     <!-- 批量删除-->
     <delete id="deleteByIds" parameterType="java.util.List">
@@ -133,89 +108,5 @@
             #{id}
         </foreach>
     </delete>
-
-    <!--<select id="queryTotal" resultType="int">-->
-        <!--select count(*) from bg_sys_schedule_job-->
-        <!--<where>-->
-            <!--<if test="queryData!=null and queryData!=''">-->
-                <!--job_name LIKE CONCAT('%',#{queryData},'%')-->
-                <!--OR-->
-                <!--spring_id LIKE CONCAT('%',#{queryData},'%')-->
-                <!--OR-->
-                <!--method_name LIKE CONCAT('%',#{queryData},'%')-->
-            <!--</if>-->
-        <!--</where>-->
-    <!--</select>-->
-
-    <!--<insert id="save" parameterType="com.weshare.kunlun.model.ScheduleJob" useGeneratedKeys="true" keyProperty="id">-->
-        <!--insert into bg_sys_schedule_job-->
-        <!--(-->
-        <!--`job_id`,-->
-        <!--`job_name`,-->
-        <!--`job_group`,-->
-        <!--`job_status`,-->
-        <!--`cron_expression`,-->
-        <!--`description`,-->
-        <!--`bean_class`,-->
-        <!--`is_concurrent`,-->
-        <!--`spring_id`,-->
-        <!--`method_name`,-->
-        <!--`create_time`,-->
-        <!--`update_time`-->
-        <!--)-->
-        <!--values-->
-        <!--(-->
-        <!--#{jobId},-->
-        <!--#{jobName},-->
-        <!--#{jobGroup},-->
-        <!--#{jobStatus},-->
-        <!--#{cronExpression},-->
-        <!--#{description},-->
-        <!--#{beanClass},-->
-        <!--#{isConcurrent},-->
-        <!--#{springId},-->
-        <!--#{methodName},-->
-        <!--#{createTime},-->
-        <!--#{updateTime}-->
-        <!--)-->
-    <!--</insert>-->
-
-    <!--<update id="update" parameterType="com.weshare.kunlun.model.ScheduleJob">-->
-        <!--update bg_sys_schedule_job-->
-        <!--<set>-->
-            <!--<if test="jobId != null">`job_id` = #{jobId}, </if>-->
-            <!--<if test="jobName != null">`job_name` = #{jobName}, </if>-->
-            <!--<if test="jobGroup != null">`job_group` = #{jobGroup}, </if>-->
-            <!--<if test="jobStatus != null">`job_status` = #{jobStatus}, </if>-->
-            <!--<if test="cronExpression != null">`cron_expression` = #{cronExpression}, </if>-->
-            <!--<if test="description != null">`description` = #{description}, </if>-->
-            <!--<if test="beanClass != null">`bean_class` = #{beanClass}, </if>-->
-            <!--<if test="isConcurrent != null">`is_concurrent` = #{isConcurrent}, </if>-->
-            <!--<if test="springId != null">`spring_id` = #{springId}, </if>-->
-            <!--<if test="methodName != null">`method_name` = #{methodName}, </if>-->
-            <!--<if test="createTime != null">`create_time` = #{createTime}, </if>-->
-            <!--<if test="updateTime != null">`update_time` = #{updateTime}</if>-->
-        <!--</set>-->
-        <!--where id = #{id}-->
-    <!--</update>-->
-
-    <!--<delete id="delete">-->
-        <!--delete from bg_sys_schedule_job where id = #{value}-->
-    <!--</delete>-->
-
-    <!--<delete id="deleteBatch">-->
-        <!--delete from bg_sys_schedule_job where id in-->
-        <!--<foreach item="id" collection="array" open="(" separator="," close=")">-->
-            <!--#{id}-->
-        <!--</foreach>-->
-    <!--</delete>-->
-
-    <!--<select id="checkName" resultType="com.weshare.kunlun.model.ScheduleJob">-->
-        <!--select * from bg_sys_schedule_job where job_name = #{value}-->
-    <!--</select>-->
-
-    <!--<select id="getAllTask" resultType="com.weshare.kunlun.model.ScheduleJob">-->
-        <!--select * from bg_sys_schedule_job-->
-    <!--</select>-->
 
 </mapper>

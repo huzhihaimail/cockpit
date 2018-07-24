@@ -13,4 +13,6 @@ public interface ScheduleJobDao extends BaseDao<ScheduleJob> {
 
     ScheduleJob checkName(String name);
 
+    List<ScheduleJob> queryAllSchedule();
+
 }

@@ -251,6 +251,10 @@ public class MenuCtl {
             //获取当前登陆用户id
             String loginName = ShiroUtil.getLoginUserName();
 
+            if (!EmptyUtils.isEmpty(loginName)){
+                return Result.error("500","请先登陆!!!");
+            }
+
             List<String> menuList = sysMenuService.queryPermissionByUserName(loginName);
 
             return Result.success().put("model", menuList);

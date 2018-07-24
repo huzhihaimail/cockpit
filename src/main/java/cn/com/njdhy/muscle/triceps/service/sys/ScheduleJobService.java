@@ -17,27 +17,11 @@ public interface ScheduleJobService extends BaseService<ScheduleJob> {
      */
     void insertSchedule(ScheduleJob scheduleJob);
 
-//    ScheduleJob queryObject(Integer id);
-//
-//    List<ScheduleJob> queryList(Map<String, Object> map);
-//
-//    int queryTotal(Map<String, Object> map);
-//
-//    void save(ScheduleJob bgSysScheduleJob);
-//
-//    void update(ScheduleJob bgSysScheduleJob);
-//
-//    void delete(Integer id);
-//
-//    void deleteBatch(Integer[] ids);
-//
-//    List<ScheduleJob> getAllTask();
-//
     void addJob(ScheduleJob job) throws Exception;
 
     void changeJobStart(String id);
 
     void changeJobStop(String id);
-//
-//    void deleteJob(ScheduleJob scheduleJob) throws Exception;
+
+    void deleteJob(ScheduleJob scheduleJob) throws Exception;
 }

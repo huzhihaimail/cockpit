@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by huaijie on 2017/9/25.
+ * 定时器业务层
  */
 @Service("scheduleJobService")
 public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, ScheduleJob> implements ScheduleJobService {
@@ -27,7 +27,7 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
     @PostConstruct
     public void init() throws Exception {
         // 这里获取任务信息数据
-        List<ScheduleJob> jobList = new ArrayList<>();//getAllTask();
+        List<ScheduleJob> jobList = this.dao.queryAllSchedule();
         for (ScheduleJob job : jobList) {
             addJob(job);
         }
@@ -35,7 +35,6 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
 
     /**
      * 新增定时器任务
-     *
      * @param scheduleJob
      */
     @Override
@@ -51,25 +50,25 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
 
     @Override
     public void changeJobStart(String id) {
-            try {
-                ScheduleJob scheduleJob = dao.queryById(id);
-                if (scheduleJob == null) {
-                    throw new ApplicationException("500", "任务信息不存在");
-                }
-                if (scheduleJob.getJobStatus().equals(ScheduleJob.STATUS_RUNNING)) {
-                    throw new ApplicationException("500", "该任务已启用");
-                }
-                ScheduleJob detail = new ScheduleJob();
-                detail.setId(Integer.valueOf(id));
-                detail.setJobStatus(ScheduleJob.STATUS_RUNNING);
-                scheduleJob.setJobStatus(ScheduleJob.STATUS_RUNNING);
-                addJob(scheduleJob);
-                this.dao.update(detail);
-            } catch (ApplicationException e) {
-                throw new ApplicationException(e.getCode(), e.getMsg());
-            }catch (Exception e) {
-                throw new ApplicationException("500", "定时器异常");
+        try {
+            ScheduleJob scheduleJob = dao.queryById(id);
+            if (scheduleJob == null) {
+                throw new ApplicationException("500", "任务信息不存在");
             }
+            if (scheduleJob.getJobStatus().equals(ScheduleJob.STATUS_RUNNING)) {
+                throw new ApplicationException("500", "该任务已启用");
+            }
+            ScheduleJob detail = new ScheduleJob();
+            detail.setId(Integer.valueOf(id));
+            detail.setJobStatus(ScheduleJob.STATUS_RUNNING);
+            scheduleJob.setJobStatus(ScheduleJob.STATUS_RUNNING);
+            addJob(scheduleJob);
+            this.dao.update(detail);
+        } catch (ApplicationException e) {
+            throw new ApplicationException(e.getCode(), e.getMsg());
+        }catch (Exception e) {
+            throw new ApplicationException("500", "定时器异常");
+        }
     }
 
     @Override
@@ -82,16 +81,19 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
             if (scheduleJob.getJobStatus().equals(ScheduleJob.STATUS_NOT_RUNNING)) {
                 throw new ApplicationException("500", "该任务已停止");
             }
-//        deleteJob(scheduleJob);
+            deleteJob(scheduleJob);
             ScheduleJob detail = new ScheduleJob();
             detail.setId(Integer.valueOf(id));
             detail.setJobStatus(ScheduleJob.STATUS_NOT_RUNNING);
             this.dao.update(detail);
         } catch (ApplicationException e) {
             throw new ApplicationException(e.getCode(), e.getMsg());
+        } catch (Exception e) {
+            throw new ApplicationException("500", "定时器异常");
         }
     }
 
+    @Override
     public void addJob(ScheduleJob job) throws Exception {
         if (job == null || !ScheduleJob.STATUS_RUNNING.equals(job.getJobStatus())) {
             return;
@@ -122,93 +124,12 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
         }
     }
 
-
-//    @Autowired
-//    private ScheduleJobDao scheduleJobDao;
-//
-
-//
-//    @Override
-//    public void save(ScheduleJob bgSysScheduleJob){
-//        String jobname=bgSysScheduleJob.getJobName().replace(" ","");
-//        if(!checkName(jobname)){
-//            throw new KunlunException("the jobName is already exists",ErrorCode.SCHEDULE_JOBNAME_CODE);
-//        }
-//        bgSysScheduleJob.setJobName(jobname);
-//        bgSysScheduleJob.setJobStatus(ScheduleJob.STATUS_NOT_RUNNING);
-//        bgSysScheduleJob.setJobId(Utility.getUUID());
-//        bgSysScheduleJob.setCreateTime(new Date());
-//        bgSysScheduleJob.setUpdateTime(new Date());
-//        scheduleJobDao.save(bgSysScheduleJob);
-//    }
-//    //判断任务名称是否相同
-//    public boolean checkName(String name){
-//        return scheduleJobDao.checkName(name)==null;
-//    }
-//    //修改信息中判断名称是否相同
-//    public Integer updateCheckName(String name){
-//        ScheduleJob scheduleJob=scheduleJobDao.checkName(name);
-//        return scheduleJob.getId();
-//    }
-//
-//    @Override
-//    public void update(ScheduleJob bgSysScheduleJob){
-//        int id=bgSysScheduleJob.getId();
-//        String jobname=bgSysScheduleJob.getJobName().replace(" ","");
-//
-//        if(checkStatus(id)){
-//            throw new KunlunException("the status is running",ErrorCode.SCHEDULE_JOB_RUNNING_CODE);
-//        }
-//        //修改信息中判断名称是否相同
-////        if(id!=updateCheckName(jobname)){
-////            throw new KunlunException("the jobName is already exists",ErrorCode.SCHEDULE_JOBNAME_CODE);
-////        }
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("jobTaskName",jobname);
-//        List<ScheduleJob> scheduleJobList = this.queryList(map);
-//        if(scheduleJobList != null && scheduleJobList.size() >0 ){
-//            if(scheduleJobList.size() >1){
-//                throw new KunlunException("the jobName is already exists",ErrorCode.SCHEDULE_JOBNAME_CODE);
-//            }else if(scheduleJobList.size() == 1) {
-//                ScheduleJob scheduleJob =  scheduleJobList.get(0);
-//                if(scheduleJob.getId() != id){
-//                    throw new KunlunException("the jobName is already exists",ErrorCode.SCHEDULE_JOBNAME_CODE);
-//                }
-//            }
-//        }
-//
-//        //bgSysScheduleJob.setJobName(jobname);
-//        bgSysScheduleJob.setUpdateTime(new Date());
-//        scheduleJobDao.update(bgSysScheduleJob);
-//
-//    }
-//
-//    //0表示停用，1表示启用
-//    public boolean checkStatus(Integer id){
-//        ScheduleJob scheduleJob = scheduleJobDao.queryObject(id);
-//        return scheduleJob.getJobStatus().equals(ScheduleJob.STATUS_RUNNING) ? true :false;
-//    }
-//    @Override
-//    public void deleteBatch(Integer[] ids){
-//        scheduleJobDao.deleteBatch(ids);
-//    }
-//
-//    @Override
-//    public List<ScheduleJob> getAllTask() {
-//        return scheduleJobDao.getAllTask();
-//    }
-//
-//
-
-
-//
-//    @Override
-//    public void deleteJob(ScheduleJob scheduleJob) throws Exception{
-//        Scheduler scheduler = schedulerFactoryBean.getScheduler();
-//        logger.info("removeJob.................remove..................................");
-//        JobKey jobKey = JobKey.jobKey(scheduleJob.getJobName(), scheduleJob.getJobGroup());
-//        if (jobKey != null) {
-//            scheduler.deleteJob(jobKey);
-//        }
-//    }
+    @Override
+    public void deleteJob(ScheduleJob scheduleJob) throws Exception{
+        Scheduler scheduler = schedulerFactoryBean.getScheduler();
+        JobKey jobKey = JobKey.jobKey(scheduleJob.getJobName(), scheduleJob.getJobGroup());
+        if (jobKey != null) {
+            scheduler.deleteJob(jobKey);
+        }
+    }
 }

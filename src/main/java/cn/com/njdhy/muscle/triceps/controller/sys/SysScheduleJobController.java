@@ -81,7 +81,6 @@ public class SysScheduleJobController {
 
     /**
      * 保存
-     *
      * @param scheduleJob 请求数据对象
      * @return 结果对象
      */
@@ -185,35 +184,5 @@ public class SysScheduleJobController {
 
         return Result.success();
     }
-
-//    /**
-//     * 修改
-//     */
-//    @RequestMapping("/update")
-//    public Result update(@RequestBody ScheduleJob bgSysScheduleJob){
-//        bgSysScheduleJobService.update(bgSysScheduleJob);
-//
-//        return Result.success();
-//    }
-//
-//    /**
-//     * 删除
-//     */
-//    @RequestMapping("/deletebatch")
-//    public Result deleteBatch(@RequestBody Integer[] ids){
-//        bgSysScheduleJobService.deleteBatch(ids);
-//
-//        return Result.success();
-//    }
-//
-//    /**
-//     * 删除
-//     */
-//    @RequestMapping("/delete")
-//    public Result delete(@RequestBody Integer id){
-//        bgSysScheduleJobService.delete(id);
-//
-//        return Result.success();
-//    }
 
 }
